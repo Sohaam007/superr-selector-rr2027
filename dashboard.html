@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajasthan Royals · SupeRR Selector S2 Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --rr-blue: #004BA0;
+            --rr-pink: #EA1A85;
+            --rr-gold: #D4AF37;
+            --rr-dark: #0B132B;
+            --rr-card: #131E3D;
+            --rr-card-border: #1E2D5A;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        body {
+            background-color: var(--rr-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #002D62 0%, #004BA0 50%, #EA1A85 100%);
+            padding: 30px 40px;
+            border-bottom: 3px solid var(--rr-gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .badge {
+            background: rgba(234, 26, 133, 0.25);
+            border: 1px solid var(--rr-pink);
+            color: #FF80BF;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-top: 10px;
+            color: #FFFFFF;
+        }
+        
+        .subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+            margin-top: 5px;
+            max-width: 900px;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+        
+        .kpi-card {
+            background: var(--rr-card);
+            border: 1px solid var(--rr-card-border);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--rr-pink);
+        }
+        
+        .kpi-card:nth-child(2)::before { background: var(--rr-blue); }
+        .kpi-card:nth-child(3)::before { background: var(--rr-gold); }
+        .kpi-card:nth-child(4)::before { background: #10B981; }
+        
+        .kpi-val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .kpi-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: var(--rr-card);
+            padding: 16px 24px;
+            border-radius: 14px;
+            border: 1px solid var(--rr-card-border);
+            margin-bottom: 30px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--rr-card-border);
+            color: var(--text-muted);
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn.active {
+            background: var(--rr-pink);
+            border-color: var(--rr-pink);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(234, 26, 133, 0.4);
+        }
+        
+        .search-box {
+            background: #0B132B;
+            border: 1px solid var(--rr-card-border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: #FFFFFF;
+            font-size: 0.95rem;
+            width: 280px;
+            outline: none;
+        }
+        
+        .search-box:focus {
+            border-color: var(--rr-pink);
+        }
+        
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+        
+        @media (max-width: 900px) {
+            .charts-section { grid-template-columns: 1fr; }
+        }
+        
+        .chart-box {
+            background: var(--rr-card);
+            border: 1px solid var(--rr-card-border);
+            border-radius: 14px;
+            padding: 24px;
+        }
+        
+        .chart-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+        
+        .player-card {
+            background: var(--rr-card);
+            border: 1px solid var(--rr-card-border);
+            border-radius: 14px;
+            padding: 22px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        
+        .player-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--rr-pink);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .card-rank {
+            background: var(--rr-blue);
+            color: #FFFFFF;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .player-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        
+        .player-tag {
+            font-size: 0.85rem;
+            color: var(--rr-gold);
+            font-weight: 500;
+        }
+        
+        .stat-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+            background: rgba(11, 19, 43, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 2px;
+        }
+        
+        .rr-fit-box {
+            background: rgba(234, 26, 133, 0.1);
+            border-left: 3px solid var(--rr-pink);
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            color: #F1F5F9;
+            line-height: 1.4;
+        }
+        
+        .methodology-box {
+            background: var(--rr-card);
+            border: 1px solid var(--rr-card-border);
+            border-radius: 14px;
+            padding: 28px;
+            margin-top: 40px;
+        }
+        
+        .methodology-box h2 {
+            color: var(--rr-gold);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        .methodology-box p {
+            color: #CBD5E1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <span class="badge">IPL 2027 Auction Analytics War Room</span>
+        <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Author: <b>Soham Paul</b> · Round 1 Submission</span>
+    </div>
+    <h1>SupeRR Selector Season 2 · Pressure Reliability Engine</h1>
+    <div class="subtitle">Leverage-Indexed Win Probability & Hierarchical Shrinkage Model identifying the most reliable clutch players for Kumar Sangakkara & Giles Lindsay.</div>
+</header>
+
+<div class="container">
+    <!-- KPI Section -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-val">200,999</div>
+            <div class="kpi-lbl">Legal Deliveries Analyzed</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-val">883</div>
+            <div class="kpi-lbl">Competitive T20 Matches</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-val">24.3%</div>
+            <div class="kpi-lbl">Pressure Sample Share</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-val">LCB Metric</div>
+            <div class="kpi-lbl">Lower Confidence Bound Ranking</div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <div class="tab-buttons">
+            <button class="tab-btn active" id="btn-batters" onclick="switchTab('batters')">Top 10 Batters (Rank 1–10)</button>
+            <button class="tab-btn" id="btn-bowlers" onclick="switchTab('bowlers')">Top 10 Bowlers (Rank 1–10)</button>
+        </div>
+        <input type="text" id="search-input" class="search-box" placeholder="Search player name..." onkeyup="filterPlayers()">
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <div class="chart-box">
+            <div class="chart-title">
+                <span id="chart-title-1">Pressure vs Usual Strike Rate</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Higher Pressure SR = Clutch</span>
+            </div>
+            <canvas id="barChart" height="200"></canvas>
+        </div>
+        <div class="chart-box">
+            <div class="chart-title">
+                <span>Composite LCB Reliability Distribution</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Regularized Score</span>
+            </div>
+            <canvas id="lcbChart" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Player Grid -->
+    <div class="player-grid" id="player-grid">
+        <!-- Rendered via JS -->
+    </div>
+
+    <!-- Methodology Summary Box -->
+    <div class="methodology-box">
+        <h2>Mathematical Framework & Pressure Formulation</h2>
+        <p><b>1. Situational Leverage Index (LI):</b> Pressure is strictly evaluated as a property of match context before delivery: <i>LI(s) = Σ P(o) · |WP(s_o) - WP(s)|</i>. Tiers isolate situations where LI exceeds 1.5x (Tier 1) and 3.0x (Tier 2) league averages, capturing death-phase chases and top-order wicket collapses.</p>
+        <p><b>2. Contextual Runs Added (y):</b> Measures projected runs above expectation for each delivery. Batters earn positive credit (+y) for boundary-striking and dot avoidance; bowlers earn positive credit (-runs + wickets) for economy and breakthrough wickets under pressure.</p>
+        <p><b>3. Hierarchical Empirical Bayes Shrinkage:</b> Small pressure sample noise is filtered via ridge regularization: <i>Level = Skill + κ · Δ_pressure</i> (penalty κ = 0.5). Players are ranked on their Lower Confidence Bound (Composite LCB = Composite - 1.0 · SE), ensuring both elite ceiling and proven sample depth.</p>
+        <p><b>4. Rajasthan Royals Auction Fit:</b> Recommendations directly address Jaipur's Sawai Mansingh Stadium dynamics—prioritizing domestic finishing engines (Rinku Singh, Ashutosh Sharma) and high-velocity death pace / mystery wrist-spin (Lockie Ferguson, Sufiyan Muqeem).</p>
+    </div>
+
+    <footer>
+        Rajasthan Royals SupeRR Selector Season 2 · Confidential War Room Dashboard · Developed by Soham Paul (dhrubo2575@gmail.com)
+    </footer>
+</div>
+
+<script>
+    const battersData = [{"player_id": 50284, "player_name": "Vaibhav Sooryavanshi", "n_all_balls": 578, "n_pressure_balls": 173, "n_pressure_matches": 12, "ipl_pressure_balls": 155, "t20i_pressure_balls": 18, "last_match_date": "2026-10-27", "skill": 53.11531628522191, "delta": 7.632195181773184, "level": 60.74751146699509, "level_se": 8.751899489873674, "consistency": 0.65, "p_sr": 223.12138728323697, "u_sr": 219.7231833910035, "p_dot_pct": 0.3757225433526011, "p_boundary_pct": 0.3815028901734104, "p_dismissal_rate": 0.0462427745664739, "rac_per_100": 63.835682927828174, "eligible": true, "composite": 3.301269695376369, "composite_se": 0.4010188400461734, "composite_lcb": 2.9804546233394302, "rank": 1}, {"player_id": 4708, "player_name": "Rinku Singh", "n_all_balls": 1285, "n_pressure_balls": 237, "n_pressure_matches": 18, "ipl_pressure_balls": 219, "t20i_pressure_balls": 18, "last_match_date": "2026-07-26", "skill": -12.726193538366664, "delta": 28.630916191442125, "level": 15.904722653075462, "level_se": 7.559289460184544, "consistency": 0.6153846153846154, "p_sr": 180.168776371308, "u_sr": 152.68482490272373, "p_dot_pct": 0.2911392405063291, "p_boundary_pct": 0.2827004219409282, "p_dismissal_rate": 0.0253164556962025, "rac_per_100": 24.361111401602678, "eligible": true, "composite": 2.239889548908087, "composite_se": 0.3463725211200096, "composite_lcb": 1.962791532012079, "rank": 2}, {"player_id": 8101, "player_name": "Ashutosh Sharma", "n_all_balls": 334, "n_pressure_balls": 134, "n_pressure_matches": 13, "ipl_pressure_balls": 134, "t20i_pressure_balls": 0, "last_match_date": "2026-05-24", "skill": -7.243216629850189, "delta": 21.066931597050697, "level": 13.823714967200509, "level_se": 9.830783046228486, "consistency": 0.5714285714285714, "p_sr": 194.02985074626864, "u_sr": 168.8622754491018, "p_dot_pct": 0.2611940298507462, "p_boundary_pct": 0.291044776119403, "p_dismissal_rate": 0.044776119402985, "rac_per_100": 24.828828488047886, "eligible": true, "composite": 1.9510876295811364, "composite_se": 0.4504541235311923, "composite_lcb": 1.5907243307561825, "rank": 3}, {"player_id": 4007, "player_name": "Ryan Rickelton", "n_all_balls": 856, "n_pressure_balls": 266, "n_pressure_matches": 14, "ipl_pressure_balls": 119, "t20i_pressure_balls": 147, "last_match_date": "2026-05-24", "skill": -3.27107258664653, "delta": 13.462856780538942, "level": 10.191784193892412, "level_se": 7.158599835262723, "consistency": 0.5909090909090909, "p_sr": 167.66917293233084, "u_sr": 157.59345794392522, "p_dot_pct": 0.3345864661654135, "p_boundary_pct": 0.2406015037593984, "p_dismissal_rate": 0.0338345864661654, "rac_per_100": 13.73464124140266, "eligible": true, "composite": 1.8100529739421796, "composite_se": 0.3280126109324436, "composite_lcb": 1.5476428851962245, "rank": 4}, {"player_id": 768, "player_name": "Reeza Hendricks", "n_all_balls": 835, "n_pressure_balls": 222, "n_pressure_matches": 11, "ipl_pressure_balls": 0, "t20i_pressure_balls": 222, "last_match_date": "2025-12-19", "skill": -9.77293303756535, "delta": 18.644205268468664, "level": 8.871272230903314, "level_se": 7.794837629539571, "consistency": 0.5789473684210527, "p_sr": 167.56756756756758, "u_sr": 146.5868263473054, "p_dot_pct": 0.2657657657657657, "p_boundary_pct": 0.2387387387387387, "p_dismissal_rate": 0.0315315315315315, "rac_per_100": 14.750075693933976, "eligible": true, "composite": 1.8057604610535145, "composite_se": 0.3571655214005825, "composite_lcb": 1.5200280439330485, "rank": 5}, {"player_id": 4736, "player_name": "Josh Inglis", "n_all_balls": 904, "n_pressure_balls": 218, "n_pressure_matches": 17, "ipl_pressure_balls": 91, "t20i_pressure_balls": 127, "last_match_date": "2026-06-21", "skill": -0.0069774044771823, "delta": 14.106599778323808, "level": 14.099622373846628, "level_se": 7.861461384965021, "consistency": 0.52, "p_sr": 177.5229357798165, "u_sr": 162.5, "p_dot_pct": 0.3440366972477064, "p_boundary_pct": 0.2706422018348624, "p_dismissal_rate": 0.0458715596330275, "rac_per_100": 18.62926450450106, "eligible": true, "composite": 1.7125161942625955, "composite_se": 0.3602182736803758, "composite_lcb": 1.424341575318295, "rank": 6}, {"player_id": 1699, "player_name": "Suryakumar Yadav", "n_all_balls": 2761, "n_pressure_balls": 693, "n_pressure_matches": 44, "ipl_pressure_balls": 429, "t20i_pressure_balls": 264, "last_match_date": "2026-05-24", "skill": 7.879440607563158, "delta": 4.2848614996012, "level": 12.164302107164357, "level_se": 4.509876168016973, "consistency": 0.4807692307692308, "p_sr": 170.12987012987014, "u_sr": 166.4252082578776, "p_dot_pct": 0.2914862914862914, "p_boundary_pct": 0.2582972582972583, "p_dismissal_rate": 0.0432900432900432, "rac_per_100": 12.597116400053368, "eligible": true, "composite": 1.4123048500806543, "composite_se": 0.2066460328689347, "composite_lcb": 1.2469880237855064, "rank": 7}, {"player_id": 4260, "player_name": "Heinrich Klaasen", "n_all_balls": 1417, "n_pressure_balls": 293, "n_pressure_matches": 22, "ipl_pressure_balls": 228, "t20i_pressure_balls": 65, "last_match_date": "2026-05-27", "skill": 5.7910830376236495, "delta": 7.934494004823486, "level": 13.725577042447137, "level_se": 6.837634587578276, "consistency": 0.4666666666666667, "p_sr": 174.4027303754266, "u_sr": 166.7607621736062, "p_dot_pct": 0.2627986348122867, "p_boundary_pct": 0.2525597269624573, "p_dismissal_rate": 0.0409556313993174, "rac_per_100": 15.621189944623396, "eligible": true, "composite": 1.46068980883059, "composite_se": 0.3133057337030517, "composite_lcb": 1.2100452218681486, "rank": 8}, {"player_id": 6281, "player_name": "Abhishek Sharma", "n_all_balls": 2251, "n_pressure_balls": 498, "n_pressure_matches": 41, "ipl_pressure_balls": 362, "t20i_pressure_balls": 136, "last_match_date": "2026-11-01", "skill": 22.97858032874389, "delta": -5.8946638642327045, "level": 17.083916464511187, "level_se": 5.298129428260175, "consistency": 0.4693877551020408, "p_sr": 181.12449799196787, "u_sr": 186.49489115948467, "p_dot_pct": 0.3293172690763052, "p_boundary_pct": 0.2891566265060241, "p_dismissal_rate": 0.0582329317269076, "rac_per_100": 16.25534925467928, "eligible": true, "composite": 1.3796771685935127, "composite_se": 0.2427644101938902, "composite_lcb": 1.1854656404384003, "rank": 9}, {"player_id": 5553, "player_name": "Phil Salt", "n_all_balls": 1643, "n_pressure_balls": 433, "n_pressure_matches": 33, "ipl_pressure_balls": 176, "t20i_pressure_balls": 257, "last_match_date": "2026-07-11", "skill": 9.457075608930005, "delta": 3.849343191277801, "level": 13.306418800207805, "level_se": 5.669467095138408, "consistency": 0.4634146341463415, "p_sr": 171.13163972286372, "u_sr": 169.32440657334143, "p_dot_pct": 0.3625866050808314, "p_boundary_pct": 0.277136258660508, "p_dismissal_rate": 0.0392609699769053, "rac_per_100": 13.92871446623424, "eligible": true, "composite": 1.3857534257632032, "composite_se": 0.2597793908400072, "composite_lcb": 1.177929913091197, "rank": 10}];
+    const bowlersData = [{"player_id": 34485, "player_name": "Sufiyan Muqeem", "n_all_balls": 351, "n_pressure_balls": 128, "n_pressure_matches": 8, "ipl_pressure_balls": 0, "t20i_pressure_balls": 128, "last_match_date": "2026-10-13", "skill": 54.492958381991336, "delta": 15.757779669034784, "level": 70.25073805102612, "level_se": 9.198662110078, "consistency": 0.6875, "p_econ": 5.0625, "u_econ": 6.35897435897436, "p_dot_pct": 0.484375, "p_wkt_rate": 0.0546875, "rac_conceded_per_100": 77.63719727088618, "eligible": true, "composite": 2.094726835880077, "composite_se": 0.5141375988010686, "composite_lcb": 1.6834167568392224, "rank": 1}, {"player_id": 5979, "player_name": "Abrar Ahmed", "n_all_balls": 776, "n_pressure_balls": 196, "n_pressure_matches": 13, "ipl_pressure_balls": 0, "t20i_pressure_balls": 196, "last_match_date": "2026-10-11", "skill": 52.67491218473429, "delta": 9.12625303165006, "level": 61.80116521638435, "level_se": 7.572712299036657, "consistency": 0.7619047619047619, "p_econ": 5.877551020408163, "u_econ": 6.579896907216496, "p_dot_pct": 0.4183673469387755, "p_wkt_rate": 0.0561224489795918, "rac_conceded_per_100": 64.59491614444049, "eligible": true, "composite": 1.9212622872168528, "composite_se": 0.4232589556227337, "composite_lcb": 1.5826551227186658, "rank": 2}, {"player_id": 7344, "player_name": "Shoriful Islam", "n_all_balls": 823, "n_pressure_balls": 142, "n_pressure_matches": 9, "ipl_pressure_balls": 0, "t20i_pressure_balls": 142, "last_match_date": "2026-06-21", "skill": 30.72885848835834, "delta": 29.19903757185446, "level": 59.9278960602128, "level_se": 8.778955729143844, "consistency": 0.7058823529411765, "p_econ": 6.084507042253521, "u_econ": 7.975698663426488, "p_dot_pct": 0.4577464788732394, "p_wkt_rate": 0.0704225352112676, "rac_conceded_per_100": 72.26551756944708, "eligible": true, "composite": 1.9741695549385183, "composite_se": 0.4906790970849811, "composite_lcb": 1.5816262772705336, "rank": 3}, {"player_id": 4722, "player_name": "Rashid Khan", "n_all_balls": 2780, "n_pressure_balls": 662, "n_pressure_matches": 42, "ipl_pressure_balls": 351, "t20i_pressure_balls": 311, "last_match_date": "2026-11-01", "skill": 41.209098206408136, "delta": 10.31171676712995, "level": 51.52081497353809, "level_se": 4.227643431132483, "consistency": 0.78, "p_econ": 6.81570996978852, "u_econ": 7.344604316546762, "p_dot_pct": 0.3700906344410876, "p_wkt_rate": 0.0604229607250755, "rac_conceded_per_100": 52.45541165938068, "eligible": true, "composite": 1.6400614635043909, "composite_se": 0.2362941932488413, "composite_lcb": 1.4510261089053178, "rank": 4}, {"player_id": 2490, "player_name": "Mohammad Nawaz", "n_all_balls": 1017, "n_pressure_balls": 313, "n_pressure_matches": 22, "ipl_pressure_balls": 0, "t20i_pressure_balls": 313, "last_match_date": "2026-02-01", "skill": 46.283119749300845, "delta": 4.664756422684878, "level": 50.947876171985726, "level_se": 6.073733934116559, "consistency": 0.7666666666666667, "p_econ": 7.054313099041533, "u_econ": 7.032448377581121, "p_dot_pct": 0.3610223642172524, "p_wkt_rate": 0.0734824281150159, "rac_conceded_per_100": 51.842078681126594, "eligible": true, "composite": 1.5111892301948735, "composite_se": 0.339477083001234, "composite_lcb": 1.239607563793886, "rank": 5}, {"player_id": 4692, "player_name": "Lockie Ferguson", "n_all_balls": 1138, "n_pressure_balls": 299, "n_pressure_matches": 24, "ipl_pressure_balls": 172, "t20i_pressure_balls": 127, "last_match_date": "2026-10-24", "skill": 24.43517411327946, "delta": 22.08394101141463, "level": 46.51911512469409, "level_se": 6.207659127814104, "consistency": 0.71875, "p_econ": 7.384615384615385, "u_econ": 8.45694200351494, "p_dot_pct": 0.4581939799331103, "p_wkt_rate": 0.0702341137123745, "rac_conceded_per_100": 50.95067519387428, "eligible": true, "composite": 1.4649515098855594, "composite_se": 0.3469625169352824, "composite_lcb": 1.1873814963373337, "rank": 6}, {"player_id": 5379, "player_name": "Mark Adair", "n_all_balls": 906, "n_pressure_balls": 195, "n_pressure_matches": 13, "ipl_pressure_balls": 0, "t20i_pressure_balls": 195, "last_match_date": "2026-01-31", "skill": 37.037537319728976, "delta": 11.505755543237122, "level": 48.5432928629661, "level_se": 7.590721152765897, "consistency": 0.7619047619047619, "p_econ": 7.476923076923077, "u_econ": 8.132450331125828, "p_dot_pct": 0.3743589743589743, "p_wkt_rate": 0.0717948717948717, "rac_conceded_per_100": 52.08352533780829, "eligible": true, "composite": 1.507970125656943, "composite_se": 0.4242655181752779, "composite_lcb": 1.168557711116721, "rank": 7}, {"player_id": 278, "player_name": "Tim Southee", "n_all_balls": 861, "n_pressure_balls": 254, "n_pressure_matches": 19, "ipl_pressure_balls": 81, "t20i_pressure_balls": 173, "last_match_date": "2024-02-21", "skill": 37.78178707444767, "delta": 11.796821381284008, "level": 49.57860845573168, "level_se": 6.706818369346616, "consistency": 0.7037037037037037, "p_econ": 7.251968503937008, "u_econ": 7.986062717770034, "p_dot_pct": 0.468503937007874, "p_wkt_rate": 0.0669291338582677, "rac_conceded_per_100": 52.36525917572003, "eligible": true, "composite": 1.3922829269016577, "composite_se": 0.3748618495545031, "composite_lcb": 1.0923934472580552, "rank": 8}, {"player_id": 6450, "player_name": "Mujeeb Ur Rahman", "n_all_balls": 849, "n_pressure_balls": 322, "n_pressure_matches": 20, "ipl_pressure_balls": 0, "t20i_pressure_balls": 322, "last_match_date": "2026-10-29", "skill": 48.35721182265612, "delta": 2.791477340678542, "level": 51.14868916333466, "level_se": 5.992081817731276, "consistency": 0.7142857142857143, "p_econ": 6.9689440993788825, "u_econ": 6.791519434628976, "p_dot_pct": 0.4254658385093168, "p_wkt_rate": 0.062111801242236, "rac_conceded_per_100": 51.668840220603954, "eligible": true, "composite": 1.3544537419147609, "composite_se": 0.3349133298648555, "composite_lcb": 1.0865230780228765, "rank": 9}, {"player_id": 781, "player_name": "Sunil Narine", "n_all_balls": 1556, "n_pressure_balls": 418, "n_pressure_matches": 24, "ipl_pressure_balls": 418, "t20i_pressure_balls": 0, "last_match_date": "2026-05-24", "skill": 43.45965999172679, "delta": 1.133718323198677, "level": 44.59337831492547, "level_se": 5.28626264465434, "consistency": 0.78125, "p_econ": 6.889952153110048, "u_econ": 6.763496143958869, "p_dot_pct": 0.3564593301435406, "p_wkt_rate": 0.0478468899521531, "rac_conceded_per_100": 44.756113002465945, "eligible": true, "composite": 1.290259918843531, "composite_se": 0.2954632260898778, "composite_lcb": 1.0538893379716288, "rank": 10}];
+    
+    let currentRole = 'batters';
+    let barChartInstance = null;
+    let lcbChartInstance = null;
+
+    const rrFitBatters = {
+        "Vaibhav Sooryavanshi": "Elite prodigy striking at 223 under pressure. Fearless top-order accelerator.",
+        "Rinku Singh": "The gold standard of domestic T20 chases. 180.2 pressure SR, sub-30% dots. Solves RR's finisher slot.",
+        "Ashutosh Sharma": "Explosive pressure disrupter with a 194 SR and 26.1% dot rate. Transforms 12+ RRR situations.",
+        "Ryan Rickelton": "South African powerhouse opener/finisher; brings left-handed boundary muscle.",
+        "Reeza Hendricks": "Disciplined anchor-accelerator with proven boundary hitting across domestic leagues.",
+        "Josh Inglis": "Dynamic 360-degree wicketkeeper-batter with high versatility against pace and spin.",
+        "Suryakumar Yadav": "693 pressure deliveries faced; irrepressible 170.1 pressure strike rate.",
+        "Heinrich Klaasen": "Unstoppable against middle-overs spin; dominant 174.4 pressure strike rate.",
+        "Abhishek Sharma": "Ultra-high boundary intent in powerplay and death overs; 181.1 pressure SR.",
+        "Phil Salt": "Aggressive wicketkeeper-opener providing relentless top-order pressure release."
+    };
+
+    const rrFitBowlers = {
+        "Sufiyan Muqeem": "Left-arm mystery wrist spin chokes middle-overs chases (5.06 economy, 48.4% dots).",
+        "Abrar Ahmed": "Mystery leg-spin control holding a 5.88 economy and 76.2% match consistency under pressure.",
+        "Shoriful Islam": "Tall left-arm fast bowler offering angled yorkers and elite 7.0% wicket-taking rate.",
+        "Rashid Khan": "Peerless T20 match-winner. 662 pressure deliveries with 6.82 economy and 78% consistency.",
+        "Mohammad Nawaz": "Left-arm orthodox choke artist delivering 7.3% wicket rate under heavy chase pressure.",
+        "Lockie Ferguson": "Express 150 km/h tearaway enforcer. Restricts death chases to 7.38 economy with 45.8% dots.",
+        "Mark Adair": "Reliable seam craftsman with 7.48 economy and clutch death-phase variations.",
+        "Tim Southee": "Veteran swing and seam mastery; 46.9% dot ball percentage in tight finishes.",
+        "Mujeeb Ur Rahman": "Mystery carrom-ball accuracy with a 6.97 economy rate in high-stress overs.",
+        "Sunil Narine": "Legendary mystery squeeze (6.89 pressure economy across 418 balls, 78.1% consistency)."
+    };
+
+    function renderCards(data) {
+        const grid = document.getElementById('player-grid');
+        grid.innerHTML = '';
+        
+        data.forEach(p => {
+            const isBat = currentRole === 'batters';
+            const fitText = isBat ? (rrFitBatters[p.player_name] || 'High-leverage contributor.') : (rrFitBowlers[p.player_name] || 'High-leverage contributor.');
+            
+            const card = document.createElement('div');
+            card.className = 'player-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <div>
+                        <div class="player-name">${p.player_name}</div>
+                        <div class="player-tag">${isBat ? 'Specialist Batter' : 'Specialist Bowler'} · ${p.n_pressure_balls} Pressure Balls</div>
+                    </div>
+                    <div class="card-rank">RANK #${p.rank}</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-item">
+                        <span class="stat-lbl">${isBat ? 'Pressure SR' : 'Pressure Econ'}</span>
+                        <span class="stat-val" style="color: var(--rr-pink);">${isBat ? p.p_sr.toFixed(1) : p.p_econ.toFixed(2)}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-lbl">${isBat ? 'Usual SR' : 'Usual Econ'}</span>
+                        <span class="stat-val">${isBat ? p.u_sr.toFixed(1) : p.u_econ.toFixed(2)}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-lbl">${isBat ? 'Dot Ball %' : 'Dot Ball %'}</span>
+                        <span class="stat-val">${(p.p_dot_pct * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-lbl">${isBat ? 'Boundary %' : 'Wicket Rate'}</span>
+                        <span class="stat-val">${isBat ? (p.p_boundary_pct * 100).toFixed(1) + '%' : (p.p_wkt_rate * 100).toFixed(1) + '%'}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-lbl">Consistency</span>
+                        <span class="stat-val" style="color: var(--rr-gold);">${(p.consistency * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-lbl">Composite LCB</span>
+                        <span class="stat-val" style="color: #10B981;">${p.composite_lcb.toFixed(2)}</span>
+                    </div>
+                </div>
+                <div class="rr-fit-box">
+                    <b>RR War Room Tactical Fit:</b> ${fitText}
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function renderCharts(data) {
+        const isBat = currentRole === 'batters';
+        const labels = data.map(d => d.player_name.split(' ').pop());
+        
+        // 1. Bar Chart
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        if (barChartInstance) barChartInstance.destroy();
+        
+        document.getElementById('chart-title-1').innerText = isBat ? 'Pressure vs Usual Strike Rate' : 'Pressure vs Usual Economy (Lower is Better)';
+        
+        barChartInstance = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: isBat ? 'Pressure SR' : 'Pressure Economy',
+                        data: data.map(d => isBat ? d.p_sr : d.p_econ),
+                        backgroundColor: '#EA1A85'
+                    },
+                    {
+                        label: isBat ? 'Usual SR' : 'Usual Economy',
+                        data: data.map(d => isBat ? d.u_sr : d.u_econ),
+                        backgroundColor: '#004BA0'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#CBD5E1' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94A3B8' } },
+                    y: { ticks: { color: '#94A3B8' } }
+                }
+            }
+        });
+
+        // 2. LCB Score Chart
+        const ctxLcb = document.getElementById('lcbChart').getContext('2d');
+        if (lcbChartInstance) lcbChartInstance.destroy();
+        
+        lcbChartInstance = new Chart(ctxLcb, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Composite LCB (Rank Metric)',
+                        data: data.map(d => d.composite_lcb),
+                        borderColor: '#D4AF37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.15)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#EA1A85',
+                        pointRadius: 6,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#CBD5E1' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94A3B8' } },
+                    y: { ticks: { color: '#94A3B8' } }
+                }
+            }
+        });
+    }
+
+    function switchTab(role) {
+        currentRole = role;
+        document.getElementById('btn-batters').classList.toggle('active', role === 'batters');
+        document.getElementById('btn-bowlers').classList.toggle('active', role === 'bowlers');
+        document.getElementById('search-input').value = '';
+        
+        const data = role === 'batters' ? battersData : bowlersData;
+        renderCards(data);
+        renderCharts(data);
+    }
+
+    function filterPlayers() {
+        const term = document.getElementById('search-input').value.toLowerCase();
+        const fullData = currentRole === 'batters' ? battersData : bowlersData;
+        const filtered = fullData.filter(p => p.player_name.toLowerCase().includes(term));
+        renderCards(filtered);
+    }
+
+    // Init
+    switchTab('batters');
+</script>
+
+</body>
+</html>
