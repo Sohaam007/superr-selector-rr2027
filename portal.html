@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajasthan Royals War Room 2.0 · SupeRR Selector Post-Round 1 AI/ML Research Engine</title>
+    <title>Rajasthan Royals War Room 2.0 · Liquid Glass AI/ML Research Engine</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,18 +12,28 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-base: #060913;
-            --bg-card: rgba(14, 22, 45, 0.75);
-            --bg-card-hover: rgba(22, 34, 68, 0.85);
-            --border-glow: rgba(0, 112, 243, 0.25);
-            --border-pink: rgba(234, 26, 133, 0.4);
-            --rr-pink: #FF007F;
-            --rr-pink-glow: rgba(255, 0, 127, 0.45);
-            --rr-blue: #0052FF;
-            --rr-blue-glow: rgba(0, 82, 255, 0.4);
-            --rr-cyan: #00F0FF;
-            --rr-gold: #FFB703;
+            --bg-void: #050814;
+            --liquid-glass-bg: rgba(13, 20, 42, 0.42);
+            --liquid-glass-hover: rgba(22, 34, 68, 0.58);
+            --liquid-glass-card: rgba(10, 16, 36, 0.48);
+            --liquid-border: rgba(255, 255, 255, 0.14);
+            --liquid-border-hover: rgba(255, 255, 255, 0.28);
+            --specular-rim: rgba(255, 255, 255, 0.35);
+            
+            /* RR Neon Brand Palette */
+            --rr-pink: #EA1A85;
+            --rr-pink-neon: #FF007F;
+            --rr-pink-glow: rgba(234, 26, 133, 0.55);
+            --rr-blue: #004BA0;
+            --rr-blue-electric: #0052FF;
+            --rr-blue-glow: rgba(0, 75, 160, 0.5);
+            --rr-cyan: #00F5FF;
+            --rr-cyan-glow: rgba(0, 245, 255, 0.45);
+            --rr-gold: #D4AF37;
+            --rr-gold-glow: rgba(212, 175, 55, 0.45);
             --rr-emerald: #00F5A0;
+            --rr-emerald-glow: rgba(0, 245, 160, 0.4);
+
             --text-primary: #F8FAFC;
             --text-secondary: #94A3B8;
             --text-muted: #64748B;
@@ -40,7 +50,7 @@
         }
 
         body {
-            background-color: var(--bg-base);
+            background-color: var(--bg-void);
             color: var(--text-primary);
             font-family: var(--font-body);
             min-height: 100vh;
@@ -49,7 +59,74 @@
             line-height: 1.6;
         }
 
-        /* Ambient Cyber Canvas */
+        /* ============================================================
+           1. LIQUID MESH & AMBIENT DRIFTING LIGHT ORBS
+           ============================================================ */
+        .liquid-mesh-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .liquid-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.52;
+            animation: float-orb 20s ease-in-out infinite alternate;
+        }
+
+        .orb-pink {
+            width: 580px;
+            height: 580px;
+            background: radial-gradient(circle, var(--rr-pink) 0%, rgba(234, 26, 133, 0) 70%);
+            top: -120px;
+            left: -100px;
+            animation-duration: 22s;
+        }
+
+        .orb-blue {
+            width: 680px;
+            height: 680px;
+            background: radial-gradient(circle, var(--rr-blue-electric) 0%, rgba(0, 82, 255, 0) 70%);
+            top: 25%;
+            right: -150px;
+            animation-duration: 28s;
+            animation-delay: -6s;
+        }
+
+        .orb-cyan {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, var(--rr-cyan) 0%, rgba(0, 245, 255, 0) 70%);
+            bottom: -100px;
+            left: 25%;
+            animation-duration: 24s;
+            animation-delay: -12s;
+        }
+
+        .orb-gold {
+            width: 440px;
+            height: 440px;
+            background: radial-gradient(circle, var(--rr-gold) 0%, rgba(212, 175, 55, 0) 70%);
+            top: 65%;
+            left: 65%;
+            animation-duration: 26s;
+            animation-delay: -18s;
+        }
+
+        @keyframes float-orb {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(70px, 90px) scale(1.15) rotate(90deg); }
+            100% { transform: translate(-50px, -70px) scale(0.9) rotate(180deg); }
+        }
+
+        /* Cyber particle canvas overlay */
         #cyber-canvas {
             position: fixed;
             top: 0;
@@ -57,57 +134,106 @@
             width: 100vw;
             height: 100vh;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.45;
+            z-index: 1;
+            opacity: 0.4;
         }
 
-        /* Content Wrapper */
+        /* App Container */
         .app-container {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             max-width: 1440px;
             margin: 0 auto;
-            padding: 20px 24px 80px;
+            padding: 24px 28px 90px;
         }
 
-        /* Top Bar */
+        /* ============================================================
+           2. ULTRA-REFINED FROSTED LIQUID GLASSMORPHISM
+           ============================================================ */
+        .liquid-glass {
+            background: var(--liquid-glass-bg);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid var(--liquid-border);
+            box-shadow: 
+                inset 0 1px 1px var(--specular-rim),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.4),
+                0 20px 45px rgba(0, 0, 0, 0.6);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Specular Prismatic Sheen Overlay */
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                115deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.02) 40%,
+                rgba(255, 255, 255, 0.12) 50%,
+                rgba(255, 255, 255, 0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            transition: transform 0.8s ease;
+        }
+
+        .liquid-glass:hover::before {
+            transform: translateX(65%);
+        }
+
+        .liquid-glass:hover {
+            border-color: var(--liquid-border-hover);
+            box-shadow: 
+                inset 0 1px 2px rgba(255, 255, 255, 0.5),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+                0 25px 60px rgba(0, 0, 0, 0.7),
+                0 0 35px rgba(0, 245, 255, 0.12);
+            transform: translateY(-3px);
+        }
+
+        /* Top Navigation Bar */
         .top-navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 16px 28px;
-            background: rgba(10, 16, 35, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            margin-bottom: 28px;
+            border-radius: 24px;
         }
 
         .brand-cluster {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
         }
 
         .rr-logo-badge {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(135deg, var(--rr-blue) 0%, var(--rr-pink) 100%);
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 1.4rem;
+            font-size: 1.45rem;
             color: #fff;
-            box-shadow: 0 0 20px var(--rr-pink-glow);
+            box-shadow: 0 0 25px var(--rr-pink-glow), inset 0 1px 1px rgba(255, 255, 255, 0.5);
             letter-spacing: -1px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .brand-meta h1 {
             font-family: var(--font-heading);
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 800;
             letter-spacing: 0.5px;
             background: linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 50%, var(--rr-cyan) 100%);
@@ -133,14 +259,16 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: 30px;
             font-size: 0.78rem;
             font-family: var(--font-mono);
-            font-weight: 600;
-            background: rgba(0, 245, 160, 0.1);
+            font-weight: 700;
+            background: rgba(0, 245, 160, 0.12);
             color: var(--rr-emerald);
-            border: 1px solid rgba(0, 245, 160, 0.3);
+            border: 1px solid rgba(0, 245, 160, 0.35);
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(16px);
         }
 
         .status-pill .pulse-dot {
@@ -148,76 +276,89 @@
             height: 8px;
             background: var(--rr-emerald);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--rr-emerald);
+            box-shadow: 0 0 12px var(--rr-emerald);
             animation: pulse-dot 1.8s infinite;
         }
 
         @keyframes pulse-dot {
             0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; }
+            50% { transform: scale(1.35); opacity: 1; }
             100% { transform: scale(0.9); opacity: 0.8; }
         }
 
-        .btn-nav {
+        /* Liquid Neon Buttons */
+        .btn-liquid {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 18px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            padding: 9px 20px;
+            border-radius: 14px;
+            font-size: 0.86rem;
+            font-weight: 700;
             text-decoration: none;
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
-            border: none;
+            border: 1px solid transparent;
+            font-family: var(--font-heading);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--rr-pink) 0%, #D80064 100%);
-            color: white;
-            box-shadow: 0 4px 16px var(--rr-pink-glow);
+        .btn-liquid-primary {
+            background: linear-gradient(135deg, rgba(234, 26, 133, 0.85) 0%, rgba(0, 82, 255, 0.85) 100%);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px var(--rr-pink-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(14px);
         }
 
-        .btn-primary:hover {
+        .btn-liquid-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(255, 0, 127, 0.6);
+            box-shadow: 0 12px 35px rgba(234, 26, 133, 0.7), 0 0 25px rgba(0, 245, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
+        .btn-liquid-secondary {
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(16px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
-        .btn-secondary:hover {
+        .btn-liquid-secondary:hover {
             background: rgba(255, 255, 255, 0.12);
             border-color: var(--rr-cyan);
             color: var(--rr-cyan);
+            box-shadow: 0 0 20px var(--rr-cyan-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
-        .btn-audio {
-            background: rgba(0, 240, 255, 0.1);
+        .btn-liquid-audio {
+            background: rgba(0, 245, 255, 0.08);
             color: var(--rr-cyan);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            font-size: 0.8rem;
-            padding: 8px 14px;
+            border: 1px solid rgba(0, 245, 255, 0.35);
+            font-size: 0.82rem;
+            padding: 9px 16px;
+            backdrop-filter: blur(16px);
         }
 
         /* ============================================================
-           STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
+           3. STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
            ============================================================ */
         .student-disclosure-card {
-            background: linear-gradient(135deg, rgba(16, 26, 56, 0.9) 0%, rgba(29, 17, 43, 0.9) 100%);
-            border: 1px solid rgba(255, 183, 3, 0.35);
-            border-radius: 20px;
-            padding: 28px 34px;
-            margin-bottom: 28px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 183, 3, 0.05);
+            background: linear-gradient(135deg, rgba(16, 26, 56, 0.55) 0%, rgba(35, 18, 50, 0.55) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 30px 36px;
+            margin-bottom: 32px;
+            border-radius: 26px;
+            box-shadow: 
+                inset 0 1px 2px rgba(255, 215, 0, 0.35),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.4),
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                0 0 35px rgba(212, 175, 55, 0.12);
         }
 
-        .student-disclosure-card::before {
+        .student-disclosure-card::after {
             content: '';
             position: absolute;
             top: 0;
@@ -225,6 +366,7 @@
             width: 5px;
             height: 100%;
             background: linear-gradient(to bottom, var(--rr-gold), var(--rr-pink));
+            box-shadow: 0 0 15px var(--rr-gold);
         }
 
         .disclosure-header {
@@ -233,7 +375,7 @@
             align-items: flex-start;
             flex-wrap: wrap;
             gap: 16px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .disclosure-title-group {
@@ -243,43 +385,46 @@
         }
 
         .badge-academic {
-            background: rgba(255, 183, 3, 0.15);
+            background: rgba(212, 175, 55, 0.18);
             border: 1px solid var(--rr-gold);
-            color: #FFD166;
-            padding: 5px 12px;
-            border-radius: 8px;
+            color: #FFDF73;
+            padding: 5px 14px;
+            border-radius: 10px;
             font-size: 0.75rem;
             font-family: var(--font-mono);
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.8px;
             text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
         }
 
         .badge-frozen {
-            background: rgba(0, 240, 255, 0.12);
+            background: rgba(0, 245, 255, 0.14);
             border: 1px solid var(--rr-cyan);
             color: var(--rr-cyan);
-            padding: 5px 12px;
-            border-radius: 8px;
+            padding: 5px 14px;
+            border-radius: 10px;
             font-size: 0.75rem;
             font-family: var(--font-mono);
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.8px;
             text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.25);
         }
 
         .disclosure-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.35rem;
+            font-weight: 800;
             color: #FFF;
             font-family: var(--font-heading);
+            letter-spacing: -0.3px;
         }
 
         .disclosure-body {
-            font-size: 0.95rem;
+            font-size: 0.96rem;
             color: #CBD5E1;
-            line-height: 1.7;
-            max-width: 1200px;
+            line-height: 1.75;
+            max-width: 1240px;
         }
 
         .disclosure-body strong {
@@ -287,20 +432,24 @@
         }
 
         .disclosure-highlight-box {
-            margin-top: 16px;
-            padding: 14px 20px;
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 12px;
+            margin-top: 18px;
+            padding: 16px 22px;
+            background: rgba(6, 10, 25, 0.55);
+            border-radius: 16px;
             border-left: 3px solid var(--rr-cyan);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 16px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         .disclosure-highlight-text {
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: #E2E8F0;
         }
 
@@ -311,94 +460,87 @@
         }
 
         .link-pill {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-family: var(--font-mono);
-            padding: 6px 14px;
-            border-radius: 8px;
+            font-weight: 700;
+            padding: 7px 16px;
+            border-radius: 10px;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.25s;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .link-pill-primary {
-            background: rgba(255, 0, 127, 0.15);
+            background: rgba(234, 26, 133, 0.18);
             color: #FF80BF;
             border: 1px solid var(--rr-pink);
         }
         .link-pill-primary:hover {
             background: var(--rr-pink);
             color: white;
+            box-shadow: 0 0 20px var(--rr-pink-glow);
         }
 
         .link-pill-cyan {
-            background: rgba(0, 240, 255, 0.12);
+            background: rgba(0, 245, 255, 0.14);
             color: var(--rr-cyan);
             border: 1px solid var(--rr-cyan);
         }
         .link-pill-cyan:hover {
             background: var(--rr-cyan);
             color: #000;
-            font-weight: 700;
+            box-shadow: 0 0 20px var(--rr-cyan-glow);
         }
 
         .link-pill-gold {
-            background: rgba(255, 183, 3, 0.12);
-            color: #FFD166;
+            background: rgba(212, 175, 55, 0.15);
+            color: #FFDF73;
             border: 1px solid var(--rr-gold);
         }
         .link-pill-gold:hover {
             background: var(--rr-gold);
             color: #000;
-            font-weight: 700;
+            box-shadow: 0 0 20px var(--rr-gold-glow);
         }
 
         /* ============================================================
-           WAR ROOM TELEMETRY HUD
+           4. WAR ROOM TELEMETRY HUD
            ============================================================ */
         .hud-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
+            gap: 18px;
+            margin-bottom: 34px;
         }
 
         .hud-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 20px 22px;
-            backdrop-filter: blur(16px);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hud-card:hover {
-            border-color: var(--rr-cyan);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(0, 240, 255, 0.15);
+            padding: 22px 24px;
+            border-radius: 20px;
         }
 
         .hud-label {
             font-size: 0.75rem;
             text-transform: uppercase;
             font-family: var(--font-mono);
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
         .hud-value {
-            font-size: 1.85rem;
+            font-size: 2rem;
             font-weight: 800;
             font-family: var(--font-heading);
             color: #FFFFFF;
             letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .hud-subtext {
@@ -407,62 +549,63 @@
             margin-top: 6px;
         }
 
-        .accent-pink { color: var(--rr-pink); }
-        .accent-cyan { color: var(--rr-cyan); }
-        .accent-gold { color: var(--rr-gold); }
-        .accent-emerald { color: var(--rr-emerald); }
+        .accent-pink { color: var(--rr-pink-neon); text-shadow: 0 0 15px rgba(255, 0, 127, 0.5); }
+        .accent-cyan { color: var(--rr-cyan); text-shadow: 0 0 15px var(--rr-cyan-glow); }
+        .accent-gold { color: var(--rr-gold); text-shadow: 0 0 15px var(--rr-gold-glow); }
+        .accent-emerald { color: var(--rr-emerald); text-shadow: 0 0 15px var(--rr-emerald-glow); }
 
         /* ============================================================
-           SECTION STYLING
+           5. SECTION HEADERS & GRID LAYOUTS
            ============================================================ */
         .section-container {
-            margin-bottom: 40px;
+            margin-bottom: 44px;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 14px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 16px;
             flex-wrap: wrap;
             gap: 14px;
         }
 
         .section-title-wrap h2 {
             font-family: var(--font-heading);
-            font-size: 1.55rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             color: #FFFFFF;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .section-title-wrap p {
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
             margin-top: 4px;
         }
 
         .section-tag {
             font-family: var(--font-mono);
-            font-size: 0.72rem;
-            padding: 4px 10px;
-            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 8px;
             background: rgba(0, 82, 255, 0.2);
-            color: #60A5FA;
-            border: 1px solid rgba(96, 165, 250, 0.4);
+            color: #93C5FD;
+            border: 1px solid rgba(147, 197, 253, 0.4);
             text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 82, 255, 0.2);
         }
 
-        /* Two Column Layout */
         .grid-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 26px;
         }
 
         @media (max-width: 1024px) {
@@ -471,80 +614,79 @@
             }
         }
 
-        /* Chart Card */
         .panel-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 20px;
-            padding: 24px;
-            backdrop-filter: blur(16px);
-            position: relative;
+            padding: 26px;
+            border-radius: 24px;
         }
 
         .panel-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             flex-wrap: wrap;
             gap: 12px;
         }
 
         .panel-title {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #FFFFFF;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-family: var(--font-heading);
         }
 
         .panel-subtitle {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
             margin-top: 2px;
         }
 
         .control-select {
-            background: rgba(10, 16, 35, 0.9);
+            background: rgba(6, 12, 30, 0.7);
             color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 10px;
-            padding: 7px 14px;
-            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 0.86rem;
             font-family: var(--font-body);
             outline: none;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s;
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .control-select:focus {
             border-color: var(--rr-pink);
-            box-shadow: 0 0 10px var(--rr-pink-glow);
+            box-shadow: 0 0 15px var(--rr-pink-glow);
         }
 
         .chart-box {
             position: relative;
-            height: 320px;
+            height: 325px;
             width: 100%;
         }
 
-        /* Metric Chips & Insights inside panels */
         .stat-badge-row {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .stat-chip {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 8px 14px;
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 0.82rem;
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
         }
 
         .stat-chip span {
@@ -553,21 +695,22 @@
             color: var(--text-muted);
             text-transform: uppercase;
             font-family: var(--font-mono);
+            letter-spacing: 0.5px;
         }
 
         .stat-chip strong {
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             color: #FFF;
             font-family: var(--font-heading);
         }
 
         /* ============================================================
-           SHAP ATTRIBUTION SIMULATOR
+           6. SHAP ATTRIBUTION & STRESS TEST
            ============================================================ */
         .simulator-grid {
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
-            gap: 24px;
+            gap: 26px;
         }
 
         @media (max-width: 1024px) {
@@ -577,14 +720,14 @@
         }
 
         .slider-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .slider-label-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 6px;
+            font-size: 0.86rem;
+            margin-bottom: 8px;
         }
 
         .slider-label-row span {
@@ -594,100 +737,107 @@
         .slider-label-row strong {
             font-family: var(--font-mono);
             color: var(--rr-cyan);
+            font-size: 0.92rem;
         }
 
         .range-slider {
             width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 5px;
             outline: none;
             -webkit-appearance: none;
             cursor: pointer;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .range-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: var(--rr-pink);
+            width: 20px;
+            height: 20px;
+            background: var(--rr-pink-neon);
+            border: 2px solid #FFFFFF;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 10px var(--rr-pink);
+            box-shadow: 0 0 14px var(--rr-pink-neon);
             transition: transform 0.15s;
         }
 
         .range-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
         .gauge-metric-card {
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 16px;
+            background: rgba(5, 10, 24, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 18px;
             text-align: center;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .gauge-number {
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 2.3rem;
+            font-weight: 900;
             font-family: var(--font-heading);
             color: #FFF;
         }
 
         /* ============================================================
-           MONTE CARLO AUCTION ENGINE
+           7. MONTE CARLO AUCTION ENGINE
            ============================================================ */
         .scenario-tab-bar {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             flex-wrap: wrap;
         }
 
         .scenario-tab {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.14);
             color: var(--text-secondary);
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 0.88rem;
-            font-weight: 600;
+            padding: 11px 22px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s;
             font-family: var(--font-heading);
+            backdrop-filter: blur(14px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .scenario-tab.active {
-            background: linear-gradient(135deg, rgba(0, 82, 255, 0.3) 0%, rgba(255, 0, 127, 0.3) 100%);
+            background: linear-gradient(135deg, rgba(0, 82, 255, 0.4) 0%, rgba(234, 26, 133, 0.4) 100%);
             border-color: var(--rr-pink);
             color: #FFFFFF;
-            box-shadow: 0 4px 16px var(--rr-pink-glow);
+            box-shadow: 0 6px 22px var(--rr-pink-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .scenario-details-box {
-            background: rgba(10, 16, 35, 0.6);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            margin-bottom: 20px;
+            background: rgba(8, 14, 32, 0.55);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .scenario-details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
-            margin-top: 14px;
+            margin-top: 16px;
         }
 
         /* ============================================================
-           RR WAR ROOM SQUAD BUILDER & JAIPUR SMS GROUND PHYSICS
+           8. SQUAD BUILDER & JAIPUR SMS GROUND PHYSICS
            ============================================================ */
         .war-room-builder-grid {
             display: grid;
             grid-template-columns: 1fr 1.1fr;
-            gap: 24px;
+            gap: 26px;
         }
 
         @media (max-width: 1100px) {
@@ -699,8 +849,8 @@
         .squad-slot-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-height: 580px;
+            gap: 11px;
+            max-height: 590px;
             overflow-y: auto;
             padding-right: 8px;
         }
@@ -709,7 +859,7 @@
             width: 6px;
         }
         .squad-slot-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 3px;
         }
 
@@ -717,133 +867,145 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(14, 22, 45, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 10px 16px;
-            transition: all 0.2s;
+            background: rgba(10, 16, 36, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 12px 18px;
+            transition: all 0.25s;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         .squad-player-item.retained {
             border-left: 4px solid var(--rr-pink);
-            background: rgba(255, 0, 127, 0.08);
+            background: rgba(234, 26, 133, 0.12);
+            box-shadow: 0 0 15px rgba(234, 26, 133, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .squad-player-item.drafted {
             border-left: 4px solid var(--rr-emerald);
-            background: rgba(0, 245, 160, 0.08);
+            background: rgba(0, 245, 160, 0.12);
+            box-shadow: 0 0 15px rgba(0, 245, 160, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .player-info-cluster {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .player-pos-badge {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.78rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #CBD5E1;
-            font-weight: 700;
+            font-weight: 800;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .player-name-text {
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             font-weight: 700;
             color: #FFFFFF;
         }
 
         .player-meta-tag {
-            font-size: 0.74rem;
+            font-size: 0.76rem;
             color: var(--text-secondary);
         }
 
         .player-price-badge {
             font-family: var(--font-mono);
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.88rem;
+            font-weight: 800;
             color: var(--rr-gold);
         }
 
-        /* Target Pool Selector */
         .target-pool-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 12px;
             margin-top: 16px;
-            max-height: 260px;
+            max-height: 270px;
             overflow-y: auto;
             padding-right: 6px;
         }
 
         .target-card {
-            background: rgba(10, 16, 35, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 12px 14px;
+            background: rgba(8, 14, 32, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 13px 15px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         .target-card:hover {
             border-color: var(--rr-cyan);
-            background: rgba(0, 240, 255, 0.06);
+            background: rgba(0, 245, 255, 0.08);
             transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--rr-cyan-glow);
         }
 
         .target-card.selected {
             border-color: var(--rr-emerald);
-            background: rgba(0, 245, 160, 0.12);
+            background: rgba(0, 245, 160, 0.16);
+            box-shadow: 0 0 20px var(--rr-emerald-glow);
         }
 
         /* Jaipur SMS Stadium Physics Panel */
         .sms-pitch-visualizer {
-            background: radial-gradient(circle at center, rgba(0, 50, 30, 0.7) 0%, rgba(6, 15, 25, 0.95) 75%);
-            border: 1px solid rgba(0, 245, 160, 0.3);
-            border-radius: 20px;
-            padding: 24px;
+            background: radial-gradient(circle at center, rgba(0, 55, 35, 0.55) 0%, rgba(6, 14, 28, 0.9) 80%);
+            border: 1px solid rgba(0, 245, 160, 0.35);
+            border-radius: 24px;
+            padding: 26px;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0, 245, 160, 0.1);
+            box-shadow: 
+                inset 0 1px 2px rgba(0, 245, 160, 0.4),
+                inset 0 0 35px rgba(0, 245, 160, 0.12),
+                0 20px 45px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(24px);
         }
 
         .sms-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0, 245, 160, 0.15);
+            background: rgba(0, 245, 160, 0.16);
             color: var(--rr-emerald);
             border: 1px solid var(--rr-emerald);
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             font-family: var(--font-mono);
-            font-weight: 700;
+            font-weight: 800;
+            box-shadow: 0 0 15px var(--rr-emerald-glow);
         }
 
         .sms-dimension-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
-            margin: 18px 0;
+            margin: 20px 0;
         }
 
         .sms-metric {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 10px 12px;
+            background: rgba(3, 7, 18, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 14px;
             text-align: center;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
         }
 
         .sms-metric span {
@@ -854,7 +1016,7 @@
         }
 
         .sms-metric strong {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #FFFFFF;
             font-family: var(--font-heading);
             display: block;
@@ -862,59 +1024,69 @@
 
         .synergy-score-gauge {
             text-align: center;
-            padding: 16px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 183, 3, 0.3);
-            margin-top: 14px;
+            padding: 18px;
+            background: rgba(3, 7, 18, 0.65);
+            border-radius: 18px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            margin-top: 16px;
+            box-shadow: inset 0 1px 1px rgba(255, 215, 0, 0.2);
         }
 
         .synergy-number {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 900;
             font-family: var(--font-heading);
             color: var(--rr-gold);
-            text-shadow: 0 0 20px rgba(255, 183, 3, 0.5);
+            text-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
         }
 
-        /* ============================================================
-           FOOTER
-           ============================================================ */
+        /* Footer */
         footer {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 65px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.88rem;
         }
 
         footer a {
             color: var(--rr-cyan);
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         footer a:hover {
-            text-decoration: underline;
+            color: #FFFFFF;
+            text-shadow: 0 0 10px var(--rr-cyan-glow);
         }
 
         .footer-tagline {
-            margin-top: 10px;
+            margin-top: 12px;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             color: var(--text-secondary);
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
+
+    <!-- Liquid Mesh Animated Orbs Container -->
+    <div class="liquid-mesh-container">
+        <div class="liquid-orb orb-pink"></div>
+        <div class="liquid-orb orb-blue"></div>
+        <div class="liquid-orb orb-cyan"></div>
+        <div class="liquid-orb orb-gold"></div>
+    </div>
 
     <!-- Ambient WebGL / Cyber Canvas -->
     <canvas id="cyber-canvas"></canvas>
 
     <div class="app-container">
 
-        <!-- Top Navigation Bar -->
-        <nav class="top-navbar">
+        <!-- Top Liquid Navigation Bar -->
+        <nav class="liquid-glass top-navbar">
             <div class="brand-cluster">
                 <div class="rr-logo-badge">RR</div>
                 <div class="brand-meta">
@@ -927,13 +1099,13 @@
                     <div class="pulse-dot"></div>
                     ROUND 2 DEEP AI/ML RESEARCH
                 </div>
-                <button id="audio-toggle-btn" class="btn-nav btn-audio" onclick="toggleAudioFx()">
+                <button id="audio-toggle-btn" class="btn-liquid btn-liquid-audio" onclick="toggleAudioFx()">
                     🔊 Sound FX: ON
                 </button>
-                <a href="dashboard.html" class="btn-nav btn-secondary">
+                <a href="dashboard.html" class="btn-liquid btn-liquid-secondary">
                     ⬅ Official Round 1 Dashboard
                 </a>
-                <a href="#squad-builder" class="btn-nav btn-primary">
+                <a href="#squad-builder" class="btn-liquid btn-liquid-primary">
                     ⚡ Open Squad Builder
                 </a>
             </div>
@@ -942,14 +1114,14 @@
         <!-- ============================================================
              1. STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
              ============================================================ -->
-        <section id="academic-disclosure" class="student-disclosure-card">
+        <section id="academic-disclosure" class="liquid-glass student-disclosure-card">
             <div class="disclosure-header">
                 <div class="disclosure-title-group">
                     <span class="badge-academic">🎓 Academic Disclosure</span>
                     <span class="badge-frozen">❄️ Round 1 Frozen</span>
                     <h2 class="disclosure-title">Candidate Research Statement & Academic Context</h2>
                 </div>
-                <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--rr-gold);">
+                <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--rr-gold); font-weight: 700;">
                     Candidate: Soham Paul · B.Tech Engineering
                 </div>
             </div>
@@ -984,32 +1156,32 @@
              2. WAR ROOM TELEMETRY HUD
              ============================================================ -->
         <section id="telemetry-hud" class="hud-grid">
-            <div class="hud-card">
+            <div class="liquid-glass hud-card">
                 <div class="hud-label"><span>🌐</span> Database Deliveries</div>
                 <div class="hud-value accent-cyan">200,999</div>
                 <div class="hud-subtext">883 IPL & T20I matches parsed</div>
             </div>
-            <div class="hud-card">
+            <div class="liquid-glass hud-card">
                 <div class="hud-label"><span>🔥</span> High-Pressure Balls</div>
                 <div class="hud-value accent-pink">48,798</div>
                 <div class="hud-subtext">24.28% Climax phase deliveries</div>
             </div>
-            <div class="hud-card">
+            <div class="liquid-glass hud-card">
                 <div class="hud-label"><span>🎲</span> Monte Carlo Sims</div>
                 <div class="hud-value accent-gold">10,000</div>
                 <div class="hud-subtext">IPL 2027 Auction Purse paths</div>
             </div>
-            <div class="hud-card">
+            <div class="liquid-glass hud-card">
                 <div class="hud-label"><span>💰</span> RR Remaining Purse</div>
                 <div class="hud-value accent-emerald">₹41.00 Cr</div>
                 <div class="hud-subtext">Post 6 Core Retentions (₹79 Cr)</div>
             </div>
-            <div class="hud-card">
+            <div class="liquid-glass hud-card">
                 <div class="hud-label"><span>🛡️</span> Retained Match-Winners</div>
                 <div class="hud-value accent-pink">6 Stars</div>
                 <div class="hud-subtext">Samson, Jaiswal, Parag, Jurel, etc.</div>
             </div>
-            <div class="hud-card">
+            <div class="liquid-glass hud-card">
                 <div class="hud-label"><span>🏟️</span> Jaipur SMS Synergy</div>
                 <div class="hud-value accent-cyan">98.0 / 100</div>
                 <div class="hud-subtext">Ashutosh & Vaibhav venue fit</div>
@@ -1030,7 +1202,7 @@
 
             <div class="grid-2col">
                 <!-- Batter Survival Curve Panel -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">🏏 Batter Survival Probability Under Pressure</div>
@@ -1049,7 +1221,7 @@
                 </div>
 
                 <!-- Bowler Strike Induction Curve Panel -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">🎯 Bowler Strike Induction Probability</div>
@@ -1083,7 +1255,7 @@
 
             <div class="simulator-grid">
                 <!-- Global & Player SHAP Radar -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">🌐 Multi-Dimensional Pressure Attribution Signature</div>
@@ -1117,7 +1289,7 @@
                 </div>
 
                 <!-- Interactive Delivery Pressure Stress-Test Simulator -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">🎛️ Live Delivery Pressure Simulator</div>
@@ -1205,7 +1377,7 @@
 
             <div class="grid-2col">
                 <!-- Player Valuation Distribution Chart -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">📈 Auction Price Valuation Percentiles (P10 - P90)</div>
@@ -1224,7 +1396,7 @@
                 </div>
 
                 <!-- Purse Depletion / Remaining Budget Distribution -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">💰 Remaining Purse Cushion Distribution (₹41 Cr Initial)</div>
@@ -1266,10 +1438,10 @@
                     <p>Integrate 6 retained superstars with auction targets, evaluated against Sawai Mansingh Stadium pitch kinematics</p>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <button class="btn-nav btn-secondary" onclick="loadScenarioIntoSquad('Scenario_A_Jaipur_Fortress')">
+                    <button class="btn-liquid btn-liquid-secondary" onclick="loadScenarioIntoSquad('Scenario_A_Jaipur_Fortress')">
                         ⚡ Load Jaipur Fortress
                     </button>
-                    <button class="btn-nav btn-secondary" onclick="resetSquadBuilder()">
+                    <button class="btn-liquid btn-liquid-secondary" onclick="resetSquadBuilder()">
                         🔄 Reset Slots
                     </button>
                 </div>
@@ -1277,13 +1449,13 @@
 
             <div class="war-room-builder-grid">
                 <!-- Squad Canvas Column -->
-                <div class="panel-card">
+                <div class="liquid-glass panel-card">
                     <div class="panel-card-header">
                         <div>
                             <div class="panel-title">🛡️ Rajasthan Royals Playing XI & Impact Player</div>
                             <div class="panel-subtitle">6 Official Retentions + Drafted Auction Targets</div>
                         </div>
-                        <div id="squad-purse-counter" class="player-price-badge" style="font-size: 1rem; color: var(--rr-emerald);">
+                        <div id="squad-purse-counter" class="player-price-badge" style="font-size: 1.05rem; color: var(--rr-emerald);">
                             Remaining: ₹27.42 Cr
                         </div>
                     </div>
@@ -1292,8 +1464,8 @@
                         <!-- Filled by JS -->
                     </div>
 
-                    <div style="margin-top: 20px;">
-                        <div style="font-size: 0.88rem; font-weight: 700; color: #FFFFFF; margin-bottom: 8px;">
+                    <div style="margin-top: 22px;">
+                        <div style="font-size: 0.9rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">
                             Select Additional Auction Targets to Draft:
                         </div>
                         <div class="target-pool-grid" id="target-pool-container">
@@ -1329,7 +1501,7 @@
                     </div>
 
                     <div style="margin-top: 14px;">
-                        <div class="panel-title" style="font-size: 0.95rem; margin-bottom: 8px;">
+                        <div class="panel-title" style="font-size: 0.98rem; margin-bottom: 8px;">
                             🏟️ SMS Venue Synergy Radar (Squad vs Jaipur Benchmark)
                         </div>
                         <div class="chart-box" style="height: 250px;">
@@ -1338,7 +1510,7 @@
                     </div>
 
                     <div class="synergy-score-gauge">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; font-family: var(--font-mono); color: #94A3B8;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; font-family: var(--font-mono); color: #94A3B8; letter-spacing: 0.8px;">
                             Composite SMS Venue Suitability Score
                         </div>
                         <div id="sms-composite-score" class="synergy-number">95.4</div>
@@ -1363,7 +1535,7 @@
                 <a href="https://github.com/Sohaam007/superr-selector-rr2027">GitHub Repository</a>
             </p>
             <div class="footer-tagline">
-                HALLA BOL · RIGOR IN DATA, TRIUMPH ON FIELD · 2026-2027
+                HALLA BOL · LIQUID GLASS AI/ML WAR ROOM · 2026-2027
             </div>
         </footer>
 
@@ -1441,10 +1613,10 @@
                 particles.push({
                     x: Math.random() * w,
                     y: Math.random() * h,
-                    vx: (Math.random() - 0.5) * 0.4,
-                    vy: (Math.random() - 0.5) * 0.4,
+                    vx: (Math.random() - 0.5) * 0.35,
+                    vy: (Math.random() - 0.5) * 0.35,
                     r: Math.random() * 2 + 1,
-                    color: Math.random() > 0.5 ? 'rgba(0, 82, 255,' : 'rgba(255, 0, 127,'
+                    color: Math.random() > 0.5 ? 'rgba(0, 82, 255,' : 'rgba(234, 26, 133,'
                 });
             }
 
@@ -1458,7 +1630,7 @@
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         if (dist < 140) {
                             ctx.beginPath();
-                            ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 140)})`;
+                            ctx.strokeStyle = `rgba(0, 245, 255, ${0.14 * (1 - dist / 140)})`;
                             ctx.lineWidth = 0.8;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -1566,18 +1738,20 @@
                         {
                             label: `${name} S(t)`,
                             data: values,
-                            borderColor: '#FF007F',
-                            backgroundColor: 'rgba(255, 0, 127, 0.15)',
+                            borderColor: '#EA1A85',
+                            backgroundColor: 'rgba(234, 26, 133, 0.2)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.35,
                             pointBackgroundColor: '#FF007F',
+                            pointBorderColor: '#FFFFFF',
+                            pointBorderWidth: 1.5,
                             pointRadius: 5
                         },
                         {
                             label: 'T20 Pressure League Average',
                             data: leagueAvg,
-                            borderColor: '#64748B',
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
                             borderWidth: 2,
                             borderDash: [5, 5],
                             fill: false,
@@ -1660,10 +1834,10 @@
                         {
                             label: `${name} Wicket Strike Probability`,
                             data: values,
-                            backgroundColor: 'rgba(0, 240, 255, 0.45)',
-                            borderColor: '#00F0FF',
+                            backgroundColor: 'rgba(0, 245, 255, 0.45)',
+                            borderColor: '#00F5FF',
                             borderWidth: 2,
-                            borderRadius: 8
+                            borderRadius: 10
                         }
                     ]
                 },
@@ -1736,7 +1910,6 @@
             if (!profile) return;
 
             const labels = ['Leverage Sensitivity', 'Balls Remaining', 'RRR Dynamic', 'Wickets Guard', 'Pace Factor', 'Speed Resilience'];
-            // Normalize values for clear visual radar (scale to 0-100)
             const rawVals = [
                 Math.abs(profile.leverage_norm || 0.01) * 800 + 20,
                 Math.abs(profile.balls_left || 0.02) * 900 + 30,
@@ -1746,7 +1919,6 @@
                 Math.abs(profile.bowl_speed_clean || 0.01) * 800 + 30
             ];
             const clamped = rawVals.map(v => Math.min(100, Math.max(15, Math.round(v))));
-
             const benchmark = [50, 50, 50, 50, 50, 50];
 
             const ctx = document.getElementById('shapRadarChart').getContext('2d');
@@ -1760,17 +1932,18 @@
                         {
                             label: `${selected} (${isBatter ? 'Batter' : 'Bowler'})`,
                             data: clamped,
-                            backgroundColor: isBatter ? 'rgba(255, 0, 127, 0.25)' : 'rgba(0, 240, 255, 0.25)',
-                            borderColor: isBatter ? '#FF007F' : '#00F0FF',
+                            backgroundColor: isBatter ? 'rgba(234, 26, 133, 0.28)' : 'rgba(0, 245, 255, 0.28)',
+                            borderColor: isBatter ? '#EA1A85' : '#00F5FF',
                             borderWidth: 2.5,
-                            pointBackgroundColor: isBatter ? '#FF007F' : '#00F0FF',
-                            pointRadius: 4
+                            pointBackgroundColor: isBatter ? '#EA1A85' : '#00F5FF',
+                            pointBorderColor: '#FFFFFF',
+                            pointRadius: 4.5
                         },
                         {
                             label: 'IPL Average Benchmark',
                             data: benchmark,
                             backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            borderColor: 'rgba(255, 255, 255, 0.35)',
                             borderWidth: 1.5,
                             borderDash: [4, 4],
                             pointRadius: 0
@@ -1785,7 +1958,7 @@
                             min: 0,
                             max: 100,
                             ticks: { display: false },
-                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
                             grid: { color: 'rgba(255, 255, 255, 0.08)' },
                             pointLabels: {
                                 color: '#CBD5E1',
@@ -1814,11 +1987,9 @@
             document.getElementById('val-balls').textContent = balls + " Balls";
             document.getElementById('val-speed').textContent = speed + " km/h";
 
-            // Multiplicative clutch model based on SHAP weights
             const leverage = (rrr / 9.0) * (24.0 / Math.max(6, balls)) * (wkts / 5.0);
             const clutchIndex = Math.min(3.5, Math.max(0.6, leverage)).toFixed(2);
 
-            // Boundary probability prediction
             let baseProb = 0.22;
             if (rrr > 11.0) baseProb += 0.06;
             if (balls <= 18) baseProb += 0.04;
@@ -1862,14 +2033,14 @@
             box.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div>
-                        <h3 style="font-size: 1.2rem; font-family: var(--font-heading); color: #FFF;">${s.name}</h3>
-                        <p style="font-size: 0.88rem; color: #CBD5E1; margin-top: 4px;">${s.description}</p>
+                        <h3 style="font-size: 1.25rem; font-family: var(--font-heading); color: #FFF;">${s.name}</h3>
+                        <p style="font-size: 0.9rem; color: #CBD5E1; margin-top: 4px;">${s.description}</p>
                     </div>
-                    <div style="font-family: var(--font-mono); font-size: 0.82rem; background: rgba(0, 245, 160, 0.15); color: var(--rr-emerald); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--rr-emerald);">
+                    <div style="font-family: var(--font-mono); font-size: 0.82rem; background: rgba(0, 245, 160, 0.16); color: var(--rr-emerald); padding: 7px 16px; border-radius: 20px; border: 1px solid var(--rr-emerald); box-shadow: 0 0 15px rgba(0, 245, 160, 0.2);">
                         ✓ All Targets Acquired Success Rate: ${successPct}%
                     </div>
                 </div>
-                <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;">
                     ${targetPills}
                 </div>
                 <div class="scenario-details-grid">
@@ -1919,16 +2090,16 @@
                             label: `${name} Projected Auction Price (₹ Cr)`,
                             data: values,
                             backgroundColor: [
-                                'rgba(0, 245, 160, 0.5)',
-                                'rgba(0, 245, 160, 0.7)',
-                                'rgba(0, 82, 255, 0.8)',
-                                'rgba(255, 183, 3, 0.85)',
-                                'rgba(255, 0, 127, 0.7)',
-                                'rgba(255, 0, 127, 0.9)'
+                                'rgba(0, 245, 160, 0.55)',
+                                'rgba(0, 245, 160, 0.75)',
+                                'rgba(0, 82, 255, 0.85)',
+                                'rgba(212, 175, 55, 0.9)',
+                                'rgba(234, 26, 133, 0.75)',
+                                'rgba(255, 0, 127, 0.95)'
                             ],
                             borderColor: '#FFFFFF',
-                            borderWidth: 1,
-                            borderRadius: 8
+                            borderWidth: 1.2,
+                            borderRadius: 10
                         }
                     ]
                 },
@@ -2004,11 +2175,13 @@
                             label: 'Remaining Purse Cushion (₹ Cr)',
                             data: values,
                             borderColor: '#00F5A0',
-                            backgroundColor: 'rgba(0, 245, 160, 0.15)',
+                            backgroundColor: 'rgba(0, 245, 160, 0.2)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.35,
                             pointBackgroundColor: '#00F5A0',
+                            pointBorderColor: '#FFFFFF',
+                            pointBorderWidth: 1.5,
                             pointRadius: 6
                         }
                     ]
@@ -2061,7 +2234,6 @@
 
             const openPositions = [1, 6, 7, 8, 10, 11];
 
-            // Map drafted targets into open slots
             const currentXI = JSON.parse(JSON.stringify(RETAINED_CORE));
             draftedTargets.forEach((dt, idx) => {
                 if (idx < openPositions.length) {
@@ -2074,12 +2246,11 @@
                 }
             });
 
-            // Render
             currentXI.forEach(p => {
                 const isRetained = p.retained;
                 const isDrafted = p.drafted;
                 const cls = isRetained ? 'retained' : (isDrafted ? 'drafted' : '');
-                const osBadge = p.overseas ? '<span style="color: var(--rr-pink); font-size: 0.72rem; font-weight: 700;">[OVERS]</span>' : '';
+                const osBadge = p.overseas ? '<span style="color: var(--rr-pink-neon); font-size: 0.72rem; font-weight: 800;">[OVERS]</span>' : '';
 
                 const item = document.createElement('div');
                 item.className = `squad-player-item ${cls}`;
@@ -2098,7 +2269,6 @@
                 container.appendChild(item);
             });
 
-            // Update remaining purse
             const totalDraftedSpend = draftedTargets.reduce((sum, t) => sum + t.price, 0);
             const remainingPurse = (41.0 - totalDraftedSpend).toFixed(2);
             document.getElementById('squad-purse-counter').textContent = `Remaining: ₹${remainingPurse} Cr`;
@@ -2131,12 +2301,12 @@
 
                 card.innerHTML = `
                     <div>
-                        <div style="font-size: 0.9rem; font-weight: 700; color: #FFF;">${p.name}</div>
-                        <div style="font-size: 0.72rem; color: #94A3B8;">${p.role}</div>
+                        <div style="font-size: 0.92rem; font-weight: 700; color: #FFF;">${p.name}</div>
+                        <div style="font-size: 0.74rem; color: #94A3B8;">${p.role}</div>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--rr-gold); font-weight: 700;">₹${p.price.toFixed(2)} Cr</span>
-                        <span style="font-size: 0.72rem; color: ${isSelectedTarget ? 'var(--rr-emerald)' : 'var(--rr-cyan)'};">
+                        <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--rr-gold); font-weight: 800;">₹${p.price.toFixed(2)} Cr</span>
+                        <span style="font-size: 0.74rem; font-weight: 700; color: ${isSelectedTarget ? 'var(--rr-emerald)' : 'var(--rr-cyan)'};">
                             ${isSelectedTarget ? '✓ DRAFTED' : '+ ADD'}
                         </span>
                     </div>
@@ -2228,17 +2398,18 @@
                         {
                             label: 'Built RR Squad Suitability',
                             data: squadValues,
-                            backgroundColor: 'rgba(0, 245, 160, 0.25)',
+                            backgroundColor: 'rgba(0, 245, 160, 0.28)',
                             borderColor: '#00F5A0',
                             borderWidth: 2.5,
                             pointBackgroundColor: '#00F5A0',
-                            pointRadius: 4
+                            pointBorderColor: '#FFFFFF',
+                            pointRadius: 4.5
                         },
                         {
                             label: 'Sawai Mansingh Stadium Par',
                             data: smsBaseline,
-                            backgroundColor: 'rgba(255, 183, 3, 0.08)',
-                            borderColor: 'rgba(255, 183, 3, 0.5)',
+                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                            borderColor: 'rgba(212, 175, 55, 0.55)',
                             borderWidth: 1.5,
                             borderDash: [4, 4],
                             pointRadius: 0
@@ -2253,7 +2424,7 @@
                             min: 50,
                             max: 100,
                             ticks: { display: false },
-                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
                             grid: { color: 'rgba(255, 255, 255, 0.08)' },
                             pointLabels: {
                                 color: '#CBD5E1',
