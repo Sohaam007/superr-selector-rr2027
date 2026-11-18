@@ -1,0 +1,1588 @@
+{
+  "metadata": {
+    "title": "Rajasthan Royals War Room 2.0 \u00b7 Advanced AI/ML Research Engine",
+    "competition": "SupeRR Selector Season 2 (IPL 2027 Auction)",
+    "researcher": "Soham Paul (Antigravity Swarm ml-researcher)",
+    "dataset_scope": {
+      "total_deliveries_analyzed": 200999,
+      "total_matches_analyzed": 883,
+      "pressure_deliveries_analyzed": 48798,
+      "pressure_share_pct": 24.28
+    },
+    "modules": [
+      "Bayesian Gamma-Poisson Hazard Modeling",
+      "TreeSHAP Feature Attribution via XGBoost",
+      "10,000-Iteration Monte Carlo IPL 2027 Auction Purse Simulator",
+      "Trajectory-Level Kinematics (Pace/Spin & Jaipur SMS Physics)"
+    ]
+  },
+  "bayesian_hazard_modeling": {
+    "model_formulation": "Empirical Bayes Gamma-Poisson Hazard Model with Nelson-Aalen survival discretization",
+    "prior_batting": {
+      "alpha": 5.0,
+      "beta": 100.0,
+      "prior_hazard_mean": 0.05
+    },
+    "prior_bowling": {
+      "alpha": 5.0,
+      "beta": 100.0,
+      "prior_hazard_mean": 0.05
+    },
+    "batters": {
+      "Vaibhav Sooryavanshi": {
+        "player_id": 50284,
+        "rank": 1,
+        "pressure_balls": 173,
+        "pressure_dismissals": 8,
+        "normal_balls": 405,
+        "normal_dismissals": 23,
+        "hazard_rate_pressure": 0.04762,
+        "hazard_rate_ci_95": [
+          0.02536,
+          0.07678
+        ],
+        "hazard_rate_normal": 0.05545,
+        "hazard_ratio": 0.859,
+        "classification": "Steady Anchor (HR 0.85 - 1.15)",
+        "survival_curve_pressure": {
+          "1": 0.9535,
+          "5": 0.7881,
+          "10": 0.6211,
+          "15": 0.4895,
+          "20": 0.3858,
+          "25": 0.3041,
+          "30": 0.2397
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0493,
+          "6-10 balls": 0.0438,
+          "11-15 balls": 0.0441,
+          "16-20 balls": 0.064,
+          "21+ balls": 0.0451
+        }
+      },
+      "Rinku Singh": {
+        "player_id": 4708,
+        "rank": 2,
+        "pressure_balls": 237,
+        "pressure_dismissals": 6,
+        "normal_balls": 1048,
+        "normal_dismissals": 48,
+        "hazard_rate_pressure": 0.03264,
+        "hazard_rate_ci_95": [
+          0.01629,
+          0.05457
+        ],
+        "hazard_rate_normal": 0.04617,
+        "hazard_ratio": 0.707,
+        "classification": "Elite Resilient (HR < 0.85)",
+        "survival_curve_pressure": {
+          "1": 0.9679,
+          "5": 0.8494,
+          "10": 0.7215,
+          "15": 0.6129,
+          "20": 0.5206,
+          "25": 0.4422,
+          "30": 0.3756
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0446,
+          "6-10 balls": 0.034,
+          "11-15 balls": 0.0423,
+          "16-20 balls": 0.053,
+          "21+ balls": 0.0377
+        }
+      },
+      "Ashutosh Sharma": {
+        "player_id": 8101,
+        "rank": 3,
+        "pressure_balls": 134,
+        "pressure_dismissals": 6,
+        "normal_balls": 200,
+        "normal_dismissals": 14,
+        "hazard_rate_pressure": 0.04701,
+        "hazard_rate_ci_95": [
+          0.02347,
+          0.07859
+        ],
+        "hazard_rate_normal": 0.06333,
+        "hazard_ratio": 0.742,
+        "classification": "Elite Resilient (HR < 0.85)",
+        "survival_curve_pressure": {
+          "1": 0.9541,
+          "5": 0.7905,
+          "10": 0.6249,
+          "15": 0.494,
+          "20": 0.3906,
+          "25": 0.3088,
+          "30": 0.2441
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0345,
+          "6-10 balls": 0.0576,
+          "11-15 balls": 0.05,
+          "16-20 balls": 0.0541,
+          "21+ balls": 0.0504
+        }
+      },
+      "Ryan Rickelton": {
+        "player_id": 4007,
+        "rank": 4,
+        "pressure_balls": 266,
+        "pressure_dismissals": 9,
+        "normal_balls": 590,
+        "normal_dismissals": 34,
+        "hazard_rate_pressure": 0.03825,
+        "hazard_rate_ci_95": [
+          0.02091,
+          0.06074
+        ],
+        "hazard_rate_normal": 0.05652,
+        "hazard_ratio": 0.677,
+        "classification": "Elite Resilient (HR < 0.85)",
+        "survival_curve_pressure": {
+          "1": 0.9625,
+          "5": 0.8259,
+          "10": 0.6821,
+          "15": 0.5634,
+          "20": 0.4653,
+          "25": 0.3843,
+          "30": 0.3174
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0329,
+          "6-10 balls": 0.0408,
+          "11-15 balls": 0.0417,
+          "16-20 balls": 0.0504,
+          "21+ balls": 0.0543
+        }
+      },
+      "Reeza Hendricks": {
+        "player_id": 768,
+        "rank": 5,
+        "pressure_balls": 222,
+        "pressure_dismissals": 7,
+        "normal_balls": 613,
+        "normal_dismissals": 28,
+        "hazard_rate_pressure": 0.03727,
+        "hazard_rate_ci_95": [
+          0.01926,
+          0.06112
+        ],
+        "hazard_rate_normal": 0.04628,
+        "hazard_ratio": 0.805,
+        "classification": "Elite Resilient (HR < 0.85)",
+        "survival_curve_pressure": {
+          "1": 0.9634,
+          "5": 0.83,
+          "10": 0.6889,
+          "15": 0.5718,
+          "20": 0.4746,
+          "25": 0.3939,
+          "30": 0.3269
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0403,
+          "6-10 balls": 0.0382,
+          "11-15 balls": 0.037,
+          "16-20 balls": 0.0611,
+          "21+ balls": 0.0448
+        }
+      },
+      "Josh Inglis": {
+        "player_id": 4736,
+        "rank": 6,
+        "pressure_balls": 218,
+        "pressure_dismissals": 10,
+        "normal_balls": 686,
+        "normal_dismissals": 39,
+        "hazard_rate_pressure": 0.04717,
+        "hazard_rate_ci_95": [
+          0.0264,
+          0.07387
+        ],
+        "hazard_rate_normal": 0.05598,
+        "hazard_ratio": 0.843,
+        "classification": "Elite Resilient (HR < 0.85)",
+        "survival_curve_pressure": {
+          "1": 0.9539,
+          "5": 0.7899,
+          "10": 0.6239,
+          "15": 0.4929,
+          "20": 0.3893,
+          "25": 0.3075,
+          "30": 0.2429
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0368,
+          "6-10 balls": 0.0577,
+          "11-15 balls": 0.0458,
+          "16-20 balls": 0.0388,
+          "21+ balls": 0.0647
+        }
+      },
+      "Suryakumar Yadav": {
+        "player_id": 1699,
+        "rank": 7,
+        "pressure_balls": 693,
+        "pressure_dismissals": 30,
+        "normal_balls": 2068,
+        "normal_dismissals": 90,
+        "hazard_rate_pressure": 0.04414,
+        "hazard_rate_ci_95": [
+          0.03074,
+          0.05991
+        ],
+        "hazard_rate_normal": 0.04382,
+        "hazard_ratio": 1.007,
+        "classification": "Steady Anchor (HR 0.85 - 1.15)",
+        "survival_curve_pressure": {
+          "1": 0.9568,
+          "5": 0.802,
+          "10": 0.6432,
+          "15": 0.5158,
+          "20": 0.4137,
+          "25": 0.3317,
+          "30": 0.266
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0422,
+          "6-10 balls": 0.0556,
+          "11-15 balls": 0.0352,
+          "16-20 balls": 0.0331,
+          "21+ balls": 0.0556
+        }
+      },
+      "Heinrich Klaasen": {
+        "player_id": 4260,
+        "rank": 8,
+        "pressure_balls": 293,
+        "pressure_dismissals": 12,
+        "normal_balls": 1124,
+        "normal_dismissals": 47,
+        "hazard_rate_pressure": 0.04326,
+        "hazard_rate_ci_95": [
+          0.0252,
+          0.06611
+        ],
+        "hazard_rate_normal": 0.04248,
+        "hazard_ratio": 1.018,
+        "classification": "Steady Anchor (HR 0.85 - 1.15)",
+        "survival_curve_pressure": {
+          "1": 0.9577,
+          "5": 0.8055,
+          "10": 0.6488,
+          "15": 0.5226,
+          "20": 0.421,
+          "25": 0.3391,
+          "30": 0.2732
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0391,
+          "6-10 balls": 0.0435,
+          "11-15 balls": 0.039,
+          "16-20 balls": 0.0602,
+          "21+ balls": 0.0542
+        }
+      },
+      "Abhishek Sharma": {
+        "player_id": 6281,
+        "rank": 9,
+        "pressure_balls": 498,
+        "pressure_dismissals": 29,
+        "normal_balls": 1753,
+        "normal_dismissals": 96,
+        "hazard_rate_pressure": 0.05686,
+        "hazard_rate_ci_95": [
+          0.03937,
+          0.0775
+        ],
+        "hazard_rate_normal": 0.05451,
+        "hazard_ratio": 1.043,
+        "classification": "Steady Anchor (HR 0.85 - 1.15)",
+        "survival_curve_pressure": {
+          "1": 0.9447,
+          "5": 0.7526,
+          "10": 0.5663,
+          "15": 0.4262,
+          "20": 0.3207,
+          "25": 0.2414,
+          "30": 0.1816
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.05,
+          "6-10 balls": 0.0481,
+          "11-15 balls": 0.0517,
+          "16-20 balls": 0.0435,
+          "21+ balls": 0.0723
+        }
+      },
+      "Phil Salt": {
+        "player_id": 5553,
+        "rank": 10,
+        "pressure_balls": 433,
+        "pressure_dismissals": 17,
+        "normal_balls": 1210,
+        "normal_dismissals": 60,
+        "hazard_rate_pressure": 0.04128,
+        "hazard_rate_ci_95": [
+          0.02587,
+          0.06023
+        ],
+        "hazard_rate_normal": 0.04962,
+        "hazard_ratio": 0.832,
+        "classification": "Elite Resilient (HR < 0.85)",
+        "survival_curve_pressure": {
+          "1": 0.9596,
+          "5": 0.8135,
+          "10": 0.6618,
+          "15": 0.5384,
+          "20": 0.438,
+          "25": 0.3563,
+          "30": 0.2899
+        },
+        "hazard_by_exposure_bin": {
+          "1-5 balls": 0.0542,
+          "6-10 balls": 0.0398,
+          "11-15 balls": 0.0395,
+          "16-20 balls": 0.0366,
+          "21+ balls": 0.0516
+        }
+      }
+    },
+    "bowlers": {
+      "Sufiyan Muqeem": {
+        "player_id": 34485,
+        "rank": 1,
+        "pressure_balls": 128,
+        "pressure_wickets": 7,
+        "normal_balls": 223,
+        "normal_wickets": 16,
+        "hazard_rate_pressure": 0.05263,
+        "hazard_rate_ci_95": [
+          0.0272,
+          0.08632
+        ],
+        "hazard_rate_normal": 0.06502,
+        "hazard_ratio": 0.81,
+        "classification": "Baseline Enforcer (HR < 1.0)",
+        "strike_induction_curve": {
+          "1": 0.0513,
+          "6": 0.2708,
+          "12": 0.4682,
+          "18": 0.6122,
+          "24": 0.7172
+        }
+      },
+      "Abrar Ahmed": {
+        "player_id": 5979,
+        "rank": 2,
+        "pressure_balls": 196,
+        "pressure_wickets": 11,
+        "normal_balls": 580,
+        "normal_wickets": 35,
+        "hazard_rate_pressure": 0.05405,
+        "hazard_rate_ci_95": [
+          0.0309,
+          0.08358
+        ],
+        "hazard_rate_normal": 0.05882,
+        "hazard_ratio": 0.919,
+        "classification": "Baseline Enforcer (HR < 1.0)",
+        "strike_induction_curve": {
+          "1": 0.0526,
+          "6": 0.277,
+          "12": 0.4772,
+          "18": 0.622,
+          "24": 0.7267
+        }
+      },
+      "Shoriful Islam": {
+        "player_id": 7344,
+        "rank": 3,
+        "pressure_balls": 142,
+        "pressure_wickets": 10,
+        "normal_balls": 681,
+        "normal_wickets": 31,
+        "hazard_rate_pressure": 0.06198,
+        "hazard_rate_ci_95": [
+          0.03469,
+          0.09706
+        ],
+        "hazard_rate_normal": 0.04609,
+        "hazard_ratio": 1.345,
+        "classification": "Elite Pressure Executioner (HR > 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0601,
+          "6": 0.3106,
+          "12": 0.5247,
+          "18": 0.6723,
+          "24": 0.7741
+        }
+      },
+      "Rashid Khan": {
+        "player_id": 4722,
+        "rank": 4,
+        "pressure_balls": 662,
+        "pressure_wickets": 40,
+        "normal_balls": 2118,
+        "normal_wickets": 113,
+        "hazard_rate_pressure": 0.05906,
+        "hazard_rate_ci_95": [
+          0.04308,
+          0.07752
+        ],
+        "hazard_rate_normal": 0.0532,
+        "hazard_ratio": 1.11,
+        "classification": "Consistent Choke Artist (HR 1.0 - 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0573,
+          "6": 0.2984,
+          "12": 0.5077,
+          "18": 0.6546,
+          "24": 0.7576
+        }
+      },
+      "Mohammad Nawaz": {
+        "player_id": 2490,
+        "rank": 5,
+        "pressure_balls": 313,
+        "pressure_wickets": 23,
+        "normal_balls": 704,
+        "normal_wickets": 43,
+        "hazard_rate_pressure": 0.0678,
+        "hazard_rate_ci_95": [
+          0.04505,
+          0.09512
+        ],
+        "hazard_rate_normal": 0.0597,
+        "hazard_ratio": 1.136,
+        "classification": "Consistent Choke Artist (HR 1.0 - 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0655,
+          "6": 0.3342,
+          "12": 0.5567,
+          "18": 0.7049,
+          "24": 0.8035
+        }
+      },
+      "Lockie Ferguson": {
+        "player_id": 4692,
+        "rank": 6,
+        "pressure_balls": 299,
+        "pressure_wickets": 21,
+        "normal_balls": 839,
+        "normal_wickets": 38,
+        "hazard_rate_pressure": 0.06516,
+        "hazard_rate_ci_95": [
+          0.04257,
+          0.09249
+        ],
+        "hazard_rate_normal": 0.04579,
+        "hazard_ratio": 1.423,
+        "classification": "Elite Pressure Executioner (HR > 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0631,
+          "6": 0.3236,
+          "12": 0.5425,
+          "18": 0.6905,
+          "24": 0.7907
+        }
+      },
+      "Mark Adair": {
+        "player_id": 5379,
+        "rank": 7,
+        "pressure_balls": 195,
+        "pressure_wickets": 14,
+        "normal_balls": 711,
+        "normal_wickets": 42,
+        "hazard_rate_pressure": 0.06441,
+        "hazard_rate_ci_95": [
+          0.03878,
+          0.09643
+        ],
+        "hazard_rate_normal": 0.05795,
+        "hazard_ratio": 1.111,
+        "classification": "Consistent Choke Artist (HR 1.0 - 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0624,
+          "6": 0.3205,
+          "12": 0.5383,
+          "18": 0.6863,
+          "24": 0.7869
+        }
+      },
+      "Tim Southee": {
+        "player_id": 278,
+        "rank": 8,
+        "pressure_balls": 254,
+        "pressure_wickets": 17,
+        "normal_balls": 607,
+        "normal_wickets": 38,
+        "hazard_rate_pressure": 0.06215,
+        "hazard_rate_ci_95": [
+          0.03895,
+          0.09068
+        ],
+        "hazard_rate_normal": 0.06082,
+        "hazard_ratio": 1.022,
+        "classification": "Consistent Choke Artist (HR 1.0 - 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0603,
+          "6": 0.3113,
+          "12": 0.5256,
+          "18": 0.6733,
+          "24": 0.775
+        }
+      },
+      "Mujeeb Ur Rahman": {
+        "player_id": 6450,
+        "rank": 9,
+        "pressure_balls": 322,
+        "pressure_wickets": 20,
+        "normal_balls": 527,
+        "normal_wickets": 28,
+        "hazard_rate_pressure": 0.05924,
+        "hazard_rate_ci_95": [
+          0.03834,
+          0.08462
+        ],
+        "hazard_rate_normal": 0.05263,
+        "hazard_ratio": 1.126,
+        "classification": "Consistent Choke Artist (HR 1.0 - 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0575,
+          "6": 0.2991,
+          "12": 0.5088,
+          "18": 0.6557,
+          "24": 0.7587
+        }
+      },
+      "Sunil Narine": {
+        "player_id": 781,
+        "rank": 10,
+        "pressure_balls": 418,
+        "pressure_wickets": 20,
+        "normal_balls": 1138,
+        "normal_wickets": 46,
+        "hazard_rate_pressure": 0.04826,
+        "hazard_rate_ci_95": [
+          0.03123,
+          0.06894
+        ],
+        "hazard_rate_normal": 0.0412,
+        "hazard_ratio": 1.172,
+        "classification": "Consistent Choke Artist (HR 1.0 - 1.25)",
+        "strike_induction_curve": {
+          "1": 0.0471,
+          "6": 0.2514,
+          "12": 0.4396,
+          "18": 0.5805,
+          "24": 0.686
+        }
+      }
+    }
+  },
+  "shap_feature_importance": {
+    "batting_model": {
+      "algorithm": "XGBoost TreeSHAP (pred_contribs exact)",
+      "features": [
+        "leverage_norm",
+        "balls_left",
+        "rrr",
+        "wickets_in_hand",
+        "is_pace",
+        "bowl_speed_clean",
+        "is_death",
+        "is_powerplay",
+        "batter_innings_ball"
+      ],
+      "global_feature_importance_mean_abs_shap": {
+        "leverage_norm": 0.0213,
+        "balls_left": 0.0266,
+        "rrr": 0.0291,
+        "wickets_in_hand": 0.0965,
+        "is_pace": 0.007,
+        "bowl_speed_clean": 0.0272,
+        "is_death": 0.0014,
+        "is_powerplay": 0.001,
+        "batter_innings_ball": 0.1431
+      },
+      "global_feature_importance_percentage": {
+        "leverage_norm": 6.02,
+        "balls_left": 7.54,
+        "rrr": 8.24,
+        "wickets_in_hand": 27.32,
+        "is_pace": 1.98,
+        "bowl_speed_clean": 7.71,
+        "is_death": 0.4,
+        "is_powerplay": 0.29,
+        "batter_innings_ball": 40.5
+      },
+      "player_profiles": {
+        "Vaibhav Sooryavanshi": {
+          "leverage_norm": -0.0171,
+          "balls_left": -0.0151,
+          "rrr": -0.0123,
+          "wickets_in_hand": 0.1089,
+          "is_pace": 0.003,
+          "bowl_speed_clean": 0.0032,
+          "is_death": 0.0005,
+          "is_powerplay": 0.0007,
+          "batter_innings_ball": 0.0202
+        },
+        "Rinku Singh": {
+          "leverage_norm": 0.0011,
+          "balls_left": 0.0151,
+          "rrr": 0.0216,
+          "wickets_in_hand": -0.094,
+          "is_pace": 0.0029,
+          "bowl_speed_clean": 0.0019,
+          "is_death": -0.0006,
+          "is_powerplay": -0.0007,
+          "batter_innings_ball": 0.0247
+        },
+        "Ashutosh Sharma": {
+          "leverage_norm": 0.0091,
+          "balls_left": 0.0204,
+          "rrr": 0.0303,
+          "wickets_in_hand": -0.1541,
+          "is_pace": 0.0064,
+          "bowl_speed_clean": 0.0022,
+          "is_death": -0.002,
+          "is_powerplay": -0.001,
+          "batter_innings_ball": -0.0102
+        },
+        "Ryan Rickelton": {
+          "leverage_norm": -0.0131,
+          "balls_left": -0.0109,
+          "rrr": -0.0076,
+          "wickets_in_hand": 0.0712,
+          "is_pace": 0.0024,
+          "bowl_speed_clean": 0.0049,
+          "is_death": 0.0004,
+          "is_powerplay": 0.0004,
+          "batter_innings_ball": 0.0427
+        },
+        "Reeza Hendricks": {
+          "leverage_norm": -0.0122,
+          "balls_left": -0.0053,
+          "rrr": 0.0286,
+          "wickets_in_hand": 0.0736,
+          "is_pace": 0.002,
+          "bowl_speed_clean": 0.0053,
+          "is_death": 0.0009,
+          "is_powerplay": 0.0002,
+          "batter_innings_ball": 0.0769
+        },
+        "Josh Inglis": {
+          "leverage_norm": -0.0139,
+          "balls_left": -0.0015,
+          "rrr": -0.0041,
+          "wickets_in_hand": 0.0531,
+          "is_pace": 0.0007,
+          "bowl_speed_clean": 0.0044,
+          "is_death": 0.0002,
+          "is_powerplay": 0.0001,
+          "batter_innings_ball": 0.0007
+        },
+        "Suryakumar Yadav": {
+          "leverage_norm": -0.0124,
+          "balls_left": 0.005,
+          "rrr": 0.0094,
+          "wickets_in_hand": 0.0158,
+          "is_pace": 0.0017,
+          "bowl_speed_clean": 0.0041,
+          "is_death": 0.0006,
+          "is_powerplay": -0.0003,
+          "batter_innings_ball": 0.0426
+        },
+        "Heinrich Klaasen": {
+          "leverage_norm": -0.0097,
+          "balls_left": 0.0133,
+          "rrr": 0.0018,
+          "wickets_in_hand": -0.0039,
+          "is_pace": 0.0016,
+          "bowl_speed_clean": 0.0005,
+          "is_death": 0.0004,
+          "is_powerplay": -0.0008,
+          "batter_innings_ball": 0.0106
+        },
+        "Abhishek Sharma": {
+          "leverage_norm": -0.0169,
+          "balls_left": -0.0205,
+          "rrr": -0.0107,
+          "wickets_in_hand": 0.1012,
+          "is_pace": 0.0018,
+          "bowl_speed_clean": 0.0056,
+          "is_death": 0.0007,
+          "is_powerplay": 0.0007,
+          "batter_innings_ball": 0.02
+        },
+        "Phil Salt": {
+          "leverage_norm": -0.0172,
+          "balls_left": -0.0219,
+          "rrr": -0.0014,
+          "wickets_in_hand": 0.0908,
+          "is_pace": 0.0024,
+          "bowl_speed_clean": 0.0029,
+          "is_death": 0.0007,
+          "is_powerplay": 0.0006,
+          "batter_innings_ball": 0.0233
+        }
+      }
+    },
+    "bowling_model": {
+      "algorithm": "XGBoost TreeSHAP (pred_contribs exact)",
+      "features": [
+        "leverage_norm",
+        "balls_left",
+        "rrr",
+        "wickets_in_hand",
+        "is_pace",
+        "bowl_speed_clean",
+        "is_death",
+        "is_powerplay",
+        "bowler_spell_ball"
+      ],
+      "global_feature_importance_mean_abs_shap": {
+        "leverage_norm": 0.0249,
+        "balls_left": 0.0604,
+        "rrr": 0.0274,
+        "wickets_in_hand": 0.121,
+        "is_pace": 0.0131,
+        "bowl_speed_clean": 0.0251,
+        "is_death": 0.002,
+        "is_powerplay": 0.0,
+        "bowler_spell_ball": 0.0074
+      },
+      "global_feature_importance_percentage": {
+        "leverage_norm": 8.86,
+        "balls_left": 21.48,
+        "rrr": 9.73,
+        "wickets_in_hand": 43.0,
+        "is_pace": 4.65,
+        "bowl_speed_clean": 8.94,
+        "is_death": 0.72,
+        "is_powerplay": 0.0,
+        "bowler_spell_ball": 2.63
+      },
+      "player_profiles": {
+        "Sufiyan Muqeem": {
+          "leverage_norm": -0.001,
+          "balls_left": -0.0235,
+          "rrr": -0.0059,
+          "wickets_in_hand": 0.0143,
+          "is_pace": 0.0093,
+          "bowl_speed_clean": 0.0362,
+          "is_death": -0.0002,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0018
+        },
+        "Abrar Ahmed": {
+          "leverage_norm": 0.004,
+          "balls_left": 0.0013,
+          "rrr": 0.0006,
+          "wickets_in_hand": -0.0174,
+          "is_pace": 0.0083,
+          "bowl_speed_clean": 0.0501,
+          "is_death": -0.0001,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0022
+        },
+        "Shoriful Islam": {
+          "leverage_norm": -0.0103,
+          "balls_left": 0.0281,
+          "rrr": 0.0088,
+          "wickets_in_hand": 0.004,
+          "is_pace": -0.0159,
+          "bowl_speed_clean": -0.0116,
+          "is_death": 0.0,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0016
+        },
+        "Rashid Khan": {
+          "leverage_norm": 0.0028,
+          "balls_left": -0.0162,
+          "rrr": 0.0005,
+          "wickets_in_hand": 0.0088,
+          "is_pace": 0.0094,
+          "bowl_speed_clean": 0.0477,
+          "is_death": 0.0002,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0014
+        },
+        "Mohammad Nawaz": {
+          "leverage_norm": 0.0051,
+          "balls_left": 0.0097,
+          "rrr": 0.0095,
+          "wickets_in_hand": -0.023,
+          "is_pace": 0.0081,
+          "bowl_speed_clean": 0.0395,
+          "is_death": 0.0001,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0033
+        },
+        "Lockie Ferguson": {
+          "leverage_norm": -0.0049,
+          "balls_left": -0.0131,
+          "rrr": -0.0037,
+          "wickets_in_hand": 0.0402,
+          "is_pace": -0.0163,
+          "bowl_speed_clean": -0.0132,
+          "is_death": -0.0004,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0019
+        },
+        "Mark Adair": {
+          "leverage_norm": -0.0083,
+          "balls_left": 0.0614,
+          "rrr": 0.0145,
+          "wickets_in_hand": -0.0282,
+          "is_pace": -0.0152,
+          "bowl_speed_clean": -0.0116,
+          "is_death": -0.0002,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0021
+        },
+        "Tim Southee": {
+          "leverage_norm": -0.0044,
+          "balls_left": 0.0474,
+          "rrr": -0.0021,
+          "wickets_in_hand": 0.0192,
+          "is_pace": -0.0158,
+          "bowl_speed_clean": -0.0156,
+          "is_death": 0.0003,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0006
+        },
+        "Mujeeb Ur Rahman": {
+          "leverage_norm": 0.0106,
+          "balls_left": 0.0358,
+          "rrr": 0.0118,
+          "wickets_in_hand": -0.0375,
+          "is_pace": 0.008,
+          "bowl_speed_clean": 0.0411,
+          "is_death": 0.0007,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0019
+        },
+        "Sunil Narine": {
+          "leverage_norm": 0.0032,
+          "balls_left": -0.0168,
+          "rrr": 0.0006,
+          "wickets_in_hand": -0.0012,
+          "is_pace": 0.0093,
+          "bowl_speed_clean": 0.0339,
+          "is_death": 0.0002,
+          "is_powerplay": 0.0,
+          "bowler_spell_ball": -0.0005
+        }
+      }
+    }
+  },
+  "monte_carlo_auction": {
+    "parameters": {
+      "total_iterations": 10000,
+      "total_ipl_purse_cr": 120.0,
+      "rr_retention_spend_cr": 79.0,
+      "rr_starting_purse_cr": 41.0,
+      "minimum_bench_buffer_cr": 12.0
+    },
+    "player_valuations": {
+      "Ashutosh Sharma": {
+        "role": "Domestic Finisher",
+        "expected_price_cr": 8.78,
+        "median_price_cr": 8.58,
+        "std_dev_cr": 1.92,
+        "percentile_10": 6.46,
+        "percentile_25": 7.4,
+        "percentile_75": 9.95,
+        "percentile_90": 11.38,
+        "min_projected_cr": 5.0,
+        "max_projected_cr": 14.5,
+        "prob_under_6cr": 0.051,
+        "prob_under_8cr": 0.375,
+        "prob_under_10cr": 0.758
+      },
+      "Vaibhav Sooryavanshi": {
+        "role": "Domestic Prodigy / Top Order",
+        "expected_price_cr": 4.9,
+        "median_price_cr": 4.73,
+        "std_dev_cr": 1.34,
+        "percentile_10": 3.32,
+        "percentile_25": 3.91,
+        "percentile_75": 5.72,
+        "percentile_90": 6.78,
+        "min_projected_cr": 2.5,
+        "max_projected_cr": 8.5,
+        "prob_under_6cr": 0.801,
+        "prob_under_8cr": 0.97,
+        "prob_under_10cr": 1.0
+      },
+      "Sufiyan Muqeem": {
+        "role": "Mystery Spinner (Wrist)",
+        "expected_price_cr": 6.51,
+        "median_price_cr": 6.35,
+        "std_dev_cr": 1.52,
+        "percentile_10": 4.68,
+        "percentile_25": 5.38,
+        "percentile_75": 7.46,
+        "percentile_90": 8.61,
+        "min_projected_cr": 3.5,
+        "max_projected_cr": 10.5,
+        "prob_under_6cr": 0.407,
+        "prob_under_8cr": 0.835,
+        "prob_under_10cr": 0.972
+      },
+      "Abrar Ahmed": {
+        "role": "Mystery Leg-Spinner",
+        "expected_price_cr": 4.6,
+        "median_price_cr": 4.47,
+        "std_dev_cr": 1.13,
+        "percentile_10": 3.25,
+        "percentile_25": 3.77,
+        "percentile_75": 5.31,
+        "percentile_90": 6.17,
+        "min_projected_cr": 2.5,
+        "max_projected_cr": 7.5,
+        "prob_under_6cr": 0.878,
+        "prob_under_8cr": 1.0,
+        "prob_under_10cr": 1.0
+      },
+      "Lockie Ferguson": {
+        "role": "Express Death Pacer",
+        "expected_price_cr": 7.92,
+        "median_price_cr": 7.78,
+        "std_dev_cr": 1.56,
+        "percentile_10": 6.0,
+        "percentile_25": 6.8,
+        "percentile_75": 8.91,
+        "percentile_90": 10.02,
+        "min_projected_cr": 4.5,
+        "max_projected_cr": 12.0,
+        "prob_under_6cr": 0.099,
+        "prob_under_8cr": 0.555,
+        "prob_under_10cr": 0.897
+      },
+      "Shoriful Islam": {
+        "role": "Left-Arm Swing & Death",
+        "expected_price_cr": 4.97,
+        "median_price_cr": 4.86,
+        "std_dev_cr": 1.09,
+        "percentile_10": 3.66,
+        "percentile_25": 4.18,
+        "percentile_75": 5.65,
+        "percentile_90": 6.44,
+        "min_projected_cr": 2.8,
+        "max_projected_cr": 8.0,
+        "prob_under_6cr": 0.829,
+        "prob_under_8cr": 1.0,
+        "prob_under_10cr": 1.0
+      },
+      "Ryan Rickelton": {
+        "role": "Overseas WK Explosive",
+        "expected_price_cr": 6.32,
+        "median_price_cr": 6.2,
+        "std_dev_cr": 1.34,
+        "percentile_10": 4.68,
+        "percentile_25": 5.33,
+        "percentile_75": 7.17,
+        "percentile_90": 8.19,
+        "min_projected_cr": 3.5,
+        "max_projected_cr": 9.5,
+        "prob_under_6cr": 0.441,
+        "prob_under_8cr": 0.88,
+        "prob_under_10cr": 1.0
+      },
+      "Josh Inglis": {
+        "role": "Overseas WK Specialist",
+        "expected_price_cr": 6.81,
+        "median_price_cr": 6.68,
+        "std_dev_cr": 1.36,
+        "percentile_10": 5.17,
+        "percentile_25": 5.84,
+        "percentile_75": 7.65,
+        "percentile_90": 8.68,
+        "min_projected_cr": 4.0,
+        "max_projected_cr": 10.5,
+        "prob_under_6cr": 0.297,
+        "prob_under_8cr": 0.814,
+        "prob_under_10cr": 0.977
+      },
+      "Mark Adair": {
+        "role": "Pace All-Rounder",
+        "expected_price_cr": 3.26,
+        "median_price_cr": 3.15,
+        "std_dev_cr": 0.81,
+        "percentile_10": 2.3,
+        "percentile_25": 2.68,
+        "percentile_75": 3.73,
+        "percentile_90": 4.36,
+        "min_projected_cr": 1.5,
+        "max_projected_cr": 5.5,
+        "prob_under_6cr": 1.0,
+        "prob_under_8cr": 1.0,
+        "prob_under_10cr": 1.0
+      },
+      "Mohammad Nawaz": {
+        "role": "Spin All-Rounder",
+        "expected_price_cr": 3.77,
+        "median_price_cr": 3.67,
+        "std_dev_cr": 0.93,
+        "percentile_10": 2.66,
+        "percentile_25": 3.1,
+        "percentile_75": 4.34,
+        "percentile_90": 5.05,
+        "min_projected_cr": 1.8,
+        "max_projected_cr": 6.5,
+        "prob_under_6cr": 0.977,
+        "prob_under_8cr": 1.0,
+        "prob_under_10cr": 1.0
+      }
+    },
+    "scenarios": {
+      "Scenario_A_Jaipur_Fortress": {
+        "name": "Jaipur Fortress (Domestic Clutch Core)",
+        "description": "Shortlist Ashutosh Sharma, Sufiyan Muqeem, and Shoriful Islam. Tailored to high SMS square boundaries.",
+        "target_players": [
+          "Ashutosh Sharma",
+          "Sufiyan Muqeem",
+          "Shoriful Islam"
+        ],
+        "bid_limits_cr": {
+          "Ashutosh Sharma": 10.0,
+          "Sufiyan Muqeem": 7.5,
+          "Shoriful Islam": 5.5
+        },
+        "success_rate_all_targets": 0.405,
+        "expected_spend_cr": 13.58,
+        "expected_remaining_purse_cr": 27.42,
+        "remaining_purse_p10": 21.61,
+        "remaining_purse_p50": 27.09,
+        "remaining_purse_p90": 34.53,
+        "expected_targets_acquired": 2.23
+      },
+      "Scenario_B_Global_Firepower": {
+        "name": "Global Firepower (Express Pace & WK Blitz)",
+        "description": "Lockie Ferguson + Ryan Rickelton + Abrar Ahmed. Pure pace-strike and overseas boundary intent.",
+        "target_players": [
+          "Lockie Ferguson",
+          "Ryan Rickelton",
+          "Abrar Ahmed"
+        ],
+        "bid_limits_cr": {
+          "Lockie Ferguson": 9.0,
+          "Ryan Rickelton": 7.5,
+          "Abrar Ahmed": 5.0
+        },
+        "success_rate_all_targets": 0.417,
+        "expected_spend_cr": 12.93,
+        "expected_remaining_purse_cr": 28.07,
+        "remaining_purse_p10": 22.85,
+        "remaining_purse_p50": 27.56,
+        "remaining_purse_p90": 34.53,
+        "expected_targets_acquired": 2.24
+      },
+      "Scenario_C_Dynasty_Vision": {
+        "name": "Dynasty Vision (Generational Prodigy + Finisher Clutch)",
+        "description": "Vaibhav Sooryavanshi + Ashutosh Sharma + Sufiyan Muqeem + Mark Adair. Maximizing future franchise upside.",
+        "target_players": [
+          "Vaibhav Sooryavanshi",
+          "Ashutosh Sharma",
+          "Sufiyan Muqeem",
+          "Mark Adair"
+        ],
+        "bid_limits_cr": {
+          "Vaibhav Sooryavanshi": 6.0,
+          "Ashutosh Sharma": 9.5,
+          "Sufiyan Muqeem": 7.0,
+          "Mark Adair": 3.8
+        },
+        "success_rate_all_targets": 0.279,
+        "expected_spend_cr": 14.72,
+        "expected_remaining_purse_cr": 26.28,
+        "remaining_purse_p10": 19.66,
+        "remaining_purse_p50": 26.03,
+        "remaining_purse_p90": 33.56,
+        "expected_targets_acquired": 2.91
+      }
+    }
+  },
+  "trajectory_kinematics": {
+    "batters": {
+      "Vaibhav Sooryavanshi": {
+        "player_id": 50284,
+        "rank": 1,
+        "pace_stats": {
+          "balls": 430,
+          "strike_rate": 228.6,
+          "dot_pct": 35.8,
+          "boundary_pct": 40.0,
+          "balls_per_boundary": 2.5,
+          "dismissals": 23
+        },
+        "spin_stats": {
+          "balls": 148,
+          "strike_rate": 193.9,
+          "dot_pct": 31.8,
+          "boundary_pct": 29.1,
+          "balls_per_boundary": 3.44,
+          "dismissals": 8
+        },
+        "delta_strike_rate_pace_minus_spin": 34.7,
+        "preferred_profile": "Pace Demolisher",
+        "balls_per_boundary_pressure": 2.62,
+        "balls_per_boundary_overall": 2.69,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Rinku Singh": {
+        "player_id": 4708,
+        "rank": 2,
+        "pace_stats": {
+          "balls": 807,
+          "strike_rate": 169.8,
+          "dot_pct": 31.7,
+          "boundary_pct": 25.0,
+          "balls_per_boundary": 4.0,
+          "dismissals": 37
+        },
+        "spin_stats": {
+          "balls": 478,
+          "strike_rate": 123.8,
+          "dot_pct": 31.2,
+          "boundary_pct": 12.6,
+          "balls_per_boundary": 7.97,
+          "dismissals": 17
+        },
+        "delta_strike_rate_pace_minus_spin": 46.0,
+        "preferred_profile": "Pace Demolisher",
+        "balls_per_boundary_pressure": 3.54,
+        "balls_per_boundary_overall": 4.9,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Ashutosh Sharma": {
+        "player_id": 8101,
+        "rank": 3,
+        "pace_stats": {
+          "balls": 236,
+          "strike_rate": 184.3,
+          "dot_pct": 28.8,
+          "boundary_pct": 26.3,
+          "balls_per_boundary": 3.81,
+          "dismissals": 13
+        },
+        "spin_stats": {
+          "balls": 98,
+          "strike_rate": 131.6,
+          "dot_pct": 40.8,
+          "boundary_pct": 17.3,
+          "balls_per_boundary": 5.76,
+          "dismissals": 7
+        },
+        "delta_strike_rate_pace_minus_spin": 52.7,
+        "preferred_profile": "Pace Demolisher",
+        "balls_per_boundary_pressure": 3.44,
+        "balls_per_boundary_overall": 4.23,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Ryan Rickelton": {
+        "player_id": 4007,
+        "rank": 4,
+        "pace_stats": {
+          "balls": 583,
+          "strike_rate": 161.4,
+          "dot_pct": 40.1,
+          "boundary_pct": 25.4,
+          "balls_per_boundary": 3.94,
+          "dismissals": 32
+        },
+        "spin_stats": {
+          "balls": 273,
+          "strike_rate": 149.5,
+          "dot_pct": 34.1,
+          "boundary_pct": 19.0,
+          "balls_per_boundary": 5.25,
+          "dismissals": 11
+        },
+        "delta_strike_rate_pace_minus_spin": 11.9,
+        "preferred_profile": "All-Condition 360\u00b0",
+        "balls_per_boundary_pressure": 4.16,
+        "balls_per_boundary_overall": 4.28,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Reeza Hendricks": {
+        "player_id": 768,
+        "rank": 5,
+        "pace_stats": {
+          "balls": 524,
+          "strike_rate": 150.2,
+          "dot_pct": 35.7,
+          "boundary_pct": 22.5,
+          "balls_per_boundary": 4.44,
+          "dismissals": 19
+        },
+        "spin_stats": {
+          "balls": 311,
+          "strike_rate": 140.5,
+          "dot_pct": 27.0,
+          "boundary_pct": 17.4,
+          "balls_per_boundary": 5.76,
+          "dismissals": 16
+        },
+        "delta_strike_rate_pace_minus_spin": 9.7,
+        "preferred_profile": "All-Condition 360\u00b0",
+        "balls_per_boundary_pressure": 4.19,
+        "balls_per_boundary_overall": 4.85,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Josh Inglis": {
+        "player_id": 4736,
+        "rank": 6,
+        "pace_stats": {
+          "balls": 538,
+          "strike_rate": 167.5,
+          "dot_pct": 36.4,
+          "boundary_pct": 27.0,
+          "balls_per_boundary": 3.71,
+          "dismissals": 26
+        },
+        "spin_stats": {
+          "balls": 366,
+          "strike_rate": 155.2,
+          "dot_pct": 28.4,
+          "boundary_pct": 19.9,
+          "balls_per_boundary": 5.01,
+          "dismissals": 23
+        },
+        "delta_strike_rate_pace_minus_spin": 12.3,
+        "preferred_profile": "All-Condition 360\u00b0",
+        "balls_per_boundary_pressure": 3.69,
+        "balls_per_boundary_overall": 4.15,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Suryakumar Yadav": {
+        "player_id": 1699,
+        "rank": 7,
+        "pace_stats": {
+          "balls": 1549,
+          "strike_rate": 180.1,
+          "dot_pct": 36.3,
+          "boundary_pct": 28.7,
+          "balls_per_boundary": 3.48,
+          "dismissals": 91
+        },
+        "spin_stats": {
+          "balls": 1212,
+          "strike_rate": 148.9,
+          "dot_pct": 26.9,
+          "boundary_pct": 19.4,
+          "balls_per_boundary": 5.16,
+          "dismissals": 29
+        },
+        "delta_strike_rate_pace_minus_spin": 31.2,
+        "preferred_profile": "Pace Demolisher",
+        "balls_per_boundary_pressure": 3.87,
+        "balls_per_boundary_overall": 4.06,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Heinrich Klaasen": {
+        "player_id": 4260,
+        "rank": 8,
+        "pace_stats": {
+          "balls": 808,
+          "strike_rate": 159.3,
+          "dot_pct": 26.2,
+          "boundary_pct": 20.9,
+          "balls_per_boundary": 4.78,
+          "dismissals": 40
+        },
+        "spin_stats": {
+          "balls": 609,
+          "strike_rate": 176.7,
+          "dot_pct": 24.8,
+          "boundary_pct": 22.3,
+          "balls_per_boundary": 4.48,
+          "dismissals": 19
+        },
+        "delta_strike_rate_pace_minus_spin": -17.4,
+        "preferred_profile": "All-Condition 360\u00b0",
+        "balls_per_boundary_pressure": 3.96,
+        "balls_per_boundary_overall": 4.65,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Abhishek Sharma": {
+        "player_id": 6281,
+        "rank": 9,
+        "pace_stats": {
+          "balls": 1536,
+          "strike_rate": 177.4,
+          "dot_pct": 38.3,
+          "boundary_pct": 29.8,
+          "balls_per_boundary": 3.35,
+          "dismissals": 80
+        },
+        "spin_stats": {
+          "balls": 715,
+          "strike_rate": 206.0,
+          "dot_pct": 27.0,
+          "boundary_pct": 30.9,
+          "balls_per_boundary": 3.24,
+          "dismissals": 45
+        },
+        "delta_strike_rate_pace_minus_spin": -28.6,
+        "preferred_profile": "Spin Destroyer",
+        "balls_per_boundary_pressure": 3.46,
+        "balls_per_boundary_overall": 3.32,
+        "jaipur_sms_suitability_score": 98.0
+      },
+      "Phil Salt": {
+        "player_id": 5553,
+        "rank": 10,
+        "pace_stats": {
+          "balls": 1089,
+          "strike_rate": 173.6,
+          "dot_pct": 35.2,
+          "boundary_pct": 28.0,
+          "balls_per_boundary": 3.57,
+          "dismissals": 52
+        },
+        "spin_stats": {
+          "balls": 554,
+          "strike_rate": 161.0,
+          "dot_pct": 29.6,
+          "boundary_pct": 22.9,
+          "balls_per_boundary": 4.36,
+          "dismissals": 25
+        },
+        "delta_strike_rate_pace_minus_spin": 12.6,
+        "preferred_profile": "All-Condition 360\u00b0",
+        "balls_per_boundary_pressure": 3.61,
+        "balls_per_boundary_overall": 3.8,
+        "jaipur_sms_suitability_score": 98.0
+      }
+    },
+    "bowlers": {
+      "Sufiyan Muqeem": {
+        "player_id": 34485,
+        "rank": 1,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 0.0,
+          "middle": 6.26,
+          "death": 6.73
+        },
+        "jaipur_sms_suitability_score": 59.0
+      },
+      "Abrar Ahmed": {
+        "player_id": 5979,
+        "rank": 2,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 8.53,
+          "middle": 5.98,
+          "death": 6.64
+        },
+        "jaipur_sms_suitability_score": 59.4
+      },
+      "Shoriful Islam": {
+        "player_id": 7344,
+        "rank": 3,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 6.88,
+          "middle": 7.91,
+          "death": 10.52
+        },
+        "jaipur_sms_suitability_score": 52.0
+      },
+      "Rashid Khan": {
+        "player_id": 4722,
+        "rank": 4,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 7.91,
+          "middle": 7.02,
+          "death": 8.26
+        },
+        "jaipur_sms_suitability_score": 52.1
+      },
+      "Mohammad Nawaz": {
+        "player_id": 2490,
+        "rank": 5,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 7.87,
+          "middle": 6.92,
+          "death": 5.65
+        },
+        "jaipur_sms_suitability_score": 63.8
+      },
+      "Lockie Ferguson": {
+        "player_id": 4692,
+        "rank": 6,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 8.16,
+          "middle": 7.6,
+          "death": 9.88
+        },
+        "jaipur_sms_suitability_score": 52.0
+      },
+      "Mark Adair": {
+        "player_id": 5379,
+        "rank": 7,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 6.78,
+          "middle": 7.5,
+          "death": 10.14
+        },
+        "jaipur_sms_suitability_score": 52.0
+      },
+      "Tim Southee": {
+        "player_id": 278,
+        "rank": 8,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 7.57,
+          "middle": 8.27,
+          "death": 8.45
+        },
+        "jaipur_sms_suitability_score": 52.0
+      },
+      "Mujeeb Ur Rahman": {
+        "player_id": 6450,
+        "rank": 9,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 6.55,
+          "middle": 6.77,
+          "death": 8.23
+        },
+        "jaipur_sms_suitability_score": 52.2
+      },
+      "Sunil Narine": {
+        "player_id": 781,
+        "rank": 10,
+        "rhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "lhb_stats": {
+          "balls": 0,
+          "economy": 0.0,
+          "wickets": 0,
+          "dot_pct": 0.0
+        },
+        "phase_economy": {
+          "powerplay": 8.0,
+          "middle": 6.69,
+          "death": 5.95
+        },
+        "jaipur_sms_suitability_score": 62.5
+      }
+    }
+  }
+}

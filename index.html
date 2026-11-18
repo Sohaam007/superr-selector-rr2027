@@ -319,17 +319,234 @@
             color: var(--text-muted);
             font-size: 0.9rem;
         }
+
+        /* Evaluator Notice & Post-Round 1 Innovation CTA */
+        .evaluator-topbar {
+            background: linear-gradient(90deg, #070D1E 0%, #15224A 50%, #070D1E 100%);
+            border-bottom: 1px solid rgba(234, 26, 133, 0.45);
+            padding: 11px 24px;
+            font-size: 0.9rem;
+            color: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .evaluator-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .evaluator-pill {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10B981;
+            color: #34D399;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .evaluator-topbar a {
+            color: #00F0FF;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 8px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .evaluator-topbar a:hover {
+            background: rgba(0, 240, 255, 0.25);
+            border-color: #00F0FF;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .neon-cta-banner {
+            background: linear-gradient(135deg, rgba(234, 26, 133, 0.2) 0%, rgba(13, 27, 62, 0.95) 45%, rgba(0, 75, 160, 0.35) 100%);
+            border: 2px solid #EA1A85;
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px rgba(234, 26, 133, 0.3), inset 0 0 20px rgba(234, 26, 133, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(234, 26, 133, 0.12) 0%, transparent 65%);
+            pointer-events: none;
+            animation: rotateGlow 14s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .neon-cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 820px;
+        }
+
+        .neon-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(234, 26, 133, 0.2);
+            color: #FF80BF;
+            border: 1px solid var(--rr-pink);
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+        }
+
+        .neon-cta-title {
+            color: #FFFFFF;
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+        .neon-cta-desc {
+            color: #CBD5E1;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .neon-pulse-btn {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #EA1A85 0%, #FF1361 40%, #7928CA 100%);
+            color: #FFFFFF !important;
+            font-size: 1.05rem;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 0 20px rgba(234, 26, 133, 0.85), 0 0 45px rgba(234, 26, 133, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+            animation: pulseGlow 2s infinite ease-in-out;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .neon-pulse-btn:hover {
+            transform: scale(1.04) translateY(-2px);
+            box-shadow: 0 0 35px #EA1A85, 0 0 65px #00F0FF, 0 0 95px rgba(234, 26, 133, 0.95);
+            border-color: #00F0FF;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 15px rgba(234, 26, 133, 0.8), 0 0 30px rgba(234, 26, 133, 0.45);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(234, 26, 133, 1), 0 0 55px rgba(0, 240, 255, 0.85), 0 0 80px rgba(234, 26, 133, 0.7);
+                transform: scale(1.025);
+            }
+            100% {
+                box-shadow: 0 0 15px rgba(234, 26, 133, 0.8), 0 0 30px rgba(234, 26, 133, 0.45);
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .neon-cta-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .neon-pulse-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 
+<div class="evaluator-topbar">
+    <div class="evaluator-topbar-left">
+        <span class="evaluator-pill">🔒 Official Round 1 Submission Preserved</span>
+        <span>All models, metrics, rankings, and PDFs below represent the unaltered official Round 1 submission.</span>
+    </div>
+    <a href="portal.html">⚡ Jump to Advanced AI/ML War Room 2.0 &rarr;</a>
+</div>
+
 <header>
     <div class="header-top">
         <span class="badge">IPL 2027 Auction Analytics War Room</span>
-        <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Author: <b>Soham Paul</b> · Round 1 Submission</span>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15);">
+                Original Round 1 Submission · Unaltered
+            </span>
+            <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Author: <b>Soham Paul</b></span>
+        </div>
     </div>
     <h1>SupeRR Selector Season 2 · Pressure Reliability Engine</h1>
     <div class="subtitle">Leverage-Indexed Win Probability & Hierarchical Shrinkage Model identifying the most reliable clutch players for Kumar Sangakkara & Giles Lindsay.</div>
+
+    <!-- Pulsing Glowing Neon Button & Explanatory Banner -->
+    <div class="neon-cta-banner">
+        <div class="neon-cta-content">
+            <div class="neon-badge-pill">
+                <span>⚡ Post-Round 1 Continuous Engineering</span>
+            </div>
+            <div class="neon-cta-title">
+                Evaluator Deep-Dive: Advanced AI/ML War Room 2.0
+            </div>
+            <div class="neon-cta-desc">
+                While our official Round 1 submission is strictly preserved in its entirety below, engineering student Soham Paul continued active research alongside college exams to build an interactive AI/ML expansion. Explore <b>Bayesian Survival Hazard Curves</b>, <b>TreeSHAP Pressure Attribution</b>, <b>10,000-run Monte Carlo Auction Optimization</b>, and <b>Jaipur SMS Stadium Ground Physics</b>.
+            </div>
+        </div>
+        <div>
+            <a href="portal.html" class="neon-pulse-btn">
+                ⚡ [POST-ROUND 1 PROGRESS] Advanced AI/ML War Room 2.0
+            </a>
+        </div>
+    </div>
 </header>
 
 <div class="container">
@@ -395,7 +612,8 @@
     </div>
 
     <footer>
-        Rajasthan Royals SupeRR Selector Season 2 · Confidential War Room Dashboard · Developed by Soham Paul (dhrubo2575@gmail.com)
+        <p>Rajasthan Royals SupeRR Selector Season 2 · Confidential War Room Dashboard · Developed by Soham Paul (dhrubo2575@gmail.com)</p>
+        <p style="margin-top: 8px; font-size: 0.85rem; color: #94A3B8;">Official Round 1 Submission Strictly Preserved · <a href="portal.html" style="color: #00F0FF; text-decoration: none; font-weight: 700;">⚡ Open Advanced AI/ML War Room 2.0 &rarr;</a></p>
     </footer>
 </div>
 

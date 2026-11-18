@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajasthan Royals War Room 2.0 · SupeRR Selector Post-Round 1 AI/ML Research Engine</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-base: #060913;
+            --bg-card: rgba(14, 22, 45, 0.75);
+            --bg-card-hover: rgba(22, 34, 68, 0.85);
+            --border-glow: rgba(0, 112, 243, 0.25);
+            --border-pink: rgba(234, 26, 133, 0.4);
+            --rr-pink: #FF007F;
+            --rr-pink-glow: rgba(255, 0, 127, 0.45);
+            --rr-blue: #0052FF;
+            --rr-blue-glow: rgba(0, 82, 255, 0.4);
+            --rr-cyan: #00F0FF;
+            --rr-gold: #FFB703;
+            --rr-emerald: #00F5A0;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --font-display: 'Outfit', -apple-system, sans-serif;
+            --font-body: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-heading: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Ambient Cyber Canvas */
+        #cyber-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.45;
+        }
+
+        /* Content Wrapper */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 20px 24px 80px;
+        }
+
+        /* Top Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 28px;
+            background: rgba(10, 16, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .brand-cluster {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .rr-logo-badge {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--rr-blue) 0%, var(--rr-pink) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: #fff;
+            box-shadow: 0 0 20px var(--rr-pink-glow);
+            letter-spacing: -1px;
+        }
+
+        .brand-meta h1 {
+            font-family: var(--font-heading);
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 50%, var(--rr-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-meta p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            background: rgba(0, 245, 160, 0.1);
+            color: var(--rr-emerald);
+            border: 1px solid rgba(0, 245, 160, 0.3);
+        }
+
+        .status-pill .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--rr-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--rr-emerald);
+            animation: pulse-dot 1.8s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--rr-pink) 0%, #D80064 100%);
+            color: white;
+            box-shadow: 0 4px 16px var(--rr-pink-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 0, 127, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--rr-cyan);
+            color: var(--rr-cyan);
+        }
+
+        .btn-audio {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--rr-cyan);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            font-size: 0.8rem;
+            padding: 8px 14px;
+        }
+
+        /* ============================================================
+           STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
+           ============================================================ */
+        .student-disclosure-card {
+            background: linear-gradient(135deg, rgba(16, 26, 56, 0.9) 0%, rgba(29, 17, 43, 0.9) 100%);
+            border: 1px solid rgba(255, 183, 3, 0.35);
+            border-radius: 20px;
+            padding: 28px 34px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 183, 3, 0.05);
+        }
+
+        .student-disclosure-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--rr-gold), var(--rr-pink));
+        }
+
+        .disclosure-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .disclosure-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge-academic {
+            background: rgba(255, 183, 3, 0.15);
+            border: 1px solid var(--rr-gold);
+            color: #FFD166;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .badge-frozen {
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid var(--rr-cyan);
+            color: var(--rr-cyan);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .disclosure-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #FFF;
+            font-family: var(--font-heading);
+        }
+
+        .disclosure-body {
+            font-size: 0.95rem;
+            color: #CBD5E1;
+            line-height: 1.7;
+            max-width: 1200px;
+        }
+
+        .disclosure-body strong {
+            color: #FFFFFF;
+        }
+
+        .disclosure-highlight-box {
+            margin-top: 16px;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 12px;
+            border-left: 3px solid var(--rr-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .disclosure-highlight-text {
+            font-size: 0.88rem;
+            color: #E2E8F0;
+        }
+
+        .disclosure-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .link-pill {
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .link-pill-primary {
+            background: rgba(255, 0, 127, 0.15);
+            color: #FF80BF;
+            border: 1px solid var(--rr-pink);
+        }
+        .link-pill-primary:hover {
+            background: var(--rr-pink);
+            color: white;
+        }
+
+        .link-pill-cyan {
+            background: rgba(0, 240, 255, 0.12);
+            color: var(--rr-cyan);
+            border: 1px solid var(--rr-cyan);
+        }
+        .link-pill-cyan:hover {
+            background: var(--rr-cyan);
+            color: #000;
+            font-weight: 700;
+        }
+
+        .link-pill-gold {
+            background: rgba(255, 183, 3, 0.12);
+            color: #FFD166;
+            border: 1px solid var(--rr-gold);
+        }
+        .link-pill-gold:hover {
+            background: var(--rr-gold);
+            color: #000;
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           WAR ROOM TELEMETRY HUD
+           ============================================================ */
+        .hud-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .hud-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px 22px;
+            backdrop-filter: blur(16px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hud-card:hover {
+            border-color: var(--rr-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 240, 255, 0.15);
+        }
+
+        .hud-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hud-value {
+            font-size: 1.85rem;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        .hud-subtext {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .accent-pink { color: var(--rr-pink); }
+        .accent-cyan { color: var(--rr-cyan); }
+        .accent-gold { color: var(--rr-gold); }
+        .accent-emerald { color: var(--rr-emerald); }
+
+        /* ============================================================
+           SECTION STYLING
+           ============================================================ */
+        .section-container {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .section-title-wrap h2 {
+            font-family: var(--font-heading);
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title-wrap p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(0, 82, 255, 0.2);
+            color: #60A5FA;
+            border: 1px solid rgba(96, 165, 250, 0.4);
+            text-transform: uppercase;
+        }
+
+        /* Two Column Layout */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Chart Card */
+        .panel-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(16px);
+            position: relative;
+        }
+
+        .panel-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .control-select {
+            background: rgba(10, 16, 35, 0.9);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            padding: 7px 14px;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-select:focus {
+            border-color: var(--rr-pink);
+            box-shadow: 0 0 10px var(--rr-pink-glow);
+        }
+
+        .chart-box {
+            position: relative;
+            height: 320px;
+            width: 100%;
+        }
+
+        /* Metric Chips & Insights inside panels */
+        .stat-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .stat-chip {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+        }
+
+        .stat-chip span {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+        }
+
+        .stat-chip strong {
+            font-size: 0.95rem;
+            color: #FFF;
+            font-family: var(--font-heading);
+        }
+
+        /* ============================================================
+           SHAP ATTRIBUTION SIMULATOR
+           ============================================================ */
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .simulator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .slider-group {
+            margin-bottom: 18px;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .slider-label-row span {
+            color: var(--text-secondary);
+        }
+
+        .slider-label-row strong {
+            font-family: var(--font-mono);
+            color: var(--rr-cyan);
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--rr-pink);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--rr-pink);
+            transition: transform 0.15s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .gauge-metric-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .gauge-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            color: #FFF;
+        }
+
+        /* ============================================================
+           MONTE CARLO AUCTION ENGINE
+           ============================================================ */
+        .scenario-tab-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .scenario-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-heading);
+        }
+
+        .scenario-tab.active {
+            background: linear-gradient(135deg, rgba(0, 82, 255, 0.3) 0%, rgba(255, 0, 127, 0.3) 100%);
+            border-color: var(--rr-pink);
+            color: #FFFFFF;
+            box-shadow: 0 4px 16px var(--rr-pink-glow);
+        }
+
+        .scenario-details-box {
+            background: rgba(10, 16, 35, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        /* ============================================================
+           RR WAR ROOM SQUAD BUILDER & JAIPUR SMS GROUND PHYSICS
+           ============================================================ */
+        .war-room-builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1100px) {
+            .war-room-builder-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .squad-slot-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 580px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .squad-slot-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .squad-slot-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+
+        .squad-player-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(14, 22, 45, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px 16px;
+            transition: all 0.2s;
+        }
+
+        .squad-player-item.retained {
+            border-left: 4px solid var(--rr-pink);
+            background: rgba(255, 0, 127, 0.08);
+        }
+
+        .squad-player-item.drafted {
+            border-left: 4px solid var(--rr-emerald);
+            background: rgba(0, 245, 160, 0.08);
+        }
+
+        .player-info-cluster {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-pos-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #CBD5E1;
+            font-weight: 700;
+        }
+
+        .player-name-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .player-meta-tag {
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+        }
+
+        .player-price-badge {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--rr-gold);
+        }
+
+        /* Target Pool Selector */
+        .target-pool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+            max-height: 260px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .target-card {
+            background: rgba(10, 16, 35, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .target-card:hover {
+            border-color: var(--rr-cyan);
+            background: rgba(0, 240, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .target-card.selected {
+            border-color: var(--rr-emerald);
+            background: rgba(0, 245, 160, 0.12);
+        }
+
+        /* Jaipur SMS Stadium Physics Panel */
+        .sms-pitch-visualizer {
+            background: radial-gradient(circle at center, rgba(0, 50, 30, 0.7) 0%, rgba(6, 15, 25, 0.95) 75%);
+            border: 1px solid rgba(0, 245, 160, 0.3);
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0, 245, 160, 0.1);
+        }
+
+        .sms-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 245, 160, 0.15);
+            color: var(--rr-emerald);
+            border: 1px solid var(--rr-emerald);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+
+        .sms-dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .sms-metric {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px 12px;
+            text-align: center;
+        }
+
+        .sms-metric span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+        }
+
+        .sms-metric strong {
+            font-size: 1.1rem;
+            color: #FFFFFF;
+            font-family: var(--font-heading);
+            display: block;
+        }
+
+        .synergy-score-gauge {
+            text-align: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            margin-top: 14px;
+        }
+
+        .synergy-number {
+            font-size: 2.8rem;
+            font-weight: 900;
+            font-family: var(--font-heading);
+            color: var(--rr-gold);
+            text-shadow: 0 0 20px rgba(255, 183, 3, 0.5);
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--rr-cyan);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-tagline {
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient WebGL / Cyber Canvas -->
+    <canvas id="cyber-canvas"></canvas>
+
+    <div class="app-container">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navbar">
+            <div class="brand-cluster">
+                <div class="rr-logo-badge">RR</div>
+                <div class="brand-meta">
+                    <h1>RAJASTHAN ROYALS WAR ROOM 2.0</h1>
+                    <p>SupeRR Selector S2 · Advanced Bayesian & Monte Carlo Intelligence</p>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="status-pill">
+                    <div class="pulse-dot"></div>
+                    ROUND 2 DEEP AI/ML RESEARCH
+                </div>
+                <button id="audio-toggle-btn" class="btn-nav btn-audio" onclick="toggleAudioFx()">
+                    🔊 Sound FX: ON
+                </button>
+                <a href="dashboard.html" class="btn-nav btn-secondary">
+                    ⬅ Official Round 1 Dashboard
+                </a>
+                <a href="#squad-builder" class="btn-nav btn-primary">
+                    ⚡ Open Squad Builder
+                </a>
+            </div>
+        </nav>
+
+        <!-- ============================================================
+             1. STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
+             ============================================================ -->
+        <section id="academic-disclosure" class="student-disclosure-card">
+            <div class="disclosure-header">
+                <div class="disclosure-title-group">
+                    <span class="badge-academic">🎓 Academic Disclosure</span>
+                    <span class="badge-frozen">❄️ Round 1 Frozen</span>
+                    <h2 class="disclosure-title">Candidate Research Statement & Academic Context</h2>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--rr-gold);">
+                    Candidate: Soham Paul · B.Tech Engineering
+                </div>
+            </div>
+
+            <div class="disclosure-body">
+                <p>
+                    <strong>To the Esteemed Rajasthan Royals Technical & Analytics Jury:</strong><br>
+                    I am an undergraduate engineering student currently appearing for university semester final examinations and rigorous laboratory viva assessments alongside participating in the <em>SupeRR Selector Season 2 Hackathon</em>. In adherence to strict scientific and competition integrity principles, please note:
+                </p>
+                <p style="margin-top: 8px;">
+                    <strong>1. Strict Round 1 Submission Immutability:</strong> The official Round 1 deliverable—including the primary SupeRR Selector composite ranking model, the technical PDF report (<code>Rajasthan_Royals_SupeRR_Selector_Report.pdf</code>), the executive presentation deck (<code>Rajasthan_Royals_SupeRR_Selector_Presentation.pptx</code>), and the core dashboard (<code>dashboard.html</code>)—was submitted prior to the official deadline and has been <strong>strictly frozen without alteration</strong>.
+                </p>
+                <p style="margin-top: 8px;">
+                    <strong>2. Purpose of War Room 2.0:</strong> This advanced portal represents deep <em>post-submission exploratory research</em> engineered specifically for Round 2 evaluation. It integrates higher-order statistical mechanics—specifically <strong>Bayesian Gamma-Poisson hazard modeling with 95% credible intervals</strong>, <strong>TreeSHAP feature attributions on XGBoost ensembles</strong>, and a <strong>10,000-iteration Monte Carlo IPL 2027 auction purse engine</strong> calibrated to Sawai Mansingh (SMS) Stadium Jaipur ground physics.
+                </p>
+            </div>
+
+            <div class="disclosure-highlight-box">
+                <div class="disclosure-highlight-text">
+                    📌 <em>Cross-verify all original Round 1 artifacts and open-source commit history:</em>
+                </div>
+                <div class="disclosure-links">
+                    <a href="dashboard.html" class="link-pill link-pill-primary">📊 Core Dashboard</a>
+                    <a href="Rajasthan_Royals_SupeRR_Selector_Report.pdf" target="_blank" class="link-pill link-pill-cyan">📄 Technical Report (PDF)</a>
+                    <a href="Rajasthan_Royals_SupeRR_Selector_Presentation.pptx" target="_blank" class="link-pill link-pill-gold">📽️ Executive Deck (PPTX)</a>
+                    <a href="https://github.com/Sohaam007/superr-selector-rr2027" target="_blank" class="link-pill link-pill-cyan">💻 GitHub Codebase</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             2. WAR ROOM TELEMETRY HUD
+             ============================================================ -->
+        <section id="telemetry-hud" class="hud-grid">
+            <div class="hud-card">
+                <div class="hud-label"><span>🌐</span> Database Deliveries</div>
+                <div class="hud-value accent-cyan">200,999</div>
+                <div class="hud-subtext">883 IPL & T20I matches parsed</div>
+            </div>
+            <div class="hud-card">
+                <div class="hud-label"><span>🔥</span> High-Pressure Balls</div>
+                <div class="hud-value accent-pink">48,798</div>
+                <div class="hud-subtext">24.28% Climax phase deliveries</div>
+            </div>
+            <div class="hud-card">
+                <div class="hud-label"><span>🎲</span> Monte Carlo Sims</div>
+                <div class="hud-value accent-gold">10,000</div>
+                <div class="hud-subtext">IPL 2027 Auction Purse paths</div>
+            </div>
+            <div class="hud-card">
+                <div class="hud-label"><span>💰</span> RR Remaining Purse</div>
+                <div class="hud-value accent-emerald">₹41.00 Cr</div>
+                <div class="hud-subtext">Post 6 Core Retentions (₹79 Cr)</div>
+            </div>
+            <div class="hud-card">
+                <div class="hud-label"><span>🛡️</span> Retained Match-Winners</div>
+                <div class="hud-value accent-pink">6 Stars</div>
+                <div class="hud-subtext">Samson, Jaiswal, Parag, Jurel, etc.</div>
+            </div>
+            <div class="hud-card">
+                <div class="hud-label"><span>🏟️</span> Jaipur SMS Synergy</div>
+                <div class="hud-value accent-cyan">98.0 / 100</div>
+                <div class="hud-subtext">Ashutosh & Vaibhav venue fit</div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             3. SECTION: BAYESIAN HAZARD & SURVIVAL ANALYSIS
+             ============================================================ -->
+        <section id="bayesian-hazard" class="section-container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <h2><span>🧬</span> Bayesian Hazard Modeling & Survival Probability S(t)</h2>
+                    <p>Empirical Bayes Gamma-Poisson posterior estimation (&alpha;=5.0, &beta;=100.0) with Nelson-Aalen survival discretization</p>
+                </div>
+                <span class="section-tag">Stochastic Survival Analytics</span>
+            </div>
+
+            <div class="grid-2col">
+                <!-- Batter Survival Curve Panel -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">🏏 Batter Survival Probability Under Pressure</div>
+                            <div class="panel-subtitle">Cumulative probability of resisting dismissal across balls 1 to 30</div>
+                        </div>
+                        <select id="batter-select" class="control-select" onchange="updateBatterSurvivalChart()">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="batterSurvivalChart"></canvas>
+                    </div>
+                    <div id="batter-hazard-chips" class="stat-badge-row">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Bowler Strike Induction Curve Panel -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">🎯 Bowler Strike Induction Probability</div>
+                            <div class="panel-subtitle">Cumulative probability of claiming a wicket within 1-24 pressure balls</div>
+                        </div>
+                        <select id="bowler-select" class="control-select" onchange="updateBowlerStrikeChart()">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="bowlerStrikeChart"></canvas>
+                    </div>
+                    <div id="bowler-hazard-chips" class="stat-badge-row">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             4. SECTION: TREESHAP FEATURE ATTRIBUTION ENGINE
+             ============================================================ -->
+        <section id="shap-attribution" class="section-container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <h2><span>⚡</span> TreeSHAP Feature Attribution & Game-Theoretic Radar</h2>
+                    <p>Exact Shapley value decomposition of pressure run expectancy and dismissal dynamics via XGBoost</p>
+                </div>
+                <span class="section-tag">Explainable AI (XAI)</span>
+            </div>
+
+            <div class="simulator-grid">
+                <!-- Global & Player SHAP Radar -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">🌐 Multi-Dimensional Pressure Attribution Signature</div>
+                            <div class="panel-subtitle">Relative feature contributions across game context variables</div>
+                        </div>
+                        <select id="shap-player-select" class="control-select" onchange="updateShapRadarChart()">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="shapRadarChart"></canvas>
+                    </div>
+                    <div class="stat-badge-row">
+                        <div class="stat-chip">
+                            <span>Dominant Feature</span>
+                            <strong class="accent-pink">Ball of Innings (40.5%)</strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span>Wickets in Hand</span>
+                            <strong class="accent-cyan">27.3% Weight</strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span>RRR Sensitivity</span>
+                            <strong class="accent-gold">8.2% Weight</strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span>Pace/Speed Factor</span>
+                            <strong class="accent-emerald">7.7% Weight</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Delivery Pressure Stress-Test Simulator -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">🎛️ Live Delivery Pressure Simulator</div>
+                            <div class="panel-subtitle">Tune match state variables to evaluate dynamic model response</div>
+                        </div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Wickets In Hand</span>
+                            <strong id="val-wickets">5 Wkts</strong>
+                        </div>
+                        <input id="slider-wickets" type="range" class="range-slider" min="1" max="9" value="5" oninput="runPressureStressTest()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Required Run Rate (RRR)</span>
+                            <strong id="val-rrr">11.5 RPO</strong>
+                        </div>
+                        <input id="slider-rrr" type="range" class="range-slider" min="6" max="18" step="0.5" value="11.5" oninput="runPressureStressTest()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Balls Remaining</span>
+                            <strong id="val-balls">18 Balls</strong>
+                        </div>
+                        <input id="slider-balls" type="range" class="range-slider" min="6" max="48" step="1" value="18" oninput="runPressureStressTest()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Bowler Release Speed</span>
+                            <strong id="val-speed">142 km/h</strong>
+                        </div>
+                        <input id="slider-speed" type="range" class="range-slider" min="115" max="155" step="1" value="142" oninput="runPressureStressTest()">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+                        <div class="gauge-metric-card">
+                            <div class="hud-label" style="justify-content: center;">Clutch Index</div>
+                            <div id="sim-clutch-index" class="gauge-number accent-pink">1.84x</div>
+                            <div class="hud-subtext">Relative leverage multiplier</div>
+                        </div>
+                        <div class="gauge-metric-card">
+                            <div class="hud-label" style="justify-content: center;">Boundary Expectancy</div>
+                            <div id="sim-boundary-prob" class="gauge-number accent-emerald">28.4%</div>
+                            <div class="hud-subtext">Ashutosh/Vaibhav baseline</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             5. SECTION: MONTE CARLO IPL 2027 AUCTION ENGINE
+             ============================================================ -->
+        <section id="monte-carlo-auction" class="section-container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <h2><span>🎲</span> 10,000-Iteration Monte Carlo IPL 2027 Auction Simulator</h2>
+                    <p>Stochastic purse depletion, market demand volatility, and acquisition probability distributions</p>
+                </div>
+                <span class="section-tag">Purse Optimization</span>
+            </div>
+
+            <!-- Pre-set Scenario Tabs -->
+            <div class="scenario-tab-bar">
+                <button id="tab-scenario-a" class="scenario-tab active" onclick="selectAuctionScenario('Scenario_A_Jaipur_Fortress')">
+                    🏰 Scenario A: Jaipur Fortress (Clutch Core)
+                </button>
+                <button id="tab-scenario-b" class="scenario-tab" onclick="selectAuctionScenario('Scenario_B_Global_Firepower')">
+                    🚀 Scenario B: Global Firepower (Express Pace)
+                </button>
+                <button id="tab-scenario-c" class="scenario-tab" onclick="selectAuctionScenario('Scenario_C_Dynasty_Vision')">
+                    👑 Scenario C: Dynasty Vision (Prodigy Upside)
+                </button>
+            </div>
+
+            <!-- Scenario Details Box -->
+            <div id="scenario-details-container" class="scenario-details-box">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="grid-2col">
+                <!-- Player Valuation Distribution Chart -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">📈 Auction Price Valuation Percentiles (P10 - P90)</div>
+                            <div class="panel-subtitle">Projected bid spreads across 10,000 market simulations</div>
+                        </div>
+                        <select id="auction-player-select" class="control-select" onchange="updateAuctionValuationChart()">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="auctionValuationChart"></canvas>
+                    </div>
+                    <div id="auction-player-metrics" class="stat-badge-row">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Purse Depletion / Remaining Budget Distribution -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">💰 Remaining Purse Cushion Distribution (₹41 Cr Initial)</div>
+                            <div class="panel-subtitle">Probabilistic remaining funds for bench depth and scouting</div>
+                        </div>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="purseDistributionChart"></canvas>
+                    </div>
+                    <div class="stat-badge-row">
+                        <div class="stat-chip">
+                            <span>Starting Purse</span>
+                            <strong class="accent-gold">₹41.00 Cr</strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span>P10 Purse Cushion</span>
+                            <strong id="chip-purse-p10" class="accent-pink">₹21.61 Cr</strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span>Median Cushion</span>
+                            <strong id="chip-purse-p50" class="accent-cyan">₹27.09 Cr</strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span>P90 Cushion</span>
+                            <strong id="chip-purse-p90" class="accent-emerald">₹34.53 Cr</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             6. SECTION: RR WAR ROOM SQUAD BUILDER & JAIPUR SMS PHYSICS
+             ============================================================ -->
+        <section id="squad-builder" class="section-container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <h2><span>⚔️</span> Rajasthan Royals War Room 2.0 · Playing XI & SMS Ground Physics</h2>
+                    <p>Integrate 6 retained superstars with auction targets, evaluated against Sawai Mansingh Stadium pitch kinematics</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-nav btn-secondary" onclick="loadScenarioIntoSquad('Scenario_A_Jaipur_Fortress')">
+                        ⚡ Load Jaipur Fortress
+                    </button>
+                    <button class="btn-nav btn-secondary" onclick="resetSquadBuilder()">
+                        🔄 Reset Slots
+                    </button>
+                </div>
+            </div>
+
+            <div class="war-room-builder-grid">
+                <!-- Squad Canvas Column -->
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <div>
+                            <div class="panel-title">🛡️ Rajasthan Royals Playing XI & Impact Player</div>
+                            <div class="panel-subtitle">6 Official Retentions + Drafted Auction Targets</div>
+                        </div>
+                        <div id="squad-purse-counter" class="player-price-badge" style="font-size: 1rem; color: var(--rr-emerald);">
+                            Remaining: ₹27.42 Cr
+                        </div>
+                    </div>
+
+                    <div class="squad-slot-list" id="squad-slot-container">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <div style="font-size: 0.88rem; font-weight: 700; color: #FFFFFF; margin-bottom: 8px;">
+                            Select Additional Auction Targets to Draft:
+                        </div>
+                        <div class="target-pool-grid" id="target-pool-container">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jaipur SMS Stadium Physics Column -->
+                <div class="sms-pitch-visualizer">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="sms-badge">🏟️ Sawai Mansingh Stadium Physics Engine</span>
+                        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94A3B8;">Jaipur, Rajasthan (Altitude: 431m)</span>
+                    </div>
+
+                    <div class="sms-dimension-grid">
+                        <div class="sms-metric">
+                            <span>Square Boundaries</span>
+                            <strong class="accent-gold">68m - 72m</strong>
+                        </div>
+                        <div class="sms-metric">
+                            <span>Straight Boundary</span>
+                            <strong class="accent-cyan">75m</strong>
+                        </div>
+                        <div class="sms-metric">
+                            <span>Avg 1st Inn Score</span>
+                            <strong class="accent-pink">172.5</strong>
+                        </div>
+                        <div class="sms-metric">
+                            <span>Wicket Split</span>
+                            <strong class="accent-emerald">62% Pace / 38% Spin</strong>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 14px;">
+                        <div class="panel-title" style="font-size: 0.95rem; margin-bottom: 8px;">
+                            🏟️ SMS Venue Synergy Radar (Squad vs Jaipur Benchmark)
+                        </div>
+                        <div class="chart-box" style="height: 250px;">
+                            <canvas id="smsRadarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="synergy-score-gauge">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; font-family: var(--font-mono); color: #94A3B8;">
+                            Composite SMS Venue Suitability Score
+                        </div>
+                        <div id="sms-composite-score" class="synergy-number">95.4</div>
+                        <p style="font-size: 0.82rem; color: #CBD5E1; margin-top: 4px;">
+                            High boundary-clearance frequency (Ashutosh 3.44 BPB) + elite death grip (Muqeem 6.26 Econ) maximizes Jaipur home-win probability.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                <strong>Rajasthan Royals SupeRR Selector Season 2 · War Room 2.0 AI/ML Research Portal</strong><br>
+                Engineered with pride by <strong>Soham Paul</strong> (B.Tech Candidate, Antigravity Swarm Architecture).
+            </p>
+            <p style="margin-top: 8px;">
+                <a href="dashboard.html">Official Round 1 Dashboard</a> · 
+                <a href="Rajasthan_Royals_SupeRR_Selector_Report.pdf">Research Report (PDF)</a> · 
+                <a href="Rajasthan_Royals_SupeRR_Selector_Presentation.pptx">Executive Slides (PPTX)</a> · 
+                <a href="https://github.com/Sohaam007/superr-selector-rr2027">GitHub Repository</a>
+            </p>
+            <div class="footer-tagline">
+                HALLA BOL · RIGOR IN DATA, TRIUMPH ON FIELD · 2026-2027
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Embedded Advanced ML Dataset -->
+    <script id="ml-data" type="application/json">
+{"metadata": {"title": "Rajasthan Royals War Room 2.0 \u00b7 Advanced AI/ML Research Engine", "competition": "SupeRR Selector Season 2 (IPL 2027 Auction)", "researcher": "Soham Paul (Antigravity Swarm ml-researcher)", "dataset_scope": {"total_deliveries_analyzed": 200999, "total_matches_analyzed": 883, "pressure_deliveries_analyzed": 48798, "pressure_share_pct": 24.28}, "modules": ["Bayesian Gamma-Poisson Hazard Modeling", "TreeSHAP Feature Attribution via XGBoost", "10,000-Iteration Monte Carlo IPL 2027 Auction Purse Simulator", "Trajectory-Level Kinematics (Pace/Spin & Jaipur SMS Physics)"]}, "bayesian_hazard_modeling": {"model_formulation": "Empirical Bayes Gamma-Poisson Hazard Model with Nelson-Aalen survival discretization", "prior_batting": {"alpha": 5.0, "beta": 100.0, "prior_hazard_mean": 0.05}, "prior_bowling": {"alpha": 5.0, "beta": 100.0, "prior_hazard_mean": 0.05}, "batters": {"Vaibhav Sooryavanshi": {"player_id": 50284, "rank": 1, "pressure_balls": 173, "pressure_dismissals": 8, "normal_balls": 405, "normal_dismissals": 23, "hazard_rate_pressure": 0.04762, "hazard_rate_ci_95": [0.02536, 0.07678], "hazard_rate_normal": 0.05545, "hazard_ratio": 0.859, "classification": "Steady Anchor (HR 0.85 - 1.15)", "survival_curve_pressure": {"1": 0.9535, "5": 0.7881, "10": 0.6211, "15": 0.4895, "20": 0.3858, "25": 0.3041, "30": 0.2397}, "hazard_by_exposure_bin": {"1-5 balls": 0.0493, "6-10 balls": 0.0438, "11-15 balls": 0.0441, "16-20 balls": 0.064, "21+ balls": 0.0451}}, "Rinku Singh": {"player_id": 4708, "rank": 2, "pressure_balls": 237, "pressure_dismissals": 6, "normal_balls": 1048, "normal_dismissals": 48, "hazard_rate_pressure": 0.03264, "hazard_rate_ci_95": [0.01629, 0.05457], "hazard_rate_normal": 0.04617, "hazard_ratio": 0.707, "classification": "Elite Resilient (HR < 0.85)", "survival_curve_pressure": {"1": 0.9679, "5": 0.8494, "10": 0.7215, "15": 0.6129, "20": 0.5206, "25": 0.4422, "30": 0.3756}, "hazard_by_exposure_bin": {"1-5 balls": 0.0446, "6-10 balls": 0.034, "11-15 balls": 0.0423, "16-20 balls": 0.053, "21+ balls": 0.0377}}, "Ashutosh Sharma": {"player_id": 8101, "rank": 3, "pressure_balls": 134, "pressure_dismissals": 6, "normal_balls": 200, "normal_dismissals": 14, "hazard_rate_pressure": 0.04701, "hazard_rate_ci_95": [0.02347, 0.07859], "hazard_rate_normal": 0.06333, "hazard_ratio": 0.742, "classification": "Elite Resilient (HR < 0.85)", "survival_curve_pressure": {"1": 0.9541, "5": 0.7905, "10": 0.6249, "15": 0.494, "20": 0.3906, "25": 0.3088, "30": 0.2441}, "hazard_by_exposure_bin": {"1-5 balls": 0.0345, "6-10 balls": 0.0576, "11-15 balls": 0.05, "16-20 balls": 0.0541, "21+ balls": 0.0504}}, "Ryan Rickelton": {"player_id": 4007, "rank": 4, "pressure_balls": 266, "pressure_dismissals": 9, "normal_balls": 590, "normal_dismissals": 34, "hazard_rate_pressure": 0.03825, "hazard_rate_ci_95": [0.02091, 0.06074], "hazard_rate_normal": 0.05652, "hazard_ratio": 0.677, "classification": "Elite Resilient (HR < 0.85)", "survival_curve_pressure": {"1": 0.9625, "5": 0.8259, "10": 0.6821, "15": 0.5634, "20": 0.4653, "25": 0.3843, "30": 0.3174}, "hazard_by_exposure_bin": {"1-5 balls": 0.0329, "6-10 balls": 0.0408, "11-15 balls": 0.0417, "16-20 balls": 0.0504, "21+ balls": 0.0543}}, "Reeza Hendricks": {"player_id": 768, "rank": 5, "pressure_balls": 222, "pressure_dismissals": 7, "normal_balls": 613, "normal_dismissals": 28, "hazard_rate_pressure": 0.03727, "hazard_rate_ci_95": [0.01926, 0.06112], "hazard_rate_normal": 0.04628, "hazard_ratio": 0.805, "classification": "Elite Resilient (HR < 0.85)", "survival_curve_pressure": {"1": 0.9634, "5": 0.83, "10": 0.6889, "15": 0.5718, "20": 0.4746, "25": 0.3939, "30": 0.3269}, "hazard_by_exposure_bin": {"1-5 balls": 0.0403, "6-10 balls": 0.0382, "11-15 balls": 0.037, "16-20 balls": 0.0611, "21+ balls": 0.0448}}, "Josh Inglis": {"player_id": 4736, "rank": 6, "pressure_balls": 218, "pressure_dismissals": 10, "normal_balls": 686, "normal_dismissals": 39, "hazard_rate_pressure": 0.04717, "hazard_rate_ci_95": [0.0264, 0.07387], "hazard_rate_normal": 0.05598, "hazard_ratio": 0.843, "classification": "Elite Resilient (HR < 0.85)", "survival_curve_pressure": {"1": 0.9539, "5": 0.7899, "10": 0.6239, "15": 0.4929, "20": 0.3893, "25": 0.3075, "30": 0.2429}, "hazard_by_exposure_bin": {"1-5 balls": 0.0368, "6-10 balls": 0.0577, "11-15 balls": 0.0458, "16-20 balls": 0.0388, "21+ balls": 0.0647}}, "Suryakumar Yadav": {"player_id": 1699, "rank": 7, "pressure_balls": 693, "pressure_dismissals": 30, "normal_balls": 2068, "normal_dismissals": 90, "hazard_rate_pressure": 0.04414, "hazard_rate_ci_95": [0.03074, 0.05991], "hazard_rate_normal": 0.04382, "hazard_ratio": 1.007, "classification": "Steady Anchor (HR 0.85 - 1.15)", "survival_curve_pressure": {"1": 0.9568, "5": 0.802, "10": 0.6432, "15": 0.5158, "20": 0.4137, "25": 0.3317, "30": 0.266}, "hazard_by_exposure_bin": {"1-5 balls": 0.0422, "6-10 balls": 0.0556, "11-15 balls": 0.0352, "16-20 balls": 0.0331, "21+ balls": 0.0556}}, "Heinrich Klaasen": {"player_id": 4260, "rank": 8, "pressure_balls": 293, "pressure_dismissals": 12, "normal_balls": 1124, "normal_dismissals": 47, "hazard_rate_pressure": 0.04326, "hazard_rate_ci_95": [0.0252, 0.06611], "hazard_rate_normal": 0.04248, "hazard_ratio": 1.018, "classification": "Steady Anchor (HR 0.85 - 1.15)", "survival_curve_pressure": {"1": 0.9577, "5": 0.8055, "10": 0.6488, "15": 0.5226, "20": 0.421, "25": 0.3391, "30": 0.2732}, "hazard_by_exposure_bin": {"1-5 balls": 0.0391, "6-10 balls": 0.0435, "11-15 balls": 0.039, "16-20 balls": 0.0602, "21+ balls": 0.0542}}, "Abhishek Sharma": {"player_id": 6281, "rank": 9, "pressure_balls": 498, "pressure_dismissals": 29, "normal_balls": 1753, "normal_dismissals": 96, "hazard_rate_pressure": 0.05686, "hazard_rate_ci_95": [0.03937, 0.0775], "hazard_rate_normal": 0.05451, "hazard_ratio": 1.043, "classification": "Steady Anchor (HR 0.85 - 1.15)", "survival_curve_pressure": {"1": 0.9447, "5": 0.7526, "10": 0.5663, "15": 0.4262, "20": 0.3207, "25": 0.2414, "30": 0.1816}, "hazard_by_exposure_bin": {"1-5 balls": 0.05, "6-10 balls": 0.0481, "11-15 balls": 0.0517, "16-20 balls": 0.0435, "21+ balls": 0.0723}}, "Phil Salt": {"player_id": 5553, "rank": 10, "pressure_balls": 433, "pressure_dismissals": 17, "normal_balls": 1210, "normal_dismissals": 60, "hazard_rate_pressure": 0.04128, "hazard_rate_ci_95": [0.02587, 0.06023], "hazard_rate_normal": 0.04962, "hazard_ratio": 0.832, "classification": "Elite Resilient (HR < 0.85)", "survival_curve_pressure": {"1": 0.9596, "5": 0.8135, "10": 0.6618, "15": 0.5384, "20": 0.438, "25": 0.3563, "30": 0.2899}, "hazard_by_exposure_bin": {"1-5 balls": 0.0542, "6-10 balls": 0.0398, "11-15 balls": 0.0395, "16-20 balls": 0.0366, "21+ balls": 0.0516}}}, "bowlers": {"Sufiyan Muqeem": {"player_id": 34485, "rank": 1, "pressure_balls": 128, "pressure_wickets": 7, "normal_balls": 223, "normal_wickets": 16, "hazard_rate_pressure": 0.05263, "hazard_rate_ci_95": [0.0272, 0.08632], "hazard_rate_normal": 0.06502, "hazard_ratio": 0.81, "classification": "Baseline Enforcer (HR < 1.0)", "strike_induction_curve": {"1": 0.0513, "6": 0.2708, "12": 0.4682, "18": 0.6122, "24": 0.7172}}, "Abrar Ahmed": {"player_id": 5979, "rank": 2, "pressure_balls": 196, "pressure_wickets": 11, "normal_balls": 580, "normal_wickets": 35, "hazard_rate_pressure": 0.05405, "hazard_rate_ci_95": [0.0309, 0.08358], "hazard_rate_normal": 0.05882, "hazard_ratio": 0.919, "classification": "Baseline Enforcer (HR < 1.0)", "strike_induction_curve": {"1": 0.0526, "6": 0.277, "12": 0.4772, "18": 0.622, "24": 0.7267}}, "Shoriful Islam": {"player_id": 7344, "rank": 3, "pressure_balls": 142, "pressure_wickets": 10, "normal_balls": 681, "normal_wickets": 31, "hazard_rate_pressure": 0.06198, "hazard_rate_ci_95": [0.03469, 0.09706], "hazard_rate_normal": 0.04609, "hazard_ratio": 1.345, "classification": "Elite Pressure Executioner (HR > 1.25)", "strike_induction_curve": {"1": 0.0601, "6": 0.3106, "12": 0.5247, "18": 0.6723, "24": 0.7741}}, "Rashid Khan": {"player_id": 4722, "rank": 4, "pressure_balls": 662, "pressure_wickets": 40, "normal_balls": 2118, "normal_wickets": 113, "hazard_rate_pressure": 0.05906, "hazard_rate_ci_95": [0.04308, 0.07752], "hazard_rate_normal": 0.0532, "hazard_ratio": 1.11, "classification": "Consistent Choke Artist (HR 1.0 - 1.25)", "strike_induction_curve": {"1": 0.0573, "6": 0.2984, "12": 0.5077, "18": 0.6546, "24": 0.7576}}, "Mohammad Nawaz": {"player_id": 2490, "rank": 5, "pressure_balls": 313, "pressure_wickets": 23, "normal_balls": 704, "normal_wickets": 43, "hazard_rate_pressure": 0.0678, "hazard_rate_ci_95": [0.04505, 0.09512], "hazard_rate_normal": 0.0597, "hazard_ratio": 1.136, "classification": "Consistent Choke Artist (HR 1.0 - 1.25)", "strike_induction_curve": {"1": 0.0655, "6": 0.3342, "12": 0.5567, "18": 0.7049, "24": 0.8035}}, "Lockie Ferguson": {"player_id": 4692, "rank": 6, "pressure_balls": 299, "pressure_wickets": 21, "normal_balls": 839, "normal_wickets": 38, "hazard_rate_pressure": 0.06516, "hazard_rate_ci_95": [0.04257, 0.09249], "hazard_rate_normal": 0.04579, "hazard_ratio": 1.423, "classification": "Elite Pressure Executioner (HR > 1.25)", "strike_induction_curve": {"1": 0.0631, "6": 0.3236, "12": 0.5425, "18": 0.6905, "24": 0.7907}}, "Mark Adair": {"player_id": 5379, "rank": 7, "pressure_balls": 195, "pressure_wickets": 14, "normal_balls": 711, "normal_wickets": 42, "hazard_rate_pressure": 0.06441, "hazard_rate_ci_95": [0.03878, 0.09643], "hazard_rate_normal": 0.05795, "hazard_ratio": 1.111, "classification": "Consistent Choke Artist (HR 1.0 - 1.25)", "strike_induction_curve": {"1": 0.0624, "6": 0.3205, "12": 0.5383, "18": 0.6863, "24": 0.7869}}, "Tim Southee": {"player_id": 278, "rank": 8, "pressure_balls": 254, "pressure_wickets": 17, "normal_balls": 607, "normal_wickets": 38, "hazard_rate_pressure": 0.06215, "hazard_rate_ci_95": [0.03895, 0.09068], "hazard_rate_normal": 0.06082, "hazard_ratio": 1.022, "classification": "Consistent Choke Artist (HR 1.0 - 1.25)", "strike_induction_curve": {"1": 0.0603, "6": 0.3113, "12": 0.5256, "18": 0.6733, "24": 0.775}}, "Mujeeb Ur Rahman": {"player_id": 6450, "rank": 9, "pressure_balls": 322, "pressure_wickets": 20, "normal_balls": 527, "normal_wickets": 28, "hazard_rate_pressure": 0.05924, "hazard_rate_ci_95": [0.03834, 0.08462], "hazard_rate_normal": 0.05263, "hazard_ratio": 1.126, "classification": "Consistent Choke Artist (HR 1.0 - 1.25)", "strike_induction_curve": {"1": 0.0575, "6": 0.2991, "12": 0.5088, "18": 0.6557, "24": 0.7587}}, "Sunil Narine": {"player_id": 781, "rank": 10, "pressure_balls": 418, "pressure_wickets": 20, "normal_balls": 1138, "normal_wickets": 46, "hazard_rate_pressure": 0.04826, "hazard_rate_ci_95": [0.03123, 0.06894], "hazard_rate_normal": 0.0412, "hazard_ratio": 1.172, "classification": "Consistent Choke Artist (HR 1.0 - 1.25)", "strike_induction_curve": {"1": 0.0471, "6": 0.2514, "12": 0.4396, "18": 0.5805, "24": 0.686}}}}, "shap_feature_importance": {"batting_model": {"algorithm": "XGBoost TreeSHAP (pred_contribs exact)", "features": ["leverage_norm", "balls_left", "rrr", "wickets_in_hand", "is_pace", "bowl_speed_clean", "is_death", "is_powerplay", "batter_innings_ball"], "global_feature_importance_mean_abs_shap": {"leverage_norm": 0.0213, "balls_left": 0.0266, "rrr": 0.0291, "wickets_in_hand": 0.0965, "is_pace": 0.007, "bowl_speed_clean": 0.0272, "is_death": 0.0014, "is_powerplay": 0.001, "batter_innings_ball": 0.1431}, "global_feature_importance_percentage": {"leverage_norm": 6.02, "balls_left": 7.54, "rrr": 8.24, "wickets_in_hand": 27.32, "is_pace": 1.98, "bowl_speed_clean": 7.71, "is_death": 0.4, "is_powerplay": 0.29, "batter_innings_ball": 40.5}, "player_profiles": {"Vaibhav Sooryavanshi": {"leverage_norm": -0.0171, "balls_left": -0.0151, "rrr": -0.0123, "wickets_in_hand": 0.1089, "is_pace": 0.003, "bowl_speed_clean": 0.0032, "is_death": 0.0005, "is_powerplay": 0.0007, "batter_innings_ball": 0.0202}, "Rinku Singh": {"leverage_norm": 0.0011, "balls_left": 0.0151, "rrr": 0.0216, "wickets_in_hand": -0.094, "is_pace": 0.0029, "bowl_speed_clean": 0.0019, "is_death": -0.0006, "is_powerplay": -0.0007, "batter_innings_ball": 0.0247}, "Ashutosh Sharma": {"leverage_norm": 0.0091, "balls_left": 0.0204, "rrr": 0.0303, "wickets_in_hand": -0.1541, "is_pace": 0.0064, "bowl_speed_clean": 0.0022, "is_death": -0.002, "is_powerplay": -0.001, "batter_innings_ball": -0.0102}, "Ryan Rickelton": {"leverage_norm": -0.0131, "balls_left": -0.0109, "rrr": -0.0076, "wickets_in_hand": 0.0712, "is_pace": 0.0024, "bowl_speed_clean": 0.0049, "is_death": 0.0004, "is_powerplay": 0.0004, "batter_innings_ball": 0.0427}, "Reeza Hendricks": {"leverage_norm": -0.0122, "balls_left": -0.0053, "rrr": 0.0286, "wickets_in_hand": 0.0736, "is_pace": 0.002, "bowl_speed_clean": 0.0053, "is_death": 0.0009, "is_powerplay": 0.0002, "batter_innings_ball": 0.0769}, "Josh Inglis": {"leverage_norm": -0.0139, "balls_left": -0.0015, "rrr": -0.0041, "wickets_in_hand": 0.0531, "is_pace": 0.0007, "bowl_speed_clean": 0.0044, "is_death": 0.0002, "is_powerplay": 0.0001, "batter_innings_ball": 0.0007}, "Suryakumar Yadav": {"leverage_norm": -0.0124, "balls_left": 0.005, "rrr": 0.0094, "wickets_in_hand": 0.0158, "is_pace": 0.0017, "bowl_speed_clean": 0.0041, "is_death": 0.0006, "is_powerplay": -0.0003, "batter_innings_ball": 0.0426}, "Heinrich Klaasen": {"leverage_norm": -0.0097, "balls_left": 0.0133, "rrr": 0.0018, "wickets_in_hand": -0.0039, "is_pace": 0.0016, "bowl_speed_clean": 0.0005, "is_death": 0.0004, "is_powerplay": -0.0008, "batter_innings_ball": 0.0106}, "Abhishek Sharma": {"leverage_norm": -0.0169, "balls_left": -0.0205, "rrr": -0.0107, "wickets_in_hand": 0.1012, "is_pace": 0.0018, "bowl_speed_clean": 0.0056, "is_death": 0.0007, "is_powerplay": 0.0007, "batter_innings_ball": 0.02}, "Phil Salt": {"leverage_norm": -0.0172, "balls_left": -0.0219, "rrr": -0.0014, "wickets_in_hand": 0.0908, "is_pace": 0.0024, "bowl_speed_clean": 0.0029, "is_death": 0.0007, "is_powerplay": 0.0006, "batter_innings_ball": 0.0233}}}, "bowling_model": {"algorithm": "XGBoost TreeSHAP (pred_contribs exact)", "features": ["leverage_norm", "balls_left", "rrr", "wickets_in_hand", "is_pace", "bowl_speed_clean", "is_death", "is_powerplay", "bowler_spell_ball"], "global_feature_importance_mean_abs_shap": {"leverage_norm": 0.0249, "balls_left": 0.0604, "rrr": 0.0274, "wickets_in_hand": 0.121, "is_pace": 0.0131, "bowl_speed_clean": 0.0251, "is_death": 0.002, "is_powerplay": 0.0, "bowler_spell_ball": 0.0074}, "global_feature_importance_percentage": {"leverage_norm": 8.86, "balls_left": 21.48, "rrr": 9.73, "wickets_in_hand": 43.0, "is_pace": 4.65, "bowl_speed_clean": 8.94, "is_death": 0.72, "is_powerplay": 0.0, "bowler_spell_ball": 2.63}, "player_profiles": {"Sufiyan Muqeem": {"leverage_norm": -0.001, "balls_left": -0.0235, "rrr": -0.0059, "wickets_in_hand": 0.0143, "is_pace": 0.0093, "bowl_speed_clean": 0.0362, "is_death": -0.0002, "is_powerplay": 0.0, "bowler_spell_ball": -0.0018}, "Abrar Ahmed": {"leverage_norm": 0.004, "balls_left": 0.0013, "rrr": 0.0006, "wickets_in_hand": -0.0174, "is_pace": 0.0083, "bowl_speed_clean": 0.0501, "is_death": -0.0001, "is_powerplay": 0.0, "bowler_spell_ball": -0.0022}, "Shoriful Islam": {"leverage_norm": -0.0103, "balls_left": 0.0281, "rrr": 0.0088, "wickets_in_hand": 0.004, "is_pace": -0.0159, "bowl_speed_clean": -0.0116, "is_death": 0.0, "is_powerplay": 0.0, "bowler_spell_ball": -0.0016}, "Rashid Khan": {"leverage_norm": 0.0028, "balls_left": -0.0162, "rrr": 0.0005, "wickets_in_hand": 0.0088, "is_pace": 0.0094, "bowl_speed_clean": 0.0477, "is_death": 0.0002, "is_powerplay": 0.0, "bowler_spell_ball": -0.0014}, "Mohammad Nawaz": {"leverage_norm": 0.0051, "balls_left": 0.0097, "rrr": 0.0095, "wickets_in_hand": -0.023, "is_pace": 0.0081, "bowl_speed_clean": 0.0395, "is_death": 0.0001, "is_powerplay": 0.0, "bowler_spell_ball": -0.0033}, "Lockie Ferguson": {"leverage_norm": -0.0049, "balls_left": -0.0131, "rrr": -0.0037, "wickets_in_hand": 0.0402, "is_pace": -0.0163, "bowl_speed_clean": -0.0132, "is_death": -0.0004, "is_powerplay": 0.0, "bowler_spell_ball": -0.0019}, "Mark Adair": {"leverage_norm": -0.0083, "balls_left": 0.0614, "rrr": 0.0145, "wickets_in_hand": -0.0282, "is_pace": -0.0152, "bowl_speed_clean": -0.0116, "is_death": -0.0002, "is_powerplay": 0.0, "bowler_spell_ball": -0.0021}, "Tim Southee": {"leverage_norm": -0.0044, "balls_left": 0.0474, "rrr": -0.0021, "wickets_in_hand": 0.0192, "is_pace": -0.0158, "bowl_speed_clean": -0.0156, "is_death": 0.0003, "is_powerplay": 0.0, "bowler_spell_ball": -0.0006}, "Mujeeb Ur Rahman": {"leverage_norm": 0.0106, "balls_left": 0.0358, "rrr": 0.0118, "wickets_in_hand": -0.0375, "is_pace": 0.008, "bowl_speed_clean": 0.0411, "is_death": 0.0007, "is_powerplay": 0.0, "bowler_spell_ball": -0.0019}, "Sunil Narine": {"leverage_norm": 0.0032, "balls_left": -0.0168, "rrr": 0.0006, "wickets_in_hand": -0.0012, "is_pace": 0.0093, "bowl_speed_clean": 0.0339, "is_death": 0.0002, "is_powerplay": 0.0, "bowler_spell_ball": -0.0005}}}}, "monte_carlo_auction": {"parameters": {"total_iterations": 10000, "total_ipl_purse_cr": 120.0, "rr_retention_spend_cr": 79.0, "rr_starting_purse_cr": 41.0, "minimum_bench_buffer_cr": 12.0}, "player_valuations": {"Ashutosh Sharma": {"role": "Domestic Finisher", "expected_price_cr": 8.78, "median_price_cr": 8.58, "std_dev_cr": 1.92, "percentile_10": 6.46, "percentile_25": 7.4, "percentile_75": 9.95, "percentile_90": 11.38, "min_projected_cr": 5.0, "max_projected_cr": 14.5, "prob_under_6cr": 0.051, "prob_under_8cr": 0.375, "prob_under_10cr": 0.758}, "Vaibhav Sooryavanshi": {"role": "Domestic Prodigy / Top Order", "expected_price_cr": 4.9, "median_price_cr": 4.73, "std_dev_cr": 1.34, "percentile_10": 3.32, "percentile_25": 3.91, "percentile_75": 5.72, "percentile_90": 6.78, "min_projected_cr": 2.5, "max_projected_cr": 8.5, "prob_under_6cr": 0.801, "prob_under_8cr": 0.97, "prob_under_10cr": 1.0}, "Sufiyan Muqeem": {"role": "Mystery Spinner (Wrist)", "expected_price_cr": 6.51, "median_price_cr": 6.35, "std_dev_cr": 1.52, "percentile_10": 4.68, "percentile_25": 5.38, "percentile_75": 7.46, "percentile_90": 8.61, "min_projected_cr": 3.5, "max_projected_cr": 10.5, "prob_under_6cr": 0.407, "prob_under_8cr": 0.835, "prob_under_10cr": 0.972}, "Abrar Ahmed": {"role": "Mystery Leg-Spinner", "expected_price_cr": 4.6, "median_price_cr": 4.47, "std_dev_cr": 1.13, "percentile_10": 3.25, "percentile_25": 3.77, "percentile_75": 5.31, "percentile_90": 6.17, "min_projected_cr": 2.5, "max_projected_cr": 7.5, "prob_under_6cr": 0.878, "prob_under_8cr": 1.0, "prob_under_10cr": 1.0}, "Lockie Ferguson": {"role": "Express Death Pacer", "expected_price_cr": 7.92, "median_price_cr": 7.78, "std_dev_cr": 1.56, "percentile_10": 6.0, "percentile_25": 6.8, "percentile_75": 8.91, "percentile_90": 10.02, "min_projected_cr": 4.5, "max_projected_cr": 12.0, "prob_under_6cr": 0.099, "prob_under_8cr": 0.555, "prob_under_10cr": 0.897}, "Shoriful Islam": {"role": "Left-Arm Swing & Death", "expected_price_cr": 4.97, "median_price_cr": 4.86, "std_dev_cr": 1.09, "percentile_10": 3.66, "percentile_25": 4.18, "percentile_75": 5.65, "percentile_90": 6.44, "min_projected_cr": 2.8, "max_projected_cr": 8.0, "prob_under_6cr": 0.829, "prob_under_8cr": 1.0, "prob_under_10cr": 1.0}, "Ryan Rickelton": {"role": "Overseas WK Explosive", "expected_price_cr": 6.32, "median_price_cr": 6.2, "std_dev_cr": 1.34, "percentile_10": 4.68, "percentile_25": 5.33, "percentile_75": 7.17, "percentile_90": 8.19, "min_projected_cr": 3.5, "max_projected_cr": 9.5, "prob_under_6cr": 0.441, "prob_under_8cr": 0.88, "prob_under_10cr": 1.0}, "Josh Inglis": {"role": "Overseas WK Specialist", "expected_price_cr": 6.81, "median_price_cr": 6.68, "std_dev_cr": 1.36, "percentile_10": 5.17, "percentile_25": 5.84, "percentile_75": 7.65, "percentile_90": 8.68, "min_projected_cr": 4.0, "max_projected_cr": 10.5, "prob_under_6cr": 0.297, "prob_under_8cr": 0.814, "prob_under_10cr": 0.977}, "Mark Adair": {"role": "Pace All-Rounder", "expected_price_cr": 3.26, "median_price_cr": 3.15, "std_dev_cr": 0.81, "percentile_10": 2.3, "percentile_25": 2.68, "percentile_75": 3.73, "percentile_90": 4.36, "min_projected_cr": 1.5, "max_projected_cr": 5.5, "prob_under_6cr": 1.0, "prob_under_8cr": 1.0, "prob_under_10cr": 1.0}, "Mohammad Nawaz": {"role": "Spin All-Rounder", "expected_price_cr": 3.77, "median_price_cr": 3.67, "std_dev_cr": 0.93, "percentile_10": 2.66, "percentile_25": 3.1, "percentile_75": 4.34, "percentile_90": 5.05, "min_projected_cr": 1.8, "max_projected_cr": 6.5, "prob_under_6cr": 0.977, "prob_under_8cr": 1.0, "prob_under_10cr": 1.0}}, "scenarios": {"Scenario_A_Jaipur_Fortress": {"name": "Jaipur Fortress (Domestic Clutch Core)", "description": "Shortlist Ashutosh Sharma, Sufiyan Muqeem, and Shoriful Islam. Tailored to high SMS square boundaries.", "target_players": ["Ashutosh Sharma", "Sufiyan Muqeem", "Shoriful Islam"], "bid_limits_cr": {"Ashutosh Sharma": 10.0, "Sufiyan Muqeem": 7.5, "Shoriful Islam": 5.5}, "success_rate_all_targets": 0.405, "expected_spend_cr": 13.58, "expected_remaining_purse_cr": 27.42, "remaining_purse_p10": 21.61, "remaining_purse_p50": 27.09, "remaining_purse_p90": 34.53, "expected_targets_acquired": 2.23}, "Scenario_B_Global_Firepower": {"name": "Global Firepower (Express Pace & WK Blitz)", "description": "Lockie Ferguson + Ryan Rickelton + Abrar Ahmed. Pure pace-strike and overseas boundary intent.", "target_players": ["Lockie Ferguson", "Ryan Rickelton", "Abrar Ahmed"], "bid_limits_cr": {"Lockie Ferguson": 9.0, "Ryan Rickelton": 7.5, "Abrar Ahmed": 5.0}, "success_rate_all_targets": 0.417, "expected_spend_cr": 12.93, "expected_remaining_purse_cr": 28.07, "remaining_purse_p10": 22.85, "remaining_purse_p50": 27.56, "remaining_purse_p90": 34.53, "expected_targets_acquired": 2.24}, "Scenario_C_Dynasty_Vision": {"name": "Dynasty Vision (Generational Prodigy + Finisher Clutch)", "description": "Vaibhav Sooryavanshi + Ashutosh Sharma + Sufiyan Muqeem + Mark Adair. Maximizing future franchise upside.", "target_players": ["Vaibhav Sooryavanshi", "Ashutosh Sharma", "Sufiyan Muqeem", "Mark Adair"], "bid_limits_cr": {"Vaibhav Sooryavanshi": 6.0, "Ashutosh Sharma": 9.5, "Sufiyan Muqeem": 7.0, "Mark Adair": 3.8}, "success_rate_all_targets": 0.279, "expected_spend_cr": 14.72, "expected_remaining_purse_cr": 26.28, "remaining_purse_p10": 19.66, "remaining_purse_p50": 26.03, "remaining_purse_p90": 33.56, "expected_targets_acquired": 2.91}}}, "trajectory_kinematics": {"batters": {"Vaibhav Sooryavanshi": {"player_id": 50284, "rank": 1, "pace_stats": {"balls": 430, "strike_rate": 228.6, "dot_pct": 35.8, "boundary_pct": 40.0, "balls_per_boundary": 2.5, "dismissals": 23}, "spin_stats": {"balls": 148, "strike_rate": 193.9, "dot_pct": 31.8, "boundary_pct": 29.1, "balls_per_boundary": 3.44, "dismissals": 8}, "delta_strike_rate_pace_minus_spin": 34.7, "preferred_profile": "Pace Demolisher", "balls_per_boundary_pressure": 2.62, "balls_per_boundary_overall": 2.69, "jaipur_sms_suitability_score": 98.0}, "Rinku Singh": {"player_id": 4708, "rank": 2, "pace_stats": {"balls": 807, "strike_rate": 169.8, "dot_pct": 31.7, "boundary_pct": 25.0, "balls_per_boundary": 4.0, "dismissals": 37}, "spin_stats": {"balls": 478, "strike_rate": 123.8, "dot_pct": 31.2, "boundary_pct": 12.6, "balls_per_boundary": 7.97, "dismissals": 17}, "delta_strike_rate_pace_minus_spin": 46.0, "preferred_profile": "Pace Demolisher", "balls_per_boundary_pressure": 3.54, "balls_per_boundary_overall": 4.9, "jaipur_sms_suitability_score": 98.0}, "Ashutosh Sharma": {"player_id": 8101, "rank": 3, "pace_stats": {"balls": 236, "strike_rate": 184.3, "dot_pct": 28.8, "boundary_pct": 26.3, "balls_per_boundary": 3.81, "dismissals": 13}, "spin_stats": {"balls": 98, "strike_rate": 131.6, "dot_pct": 40.8, "boundary_pct": 17.3, "balls_per_boundary": 5.76, "dismissals": 7}, "delta_strike_rate_pace_minus_spin": 52.7, "preferred_profile": "Pace Demolisher", "balls_per_boundary_pressure": 3.44, "balls_per_boundary_overall": 4.23, "jaipur_sms_suitability_score": 98.0}, "Ryan Rickelton": {"player_id": 4007, "rank": 4, "pace_stats": {"balls": 583, "strike_rate": 161.4, "dot_pct": 40.1, "boundary_pct": 25.4, "balls_per_boundary": 3.94, "dismissals": 32}, "spin_stats": {"balls": 273, "strike_rate": 149.5, "dot_pct": 34.1, "boundary_pct": 19.0, "balls_per_boundary": 5.25, "dismissals": 11}, "delta_strike_rate_pace_minus_spin": 11.9, "preferred_profile": "All-Condition 360\u00b0", "balls_per_boundary_pressure": 4.16, "balls_per_boundary_overall": 4.28, "jaipur_sms_suitability_score": 98.0}, "Reeza Hendricks": {"player_id": 768, "rank": 5, "pace_stats": {"balls": 524, "strike_rate": 150.2, "dot_pct": 35.7, "boundary_pct": 22.5, "balls_per_boundary": 4.44, "dismissals": 19}, "spin_stats": {"balls": 311, "strike_rate": 140.5, "dot_pct": 27.0, "boundary_pct": 17.4, "balls_per_boundary": 5.76, "dismissals": 16}, "delta_strike_rate_pace_minus_spin": 9.7, "preferred_profile": "All-Condition 360\u00b0", "balls_per_boundary_pressure": 4.19, "balls_per_boundary_overall": 4.85, "jaipur_sms_suitability_score": 98.0}, "Josh Inglis": {"player_id": 4736, "rank": 6, "pace_stats": {"balls": 538, "strike_rate": 167.5, "dot_pct": 36.4, "boundary_pct": 27.0, "balls_per_boundary": 3.71, "dismissals": 26}, "spin_stats": {"balls": 366, "strike_rate": 155.2, "dot_pct": 28.4, "boundary_pct": 19.9, "balls_per_boundary": 5.01, "dismissals": 23}, "delta_strike_rate_pace_minus_spin": 12.3, "preferred_profile": "All-Condition 360\u00b0", "balls_per_boundary_pressure": 3.69, "balls_per_boundary_overall": 4.15, "jaipur_sms_suitability_score": 98.0}, "Suryakumar Yadav": {"player_id": 1699, "rank": 7, "pace_stats": {"balls": 1549, "strike_rate": 180.1, "dot_pct": 36.3, "boundary_pct": 28.7, "balls_per_boundary": 3.48, "dismissals": 91}, "spin_stats": {"balls": 1212, "strike_rate": 148.9, "dot_pct": 26.9, "boundary_pct": 19.4, "balls_per_boundary": 5.16, "dismissals": 29}, "delta_strike_rate_pace_minus_spin": 31.2, "preferred_profile": "Pace Demolisher", "balls_per_boundary_pressure": 3.87, "balls_per_boundary_overall": 4.06, "jaipur_sms_suitability_score": 98.0}, "Heinrich Klaasen": {"player_id": 4260, "rank": 8, "pace_stats": {"balls": 808, "strike_rate": 159.3, "dot_pct": 26.2, "boundary_pct": 20.9, "balls_per_boundary": 4.78, "dismissals": 40}, "spin_stats": {"balls": 609, "strike_rate": 176.7, "dot_pct": 24.8, "boundary_pct": 22.3, "balls_per_boundary": 4.48, "dismissals": 19}, "delta_strike_rate_pace_minus_spin": -17.4, "preferred_profile": "All-Condition 360\u00b0", "balls_per_boundary_pressure": 3.96, "balls_per_boundary_overall": 4.65, "jaipur_sms_suitability_score": 98.0}, "Abhishek Sharma": {"player_id": 6281, "rank": 9, "pace_stats": {"balls": 1536, "strike_rate": 177.4, "dot_pct": 38.3, "boundary_pct": 29.8, "balls_per_boundary": 3.35, "dismissals": 80}, "spin_stats": {"balls": 715, "strike_rate": 206.0, "dot_pct": 27.0, "boundary_pct": 30.9, "balls_per_boundary": 3.24, "dismissals": 45}, "delta_strike_rate_pace_minus_spin": -28.6, "preferred_profile": "Spin Destroyer", "balls_per_boundary_pressure": 3.46, "balls_per_boundary_overall": 3.32, "jaipur_sms_suitability_score": 98.0}, "Phil Salt": {"player_id": 5553, "rank": 10, "pace_stats": {"balls": 1089, "strike_rate": 173.6, "dot_pct": 35.2, "boundary_pct": 28.0, "balls_per_boundary": 3.57, "dismissals": 52}, "spin_stats": {"balls": 554, "strike_rate": 161.0, "dot_pct": 29.6, "boundary_pct": 22.9, "balls_per_boundary": 4.36, "dismissals": 25}, "delta_strike_rate_pace_minus_spin": 12.6, "preferred_profile": "All-Condition 360\u00b0", "balls_per_boundary_pressure": 3.61, "balls_per_boundary_overall": 3.8, "jaipur_sms_suitability_score": 98.0}}, "bowlers": {"Sufiyan Muqeem": {"player_id": 34485, "rank": 1, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 0.0, "middle": 6.26, "death": 6.73}, "jaipur_sms_suitability_score": 59.0}, "Abrar Ahmed": {"player_id": 5979, "rank": 2, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 8.53, "middle": 5.98, "death": 6.64}, "jaipur_sms_suitability_score": 59.4}, "Shoriful Islam": {"player_id": 7344, "rank": 3, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 6.88, "middle": 7.91, "death": 10.52}, "jaipur_sms_suitability_score": 52.0}, "Rashid Khan": {"player_id": 4722, "rank": 4, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 7.91, "middle": 7.02, "death": 8.26}, "jaipur_sms_suitability_score": 52.1}, "Mohammad Nawaz": {"player_id": 2490, "rank": 5, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 7.87, "middle": 6.92, "death": 5.65}, "jaipur_sms_suitability_score": 63.8}, "Lockie Ferguson": {"player_id": 4692, "rank": 6, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 8.16, "middle": 7.6, "death": 9.88}, "jaipur_sms_suitability_score": 52.0}, "Mark Adair": {"player_id": 5379, "rank": 7, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 6.78, "middle": 7.5, "death": 10.14}, "jaipur_sms_suitability_score": 52.0}, "Tim Southee": {"player_id": 278, "rank": 8, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 7.57, "middle": 8.27, "death": 8.45}, "jaipur_sms_suitability_score": 52.0}, "Mujeeb Ur Rahman": {"player_id": 6450, "rank": 9, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 6.55, "middle": 6.77, "death": 8.23}, "jaipur_sms_suitability_score": 52.2}, "Sunil Narine": {"player_id": 781, "rank": 10, "rhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "lhb_stats": {"balls": 0, "economy": 0.0, "wickets": 0, "dot_pct": 0.0}, "phase_economy": {"powerplay": 8.0, "middle": 6.69, "death": 5.95}, "jaipur_sms_suitability_score": 62.5}}}}
+    </script>
+
+    <!-- Interactive Script -->
+    <script>
+        // Parse embedded dataset
+        const ML_DATA = JSON.parse(document.getElementById('ml-data').textContent);
+        console.log("War Room 2.0 ML Data Loaded:", ML_DATA);
+
+        // Audio Synthesizer (Web Audio API)
+        let audioCtx = null;
+        let audioEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(freq, type, duration) {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {
+                // AudioContext autoplay restriction fallback
+            }
+        }
+
+        function toggleAudioFx() {
+            audioEnabled = !audioEnabled;
+            const btn = document.getElementById('audio-toggle-btn');
+            if (audioEnabled) {
+                btn.textContent = "🔊 Sound FX: ON";
+                btn.style.color = "var(--rr-cyan)";
+                playTone(880, 'sine', 0.1);
+            } else {
+                btn.textContent = "🔇 Sound FX: OFF";
+                btn.style.color = "var(--text-muted)";
+            }
+        }
+
+        // Ambient WebGL / Cyber Canvas
+        (function initCyberCanvas() {
+            const canvas = document.getElementById('cyber-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            const particles = [];
+            const particleCount = 45;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 1,
+                    color: Math.random() > 0.5 ? 'rgba(0, 82, 255,' : 'rgba(255, 0, 127,'
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                // Draw connecting lines
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 140) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 140)})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Draw dots
+                for (let p of particles) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + '0.7)';
+                    ctx.fill();
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ============================================================
+        // CHART INSTANCES
+        // ============================================================
+        let batterSurvivalChart = null;
+        let bowlerStrikeChart = null;
+        let shapRadarChart = null;
+        let auctionValuationChart = null;
+        let purseDistributionChart = null;
+        let smsRadarChart = null;
+
+        // Populate Select Dropdowns
+        function initSelectors() {
+            const batterSelect = document.getElementById('batter-select');
+            const bowlerSelect = document.getElementById('bowler-select');
+            const shapSelect = document.getElementById('shap-player-select');
+            const auctionSelect = document.getElementById('auction-player-select');
+
+            // Batters
+            Object.keys(ML_DATA.bayesian_hazard_modeling.batters).forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                if (name === "Ashutosh Sharma") opt.selected = true;
+                batterSelect.appendChild(opt);
+
+                const optShap = document.createElement('option');
+                optShap.value = name;
+                optShap.textContent = name + " (Batter)";
+                if (name === "Ashutosh Sharma") optShap.selected = true;
+                shapSelect.appendChild(optShap);
+            });
+
+            // Bowlers
+            Object.keys(ML_DATA.bayesian_hazard_modeling.bowlers).forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                if (name === "Sufiyan Muqeem") opt.selected = true;
+                bowlerSelect.appendChild(opt);
+
+                const optShap = document.createElement('option');
+                optShap.value = name;
+                optShap.textContent = name + " (Bowler)";
+                shapSelect.appendChild(optShap);
+            });
+
+            // Auction Players
+            Object.keys(ML_DATA.monte_carlo_auction.player_valuations).forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                if (name === "Ashutosh Sharma") opt.selected = true;
+                auctionSelect.appendChild(opt);
+            });
+        }
+
+        // ============================================================
+        // 1. BATTER SURVIVAL CHART
+        // ============================================================
+        function updateBatterSurvivalChart() {
+            playTone(600, 'triangle', 0.08);
+            const name = document.getElementById('batter-select').value;
+            const batter = ML_DATA.bayesian_hazard_modeling.batters[name];
+            if (!batter) return;
+
+            const curve = batter.survival_curve_pressure;
+            const labels = Object.keys(curve).map(b => b + " Balls");
+            const values = Object.values(curve).map(v => (v * 100).toFixed(1));
+
+            // League average baseline curve (decaying at ~0.05 per ball)
+            const leagueAvg = [95.0, 77.4, 59.9, 46.3, 35.8, 27.7, 21.5];
+
+            const ctx = document.getElementById('batterSurvivalChart').getContext('2d');
+            if (batterSurvivalChart) batterSurvivalChart.destroy();
+
+            batterSurvivalChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `${name} S(t)`,
+                            data: values,
+                            borderColor: '#FF007F',
+                            backgroundColor: 'rgba(255, 0, 127, 0.15)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.35,
+                            pointBackgroundColor: '#FF007F',
+                            pointRadius: 5
+                        },
+                        {
+                            label: 'T20 Pressure League Average',
+                            data: leagueAvg,
+                            borderColor: '#64748B',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.35,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#CBD5E1', font: { family: 'Outfit', size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}% Survival`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            ticks: { color: '#94A3B8', callback: v => v + '%' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        },
+                        x: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        }
+                    }
+                }
+            });
+
+            // Chips
+            const chipContainer = document.getElementById('batter-hazard-chips');
+            const hr = batter.hazard_ratio.toFixed(3);
+            const ci = `[${batter.hazard_rate_ci_95[0].toFixed(3)} - ${batter.hazard_rate_ci_95[1].toFixed(3)}]`;
+            chipContainer.innerHTML = `
+                <div class="stat-chip">
+                    <span>Hazard Ratio (HR)</span>
+                    <strong class="${batter.hazard_ratio < 0.85 ? 'accent-emerald' : 'accent-gold'}">${hr}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>95% Credible Interval</span>
+                    <strong class="accent-cyan">${ci}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>Classification</span>
+                    <strong class="accent-pink">${batter.classification}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>Pressure Balls</span>
+                    <strong>${batter.pressure_balls} balls</strong>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // 2. BOWLER STRIKE CHART
+        // ============================================================
+        function updateBowlerStrikeChart() {
+            playTone(720, 'triangle', 0.08);
+            const name = document.getElementById('bowler-select').value;
+            const bowler = ML_DATA.bayesian_hazard_modeling.bowlers[name];
+            if (!bowler) return;
+
+            const curve = bowler.strike_induction_curve;
+            const labels = Object.keys(curve).map(b => b + " Pressure Balls");
+            const values = Object.values(curve).map(v => (v * 100).toFixed(1));
+
+            const ctx = document.getElementById('bowlerStrikeChart').getContext('2d');
+            if (bowlerStrikeChart) bowlerStrikeChart.destroy();
+
+            bowlerStrikeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `${name} Wicket Strike Probability`,
+                            data: values,
+                            backgroundColor: 'rgba(0, 240, 255, 0.45)',
+                            borderColor: '#00F0FF',
+                            borderWidth: 2,
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#CBD5E1', font: { family: 'Outfit', size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `P(Wicket within ${ctx.label}): ${ctx.parsed.y}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            ticks: { color: '#94A3B8', callback: v => v + '%' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        },
+                        x: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        }
+                    }
+                }
+            });
+
+            const chipContainer = document.getElementById('bowler-hazard-chips');
+            const hr = bowler.hazard_ratio.toFixed(3);
+            const strike24 = ((curve['24'] || 0.5) * 100).toFixed(1) + '%';
+            chipContainer.innerHTML = `
+                <div class="stat-chip">
+                    <span>24-Ball Wicket Probability</span>
+                    <strong class="accent-emerald">${strike24}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>Hazard Ratio (HR)</span>
+                    <strong class="accent-cyan">${hr}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>Classification</span>
+                    <strong class="accent-pink">${bowler.classification}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>Sample Balls</span>
+                    <strong>${bowler.pressure_balls} balls</strong>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // 3. SHAP RADAR CHART
+        // ============================================================
+        function updateShapRadarChart() {
+            playTone(520, 'sine', 0.08);
+            const selected = document.getElementById('shap-player-select').value;
+            let profile = null;
+            let isBatter = true;
+
+            if (ML_DATA.shap_feature_importance.batting_model.player_profiles[selected]) {
+                profile = ML_DATA.shap_feature_importance.batting_model.player_profiles[selected];
+                isBatter = true;
+            } else if (ML_DATA.shap_feature_importance.bowling_model.player_profiles[selected]) {
+                profile = ML_DATA.shap_feature_importance.bowling_model.player_profiles[selected];
+                isBatter = false;
+            }
+
+            if (!profile) return;
+
+            const labels = ['Leverage Sensitivity', 'Balls Remaining', 'RRR Dynamic', 'Wickets Guard', 'Pace Factor', 'Speed Resilience'];
+            // Normalize values for clear visual radar (scale to 0-100)
+            const rawVals = [
+                Math.abs(profile.leverage_norm || 0.01) * 800 + 20,
+                Math.abs(profile.balls_left || 0.02) * 900 + 30,
+                Math.abs(profile.rrr || 0.02) * 850 + 25,
+                Math.abs(profile.wickets_in_hand || 0.05) * 500 + 40,
+                Math.abs(profile.is_pace || 0.01) * 1000 + 35,
+                Math.abs(profile.bowl_speed_clean || 0.01) * 800 + 30
+            ];
+            const clamped = rawVals.map(v => Math.min(100, Math.max(15, Math.round(v))));
+
+            const benchmark = [50, 50, 50, 50, 50, 50];
+
+            const ctx = document.getElementById('shapRadarChart').getContext('2d');
+            if (shapRadarChart) shapRadarChart.destroy();
+
+            shapRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `${selected} (${isBatter ? 'Batter' : 'Bowler'})`,
+                            data: clamped,
+                            backgroundColor: isBatter ? 'rgba(255, 0, 127, 0.25)' : 'rgba(0, 240, 255, 0.25)',
+                            borderColor: isBatter ? '#FF007F' : '#00F0FF',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: isBatter ? '#FF007F' : '#00F0FF',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'IPL Average Benchmark',
+                            data: benchmark,
+                            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            borderWidth: 1.5,
+                            borderDash: [4, 4],
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: { display: false },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                            pointLabels: {
+                                color: '#CBD5E1',
+                                font: { family: 'Space Grotesk', size: 11 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#CBD5E1', font: { family: 'Outfit', size: 12 } } }
+                    }
+                }
+            });
+        }
+
+        // ============================================================
+        // 4. LIVE DELIVERY PRESSURE STRESS TEST SIMULATOR
+        // ============================================================
+        function runPressureStressTest() {
+            const wkts = parseInt(document.getElementById('slider-wickets').value);
+            const rrr = parseFloat(document.getElementById('slider-rrr').value);
+            const balls = parseInt(document.getElementById('slider-balls').value);
+            const speed = parseInt(document.getElementById('slider-speed').value);
+
+            document.getElementById('val-wickets').textContent = wkts + " Wkts";
+            document.getElementById('val-rrr').textContent = rrr.toFixed(1) + " RPO";
+            document.getElementById('val-balls').textContent = balls + " Balls";
+            document.getElementById('val-speed').textContent = speed + " km/h";
+
+            // Multiplicative clutch model based on SHAP weights
+            const leverage = (rrr / 9.0) * (24.0 / Math.max(6, balls)) * (wkts / 5.0);
+            const clutchIndex = Math.min(3.5, Math.max(0.6, leverage)).toFixed(2);
+
+            // Boundary probability prediction
+            let baseProb = 0.22;
+            if (rrr > 11.0) baseProb += 0.06;
+            if (balls <= 18) baseProb += 0.04;
+            if (speed > 140) baseProb -= 0.02;
+            const boundaryProb = (baseProb * 100).toFixed(1) + "%";
+
+            document.getElementById('sim-clutch-index').textContent = clutchIndex + "x";
+            document.getElementById('sim-boundary-prob').textContent = boundaryProb;
+        }
+
+        // ============================================================
+        // 5. MONTE CARLO AUCTION ENGINE
+        // ============================================================
+        let currentScenarioKey = 'Scenario_A_Jaipur_Fortress';
+
+        function selectAuctionScenario(scenarioKey) {
+            playTone(800, 'sine', 0.1);
+            currentScenarioKey = scenarioKey;
+
+            document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+            if (scenarioKey === 'Scenario_A_Jaipur_Fortress') document.getElementById('tab-scenario-a').classList.add('active');
+            if (scenarioKey === 'Scenario_B_Global_Firepower') document.getElementById('tab-scenario-b').classList.add('active');
+            if (scenarioKey === 'Scenario_C_Dynasty_Vision') document.getElementById('tab-scenario-c').classList.add('active');
+
+            renderScenarioDetails();
+            updatePurseDistributionChart();
+        }
+
+        function renderScenarioDetails() {
+            const s = ML_DATA.monte_carlo_auction.scenarios[currentScenarioKey];
+            if (!s) return;
+
+            const box = document.getElementById('scenario-details-container');
+            const targetPills = s.target_players.map(p => {
+                const limit = s.bid_limits_cr[p] ? `(Max ₹${s.bid_limits_cr[p]} Cr)` : '';
+                return `<span class="link-pill link-pill-cyan">🎯 ${p} ${limit}</span>`;
+            }).join(' ');
+
+            const successPct = (s.success_rate_all_targets * 100).toFixed(1);
+
+            box.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 style="font-size: 1.2rem; font-family: var(--font-heading); color: #FFF;">${s.name}</h3>
+                        <p style="font-size: 0.88rem; color: #CBD5E1; margin-top: 4px;">${s.description}</p>
+                    </div>
+                    <div style="font-family: var(--font-mono); font-size: 0.82rem; background: rgba(0, 245, 160, 0.15); color: var(--rr-emerald); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--rr-emerald);">
+                        ✓ All Targets Acquired Success Rate: ${successPct}%
+                    </div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                    ${targetPills}
+                </div>
+                <div class="scenario-details-grid">
+                    <div class="stat-chip">
+                        <span>Expected Total Spend</span>
+                        <strong class="accent-pink">₹${s.expected_spend_cr.toFixed(2)} Cr</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span>Expected Remaining Purse</span>
+                        <strong class="accent-emerald">₹${s.expected_remaining_purse_cr.toFixed(2)} Cr</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span>P10 Purse Cushion</span>
+                        <strong class="accent-gold">₹${s.remaining_purse_p10.toFixed(2)} Cr</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span>Avg Targets Acquired</span>
+                        <strong class="accent-cyan">${s.expected_targets_acquired.toFixed(2)} / ${s.target_players.length}</strong>
+                    </div>
+                </div>
+            `;
+
+            // Update HUD chips
+            document.getElementById('chip-purse-p10').textContent = `₹${s.remaining_purse_p10.toFixed(2)} Cr`;
+            document.getElementById('chip-purse-p50').textContent = `₹${s.remaining_purse_p50.toFixed(2)} Cr`;
+            document.getElementById('chip-purse-p90').textContent = `₹${s.remaining_purse_p90.toFixed(2)} Cr`;
+        }
+
+        function updateAuctionValuationChart() {
+            playTone(640, 'triangle', 0.08);
+            const name = document.getElementById('auction-player-select').value;
+            const p = ML_DATA.monte_carlo_auction.player_valuations[name];
+            if (!p) return;
+
+            const labels = ['P10 Floor', 'P25 Q1', 'Median (P50)', 'Expected Mean', 'P75 Q3', 'P90 Ceiling'];
+            const values = [p.percentile_10, p.percentile_25, p.median_price_cr, p.expected_price_cr, p.percentile_75, p.percentile_90];
+
+            const ctx = document.getElementById('auctionValuationChart').getContext('2d');
+            if (auctionValuationChart) auctionValuationChart.destroy();
+
+            auctionValuationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `${name} Projected Auction Price (₹ Cr)`,
+                            data: values,
+                            backgroundColor: [
+                                'rgba(0, 245, 160, 0.5)',
+                                'rgba(0, 245, 160, 0.7)',
+                                'rgba(0, 82, 255, 0.8)',
+                                'rgba(255, 183, 3, 0.85)',
+                                'rgba(255, 0, 127, 0.7)',
+                                'rgba(255, 0, 127, 0.9)'
+                            ],
+                            borderColor: '#FFFFFF',
+                            borderWidth: 1,
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#CBD5E1', font: { family: 'Outfit', size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ₹${ctx.parsed.y.toFixed(2)} Cr`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            ticks: { color: '#94A3B8', callback: v => '₹' + v + ' Cr' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        },
+                        x: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        }
+                    }
+                }
+            });
+
+            const metricsContainer = document.getElementById('auction-player-metrics');
+            metricsContainer.innerHTML = `
+                <div class="stat-chip">
+                    <span>Role</span>
+                    <strong class="accent-cyan">${p.role}</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>Expected Mean</span>
+                    <strong class="accent-gold">₹${p.expected_price_cr.toFixed(2)} Cr</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>P(Price &lt; ₹8 Cr)</span>
+                    <strong class="accent-emerald">${(p.prob_under_8cr * 100).toFixed(1)}%</strong>
+                </div>
+                <div class="stat-chip">
+                    <span>P(Price &lt; ₹10 Cr)</span>
+                    <strong class="accent-pink">${(p.prob_under_10cr * 100).toFixed(1)}%</strong>
+                </div>
+            `;
+        }
+
+        function updatePurseDistributionChart() {
+            const s = ML_DATA.monte_carlo_auction.scenarios[currentScenarioKey];
+            if (!s) return;
+
+            const labels = ['P10 Pessimistic', 'P25 Conserv.', 'Median Cushion', 'Expected Mean', 'P75 Optimistic', 'P90 Max Savings'];
+            const values = [
+                s.remaining_purse_p10,
+                (s.remaining_purse_p10 + s.remaining_purse_p50) / 2,
+                s.remaining_purse_p50,
+                s.expected_remaining_purse_cr,
+                (s.remaining_purse_p50 + s.remaining_purse_p90) / 2,
+                s.remaining_purse_p90
+            ].map(v => parseFloat(v.toFixed(2)));
+
+            const ctx = document.getElementById('purseDistributionChart').getContext('2d');
+            if (purseDistributionChart) purseDistributionChart.destroy();
+
+            purseDistributionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Remaining Purse Cushion (₹ Cr)',
+                            data: values,
+                            borderColor: '#00F5A0',
+                            backgroundColor: 'rgba(0, 245, 160, 0.15)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.35,
+                            pointBackgroundColor: '#00F5A0',
+                            pointRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#CBD5E1', font: { family: 'Outfit', size: 12 } } }
+                    },
+                    scales: {
+                        y: {
+                            min: 15,
+                            max: 40,
+                            ticks: { color: '#94A3B8', callback: v => '₹' + v + ' Cr' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        },
+                        x: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ============================================================
+        // 6. SQUAD BUILDER & JAIPUR SMS STADIUM PHYSICS
+        // ============================================================
+        const RETAINED_CORE = [
+            { pos: '1', name: 'Yashasvi Jaiswal', role: 'Opener (LH Bat)', retained: true, overseas: false, price: 18.0 },
+            { pos: '2', name: 'Open Slot (Auction Target)', role: 'Opener / Anchor', retained: false, overseas: false, price: 0.0 },
+            { pos: '3', name: 'Sanju Samson (C)', role: 'Top Order / WK (RH Bat)', retained: true, overseas: false, price: 18.0 },
+            { pos: '4', name: 'Riyan Parag', role: 'Middle Order (RH Bat & Spin)', retained: true, overseas: false, price: 14.0 },
+            { pos: '5', name: 'Dhruv Jurel (WK)', role: 'Finisher / WK (RH Bat)', retained: true, overseas: false, price: 14.0 },
+            { pos: '6', name: 'Shimron Hetmyer', role: 'Overseas Finisher (LH Bat)', retained: true, overseas: true, price: 11.0 },
+            { pos: '7', name: 'Open Slot (Auction Target)', role: 'Pace-Hitting Clutch Finisher', retained: false, overseas: false, price: 0.0 },
+            { pos: '8', name: 'Open Slot (Auction Target)', role: 'Mystery / Wrist Spinner', retained: false, overseas: false, price: 0.0 },
+            { pos: '9', name: 'Open Slot (Auction Target)', role: 'Express Pace / Death Specialist', retained: false, overseas: false, price: 0.0 },
+            { pos: '10', name: 'Sandeep Sharma', role: 'Death / Swing Pacer', retained: true, overseas: false, price: 4.0 },
+            { pos: '11', name: 'Open Slot (Auction Target)', role: 'Seamer / Pace Enforcer', retained: false, overseas: false, price: 0.0 },
+            { pos: 'Sub', name: 'Impact Player Slot', role: 'Tactical Matchup Specialist', retained: false, overseas: false, price: 0.0 }
+        ];
+
+        let draftedTargets = [];
+
+        function renderSquadList() {
+            const container = document.getElementById('squad-slot-container');
+            container.innerHTML = '';
+
+            const openPositions = [1, 6, 7, 8, 10, 11];
+
+            // Map drafted targets into open slots
+            const currentXI = JSON.parse(JSON.stringify(RETAINED_CORE));
+            draftedTargets.forEach((dt, idx) => {
+                if (idx < openPositions.length) {
+                    const slotIndex = openPositions[idx];
+                    currentXI[slotIndex].name = dt.name;
+                    currentXI[slotIndex].role = dt.role;
+                    currentXI[slotIndex].drafted = true;
+                    currentXI[slotIndex].overseas = dt.overseas;
+                    currentXI[slotIndex].price = dt.price;
+                }
+            });
+
+            // Render
+            currentXI.forEach(p => {
+                const isRetained = p.retained;
+                const isDrafted = p.drafted;
+                const cls = isRetained ? 'retained' : (isDrafted ? 'drafted' : '');
+                const osBadge = p.overseas ? '<span style="color: var(--rr-pink); font-size: 0.72rem; font-weight: 700;">[OVERS]</span>' : '';
+
+                const item = document.createElement('div');
+                item.className = `squad-player-item ${cls}`;
+                item.innerHTML = `
+                    <div class="player-info-cluster">
+                        <div class="player-pos-badge">${p.pos}</div>
+                        <div>
+                            <div class="player-name-text">${p.name} ${osBadge}</div>
+                            <div class="player-meta-tag">${p.role}</div>
+                        </div>
+                    </div>
+                    <div class="player-price-badge">
+                        ${isRetained ? '<span style="color: #64748B; font-size: 0.75rem;">RETAINED</span>' : (isDrafted ? `₹${p.price.toFixed(2)} Cr` : '<span style="color: #475569; font-size: 0.75rem;">EMPTY</span>')}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+
+            // Update remaining purse
+            const totalDraftedSpend = draftedTargets.reduce((sum, t) => sum + t.price, 0);
+            const remainingPurse = (41.0 - totalDraftedSpend).toFixed(2);
+            document.getElementById('squad-purse-counter').textContent = `Remaining: ₹${remainingPurse} Cr`;
+
+            updateSmsSynergy();
+        }
+
+        function renderTargetPool() {
+            const container = document.getElementById('target-pool-container');
+            container.innerHTML = '';
+
+            const available = [
+                { name: 'Ashutosh Sharma', role: 'Domestic Finisher (RHB)', overseas: false, price: 8.78, smsFit: 98.0 },
+                { name: 'Vaibhav Sooryavanshi', role: 'Domestic Prodigy / Top Order', overseas: false, price: 4.90, smsFit: 98.0 },
+                { name: 'Sufiyan Muqeem', role: 'Mystery Wrist-Spinner', overseas: true, price: 6.51, smsFit: 88.0 },
+                { name: 'Shoriful Islam', role: 'Left-Arm Fast-Medium', overseas: true, price: 5.42, smsFit: 85.0 },
+                { name: 'Lockie Ferguson', role: 'Express Death Pacer', overseas: true, price: 7.92, smsFit: 84.0 },
+                { name: 'Ryan Rickelton', role: 'WK / Explosive Opener', overseas: true, price: 6.85, smsFit: 92.0 },
+                { name: 'Josh Inglis', role: '360° WK Finisher', overseas: true, price: 6.20, smsFit: 90.0 },
+                { name: 'Mark Adair', role: 'Death Pacer / All-Rounder', overseas: true, price: 3.40, smsFit: 80.0 },
+                { name: 'Abrar Ahmed', role: 'Mystery Leg-Spinner', overseas: true, price: 4.60, smsFit: 86.0 },
+                { name: 'Mohammad Nawaz', role: 'Left-Arm Spin All-Rounder', overseas: true, price: 4.10, smsFit: 82.0 }
+            ];
+
+            available.forEach(p => {
+                const isSelectedTarget = isSelected(p.name);
+                const card = document.createElement('div');
+                card.className = `target-card ${isSelectedTarget ? 'selected' : ''}`;
+                card.onclick = () => toggleTargetInSquad(p);
+
+                card.innerHTML = `
+                    <div>
+                        <div style="font-size: 0.9rem; font-weight: 700; color: #FFF;">${p.name}</div>
+                        <div style="font-size: 0.72rem; color: #94A3B8;">${p.role}</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--rr-gold); font-weight: 700;">₹${p.price.toFixed(2)} Cr</span>
+                        <span style="font-size: 0.72rem; color: ${isSelectedTarget ? 'var(--rr-emerald)' : 'var(--rr-cyan)'};">
+                            ${isSelectedTarget ? '✓ DRAFTED' : '+ ADD'}
+                        </span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleTargetInSquad(target) {
+            playTone(isSelected(target.name) ? 400 : 700, 'sine', 0.08);
+            if (isSelected(target.name)) {
+                draftedTargets = draftedTargets.filter(t => t.name !== target.name);
+            } else {
+                if (draftedTargets.length >= 6) {
+                    alert("All 6 open positions in the War Room Squad have been filled!");
+                    return;
+                }
+                draftedTargets.push(target);
+            }
+            renderSquadList();
+            renderTargetPool();
+        }
+
+        function isSelected(name) {
+            return draftedTargets.some(t => t.name === name);
+        }
+
+        function loadScenarioIntoSquad(scenarioKey) {
+            playTone(880, 'sine', 0.12);
+            if (scenarioKey === 'Scenario_A_Jaipur_Fortress') {
+                draftedTargets = [
+                    { name: 'Vaibhav Sooryavanshi', role: 'Domestic Prodigy / Top Order', overseas: false, price: 4.90, smsFit: 98.0 },
+                    { name: 'Ashutosh Sharma', role: 'Domestic Finisher (RHB)', overseas: false, price: 8.78, smsFit: 98.0 },
+                    { name: 'Sufiyan Muqeem', role: 'Mystery Wrist-Spinner', overseas: true, price: 6.51, smsFit: 88.0 },
+                    { name: 'Shoriful Islam', role: 'Left-Arm Fast-Medium', overseas: true, price: 5.42, smsFit: 85.0 },
+                    { name: 'Mark Adair', role: 'Death Pacer / All-Rounder', overseas: true, price: 3.40, smsFit: 80.0 },
+                    { name: 'Abrar Ahmed', role: 'Mystery Leg-Spinner', overseas: true, price: 4.60, smsFit: 86.0 }
+                ];
+            }
+            renderSquadList();
+            renderTargetPool();
+        }
+
+        function resetSquadBuilder() {
+            playTone(300, 'sine', 0.1);
+            draftedTargets = [];
+            renderSquadList();
+            renderTargetPool();
+        }
+
+        // ============================================================
+        // 7. JAIPUR SMS STADIUM RADAR & SYNERGY
+        // ============================================================
+        function updateSmsSynergy() {
+            let squareBoundaryPower = 88;
+            let deathEconomyGrip = 85;
+            let spinEnclosureRate = 82;
+            let paceHittingDelta = 84;
+            let powerplayStrike = 86;
+
+            draftedTargets.forEach(t => {
+                if (t.name === "Ashutosh Sharma") { squareBoundaryPower += 5; paceHittingDelta += 6; }
+                if (t.name === "Vaibhav Sooryavanshi") { powerplayStrike += 6; squareBoundaryPower += 4; }
+                if (t.name === "Sufiyan Muqeem") { spinEnclosureRate += 7; deathEconomyGrip += 4; }
+                if (t.name === "Shoriful Islam") { deathEconomyGrip += 4; }
+            });
+
+            const composite = ((squareBoundaryPower + deathEconomyGrip + spinEnclosureRate + paceHittingDelta + powerplayStrike) / 5).toFixed(1);
+            document.getElementById('sms-composite-score').textContent = Math.min(99.0, composite);
+
+            const labels = ['Square Boundary Power', 'Death Over Economy', 'Spin Enclosure Grip', 'Pace-Hitting Delta', 'Powerplay Strike Rate'];
+            const squadValues = [
+                Math.min(100, squareBoundaryPower),
+                Math.min(100, deathEconomyGrip),
+                Math.min(100, spinEnclosureRate),
+                Math.min(100, paceHittingDelta),
+                Math.min(100, powerplayStrike)
+            ];
+            const smsBaseline = [75, 75, 75, 75, 75];
+
+            const ctx = document.getElementById('smsRadarChart').getContext('2d');
+            if (smsRadarChart) smsRadarChart.destroy();
+
+            smsRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Built RR Squad Suitability',
+                            data: squadValues,
+                            backgroundColor: 'rgba(0, 245, 160, 0.25)',
+                            borderColor: '#00F5A0',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#00F5A0',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Sawai Mansingh Stadium Par',
+                            data: smsBaseline,
+                            backgroundColor: 'rgba(255, 183, 3, 0.08)',
+                            borderColor: 'rgba(255, 183, 3, 0.5)',
+                            borderWidth: 1.5,
+                            borderDash: [4, 4],
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 50,
+                            max: 100,
+                            ticks: { display: false },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                            pointLabels: {
+                                color: '#CBD5E1',
+                                font: { family: 'Space Grotesk', size: 10 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#CBD5E1', font: { family: 'Outfit', size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            initSelectors();
+            updateBatterSurvivalChart();
+            updateBowlerStrikeChart();
+            updateShapRadarChart();
+            runPressureStressTest();
+            selectAuctionScenario('Scenario_A_Jaipur_Fortress');
+            updateAuctionValuationChart();
+            loadScenarioIntoSquad('Scenario_A_Jaipur_Fortress');
+        });
+    </script>
+</body>
+</html>
