@@ -1,32 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rajasthan Royals · SupeRR Selector S2 Dashboard</title>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
+        /* ============================================================
+           SHADCN CUSTOM THEME ARCHITECTURE (Liquid Glass Edition)
+           ============================================================ */
+        :root, .dark {
+            --background: 222 47% 4%;
+            --foreground: 210 40% 98%;
+            --card: 222 47% 8%;
+            --card-alpha: 0.55;
+            --card-foreground: 210 40% 98%;
+            --popover: 222 47% 7%;
+            --popover-alpha: 0.85;
+            --popover-foreground: 210 40% 98%;
+            --primary: 330 90% 51%; /* Rajasthan Royals Pink #EA1A85 */
+            --primary-foreground: 0 0% 100%;
+            --secondary: 213 100% 31%; /* Royal Blue #004BA0 */
+            --secondary-foreground: 0 0% 100%;
+            --muted: 217 33% 17%;
+            --muted-alpha: 0.5;
+            --muted-foreground: 215 20% 65%;
+            --accent: 186 100% 50%; /* Electric Cyan #00F5FF */
+            --accent-foreground: 222 47% 4%;
+            --gold: 45 65% 52%; /* Molten Gold #D4AF37 */
+            --gold-foreground: 0 0% 100%;
+            --destructive: 0 84% 60%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 217 33% 30%;
+            --border-alpha: 0.35;
+            --input: 217 33% 20%;
+            --input-alpha: 0.6;
+            --ring: 330 90% 51%;
+            --radius: 0.75rem;
+
+            /* Liquid Glass Effect Tokens */
             --rr-pink: #EA1A85;
             --rr-pink-light: #FF52AA;
             --rr-blue: #004BA0;
             --rr-blue-electric: #0070F3;
             --rr-cyan: #00F5FF;
             --rr-gold: #D4AF37;
-            --rr-gold-glow: #FBD560;
-            --bg-deep: #050814;
-            --glass-bg: rgba(13, 20, 42, 0.52);
-            --glass-bg-subtle: rgba(255, 255, 255, 0.035);
-            --glass-border: rgba(255, 255, 255, 0.14);
-            --glass-border-hover: rgba(234, 26, 133, 0.45);
-            --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.32), inset 0 -1px 1px rgba(0, 0, 0, 0.45);
             --glass-blur: blur(28px) saturate(190%);
-            --text-primary: #F8FAFC;
-            --text-secondary: #CBD5E1;
-            --text-muted: #94A3B8;
+            --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.32), inset 0 -1px 1px rgba(0, 0, 0, 0.45);
         }
         
         * {
@@ -37,15 +61,15 @@
         }
         
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
             min-height: 100vh;
             padding-bottom: 70px;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Ambient Liquid Mesh & Iridescent Light Orbs */
+        /* Ambient Drifting Liquid Mesh */
         .liquid-mesh {
             position: fixed;
             top: 0;
@@ -111,12 +135,324 @@
             100% { transform: translate(50px, 60px) scale(1.05) rotate(135deg); }
         }
 
-        /* Evaluator Notice Ribbon (Liquid Translucent) */
+        /* ============================================================
+           SHADCN UI COMPONENT STYLES (Custom Liquid Glass)
+           ============================================================ */
+
+        /* 1. shadcn Card */
+        .shadcn-card {
+            background-color: hsla(var(--card), var(--card-alpha));
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid hsla(var(--border), var(--border-alpha));
+            border-radius: var(--radius);
+            color: hsl(var(--card-foreground));
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .shadcn-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .shadcn-card-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+            padding: 1.5rem;
+        }
+
+        .shadcn-card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: hsl(var(--card-foreground));
+        }
+
+        .shadcn-card-description {
+            font-size: 0.875rem;
+            color: hsl(var(--muted-foreground));
+            line-height: 1.4;
+        }
+
+        .shadcn-card-content {
+            padding: 1.5rem;
+            padding-top: 0;
+        }
+
+        .shadcn-card-footer {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            padding-top: 0;
+        }
+
+        /* 2. shadcn Badge */
+        .shadcn-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .shadcn-badge-default {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            box-shadow: 0 0 12px hsla(var(--primary), 0.5);
+        }
+
+        .shadcn-badge-secondary {
+            background-color: hsla(var(--secondary), 0.8);
+            color: hsl(var(--secondary-foreground));
+            border-color: hsla(var(--border), var(--border-alpha));
+        }
+
+        .shadcn-badge-outline {
+            color: hsl(var(--foreground));
+            border-color: hsla(var(--border), var(--border-alpha));
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+        }
+
+        .shadcn-badge-glow-pink {
+            background: hsla(var(--primary), 0.2);
+            border-color: hsl(var(--primary));
+            color: #FFA1D2;
+            box-shadow: 0 0 16px hsla(var(--primary), 0.35);
+        }
+
+        .shadcn-badge-glow-gold {
+            background: hsla(var(--gold), 0.2);
+            border-color: hsl(var(--gold));
+            color: #FFE58F;
+            box-shadow: 0 0 16px hsla(var(--gold), 0.35);
+        }
+
+        .shadcn-badge-glow-cyan {
+            background: hsla(var(--accent), 0.15);
+            border-color: hsl(var(--accent));
+            color: hsl(var(--accent));
+            box-shadow: 0 0 16px hsla(var(--accent), 0.35);
+        }
+
+        /* 3. shadcn Button */
+        .shadcn-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: calc(var(--radius) - 2px);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.625rem 1.25rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .shadcn-btn-default {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            box-shadow: 0 4px 14px hsla(var(--primary), 0.4);
+        }
+
+        .shadcn-btn-default:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .shadcn-btn-secondary {
+            background-color: hsla(var(--secondary), 0.8);
+            color: hsl(var(--secondary-foreground));
+            border-color: hsla(var(--border), var(--border-alpha));
+        }
+
+        .shadcn-btn-outline {
+            border-color: hsla(var(--border), var(--border-alpha));
+            background-color: rgba(255, 255, 255, 0.04);
+            color: hsl(var(--foreground));
+            backdrop-filter: blur(10px);
+        }
+
+        .shadcn-btn-outline:hover {
+            background-color: hsla(var(--muted), var(--muted-alpha));
+            border-color: hsl(var(--accent));
+            color: hsl(var(--accent));
+        }
+
+        .shadcn-btn-glow-liquid {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, #FF2A9D 40%, #0070F3 100%);
+            color: #FFFFFF !important;
+            font-size: 1.05rem;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 16px 34px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 25px hsla(var(--primary), 0.85), 0 0 50px rgba(0, 112, 243, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+            animation: liquidPulse 2.4s infinite ease-in-out;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .shadcn-btn-glow-liquid:hover {
+            transform: scale(1.04) translateY(-2px);
+            box-shadow: 0 0 40px hsl(var(--primary)), 0 0 75px hsl(var(--accent)), 0 0 100px hsla(var(--primary), 0.9), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            border-color: hsl(var(--accent));
+        }
+
+        @keyframes liquidPulse {
+            0% {
+                box-shadow: 0 0 20px hsla(var(--primary), 0.75), 0 0 40px rgba(0, 112, 243, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 35px hsla(var(--primary), 1), 0 0 65px hsla(var(--accent), 0.85), 0 0 95px hsla(var(--primary), 0.7), inset 0 1px 4px rgba(255, 255, 255, 0.8);
+                transform: scale(1.025);
+            }
+            100% {
+                box-shadow: 0 0 20px hsla(var(--primary), 0.75), 0 0 40px rgba(0, 112, 243, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+                transform: scale(1);
+            }
+        }
+
+        /* 4. shadcn Tabs */
+        .shadcn-tabs {
+            display: inline-block;
+        }
+
+        .shadcn-tabs-list {
+            display: inline-flex;
+            height: 3.1rem;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            background-color: hsla(var(--muted), var(--muted-alpha));
+            padding: 0.25rem;
+            color: hsl(var(--muted-foreground));
+            backdrop-filter: blur(12px);
+            border: 1px solid hsla(var(--border), var(--border-alpha));
+            gap: 4px;
+        }
+
+        .shadcn-tabs-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border-radius: calc(var(--radius) - 4px);
+            padding: 0.6rem 1.4rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: hsl(var(--muted-foreground));
+            transition: all 0.25s ease;
+        }
+
+        .shadcn-tabs-trigger:hover {
+            color: hsl(var(--foreground));
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .shadcn-tabs-trigger.active {
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, #FF2E93 100%);
+            color: #FFFFFF;
+            box-shadow: 0 4px 18px hsla(var(--primary), 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        /* 5. shadcn Input */
+        .shadcn-input {
+            display: flex;
+            height: 3rem;
+            width: 100%;
+            border-radius: var(--radius);
+            border: 1px solid hsla(var(--border), var(--border-alpha));
+            background-color: hsla(var(--input), var(--input-alpha));
+            padding: 0.5rem 1.15rem;
+            font-size: 0.92rem;
+            color: hsl(var(--foreground));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .shadcn-input:focus {
+            border-color: hsl(var(--ring));
+            box-shadow: 0 0 0 2px hsla(var(--ring), 0.35), 0 0 15px hsla(var(--ring), 0.4);
+            background-color: hsla(var(--input), 0.85);
+        }
+
+        /* 6. shadcn Alert */
+        .shadcn-alert {
+            position: relative;
+            width: 100%;
+            border-radius: var(--radius);
+            border: 1px solid hsla(var(--border), var(--border-alpha));
+            background: hsla(var(--card), var(--card-alpha));
+            padding: 1rem 1.5rem;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .shadcn-alert-title {
+            font-weight: 700;
+            line-height: 1.2;
+            color: hsl(var(--foreground));
+        }
+
+        .shadcn-alert-description {
+            font-size: 0.88rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        /* ============================================================
+           LAYOUT & SECTION STYLING
+           ============================================================ */
+
+        /* Evaluator Notice Sticky Ribbon */
         .evaluator-topbar {
             background: rgba(7, 13, 30, 0.75);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid hsla(var(--border), var(--border-alpha));
             padding: 12px 28px;
             font-size: 0.9rem;
             color: #E2E8F0;
@@ -138,49 +474,12 @@
             flex-wrap: wrap;
         }
 
-        .evaluator-pill {
-            background: rgba(16, 185, 129, 0.18);
-            border: 1px solid rgba(16, 185, 129, 0.6);
-            color: #34D399;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
-        }
-
-        .evaluator-topbar a {
-            color: var(--rr-cyan);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.88rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 16px;
-            border-radius: 10px;
-            background: rgba(0, 245, 255, 0.1);
-            border: 1px solid rgba(0, 245, 255, 0.35);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
-        }
-
-        .evaluator-topbar a:hover {
-            background: rgba(0, 245, 255, 0.25);
-            border-color: var(--rr-cyan);
-            box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
-            transform: translateY(-1px);
-        }
-        
         /* Header Liquid Hero */
         header {
             background: linear-gradient(135deg, rgba(7, 20, 56, 0.82) 0%, rgba(13, 27, 68, 0.75) 50%, rgba(35, 12, 45, 0.8) 100%);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+            border-bottom: 1px solid hsla(var(--border), 0.45);
             box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
             padding: 36px 45px;
             position: relative;
@@ -194,7 +493,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, transparent 0%, var(--rr-pink) 30%, var(--rr-gold) 70%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, hsl(var(--primary)) 30%, hsl(var(--gold)) 70%, transparent 100%);
         }
         
         .header-top {
@@ -204,53 +503,38 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        
-        .badge {
-            background: rgba(234, 26, 133, 0.22);
-            border: 1px solid var(--rr-pink);
-            color: #FFA1D2;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 18px rgba(234, 26, 133, 0.35);
-        }
-        
+
         h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.35rem;
             font-weight: 800;
             margin-top: 14px;
-            background: linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 50%, var(--rr-cyan) 100%);
+            background: linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 50%, hsl(var(--accent)) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
         }
         
         .subtitle {
-            color: var(--text-secondary);
+            color: hsl(var(--muted-foreground));
             font-size: 1.05rem;
             margin-top: 8px;
             max-width: 960px;
             line-height: 1.55;
         }
 
-        /* Pulsing Glowing Liquid Neon War Room 2.0 CTA */
+        /* War Room 2.0 CTA Banner */
         .neon-cta-banner {
-            background: linear-gradient(135deg, rgba(234, 26, 133, 0.24) 0%, rgba(13, 24, 58, 0.85) 45%, rgba(0, 245, 255, 0.16) 100%);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid rgba(234, 26, 133, 0.55);
-            border-radius: 20px;
+            background: linear-gradient(135deg, hsla(var(--primary), 0.24) 0%, rgba(13, 24, 58, 0.85) 45%, hsla(var(--accent), 0.16) 100%);
+            border: 1px solid hsla(var(--primary), 0.55);
+            border-radius: var(--radius);
             padding: 24px 30px;
             margin-top: 26px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 26px;
-            box-shadow: 0 15px 45px rgba(234, 26, 133, 0.28), inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 45px hsla(var(--primary), 0.28), inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
         }
@@ -262,7 +546,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(234, 26, 133, 0.15) 0%, transparent 65%);
+            background: radial-gradient(circle, hsla(var(--primary), 0.15) 0%, transparent 65%);
             pointer-events: none;
             animation: rotateGlow 14s linear infinite;
         }
@@ -295,91 +579,12 @@
             max-width: 820px;
         }
 
-        .neon-badge-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(234, 26, 133, 0.22);
-            color: #FFA1D2;
-            border: 1px solid var(--rr-pink);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 10px;
-            box-shadow: 0 0 15px rgba(234, 26, 133, 0.35);
-        }
-
-        .neon-cta-title {
-            color: #FFFFFF;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            line-height: 1.35;
-            margin-bottom: 6px;
-            letter-spacing: 0.2px;
-        }
-
-        .neon-cta-desc {
-            color: var(--text-secondary);
-            font-size: 0.92rem;
-            line-height: 1.55;
-        }
-
-        .neon-pulse-btn {
-            position: relative;
-            z-index: 2;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #EA1A85 0%, #FF2A9D 40%, #0070F3 100%);
-            color: #FFFFFF !important;
-            font-size: 1.05rem;
-            font-weight: 800;
-            text-decoration: none;
-            padding: 16px 34px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 0 25px rgba(234, 26, 133, 0.85), 0 0 50px rgba(0, 112, 243, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            white-space: nowrap;
-            animation: liquidPulse 2.4s infinite ease-in-out;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .neon-pulse-btn:hover {
-            transform: scale(1.04) translateY(-2px);
-            box-shadow: 0 0 40px #EA1A85, 0 0 75px #00F5FF, 0 0 100px rgba(234, 26, 133, 0.9), inset 0 1px 3px rgba(255, 255, 255, 0.9);
-            border-color: #00F5FF;
-        }
-
-        @keyframes liquidPulse {
-            0% {
-                box-shadow: 0 0 20px rgba(234, 26, 133, 0.75), 0 0 40px rgba(0, 112, 243, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
-                transform: scale(1);
-            }
-            50% {
-                box-shadow: 0 0 35px rgba(234, 26, 133, 1), 0 0 65px rgba(0, 245, 255, 0.85), 0 0 95px rgba(234, 26, 133, 0.7), inset 0 1px 4px rgba(255, 255, 255, 0.8);
-                transform: scale(1.025);
-            }
-            100% {
-                box-shadow: 0 0 20px rgba(234, 26, 133, 0.75), 0 0 40px rgba(0, 112, 243, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
-                transform: scale(1);
-            }
-        }
-
         @media (max-width: 1024px) {
             .neon-cta-banner {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .neon-pulse-btn {
+            .shadcn-btn-glow-liquid {
                 width: 100%;
                 text-align: center;
             }
@@ -393,7 +598,7 @@
             z-index: 10;
         }
         
-        /* KPI Grid Liquid Glass */
+        /* KPI Grid */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -402,12 +607,6 @@
         }
         
         .kpi-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            border-radius: 18px;
             padding: 24px;
             position: relative;
             overflow: hidden;
@@ -416,8 +615,8 @@
 
         .kpi-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(234, 26, 133, 0.5);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(234, 26, 133, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.45);
+            border-color: hsla(var(--primary), 0.5);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px hsla(var(--primary), 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.45);
         }
         
         .kpi-card::before {
@@ -444,84 +643,29 @@
         
         .kpi-lbl {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: hsl(var(--muted-foreground));
             text-transform: uppercase;
             letter-spacing: 0.6px;
             margin-top: 6px;
             font-weight: 500;
         }
         
-        /* Controls Liquid Bar */
+        /* Controls */
         .controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
             padding: 18px 26px;
-            border-radius: 18px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
             margin-bottom: 35px;
         }
         
-        .tab-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-muted);
-            padding: 11px 24px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #FFFFFF;
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-        
-        .tab-btn.active {
-            background: linear-gradient(135deg, #EA1A85 0%, #FF2E93 100%);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: #FFFFFF;
-            box-shadow: 0 4px 20px rgba(234, 26, 133, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-        }
-        
         .search-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 12px 18px;
-            color: #FFFFFF;
-            font-size: 0.95rem;
             width: 290px;
-            outline: none;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-            transition: all 0.25s ease;
         }
         
-        .search-box:focus {
-            border-color: var(--rr-pink);
-            box-shadow: 0 0 15px rgba(234, 26, 133, 0.4), inset 0 1px 2px rgba(0, 0, 0, 0.4);
-            background: rgba(255, 255, 255, 0.08);
-        }
-        
-        /* Charts Liquid Panels */
+        /* Charts Section */
         .charts-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -534,26 +678,7 @@
         }
         
         .chart-box {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
             padding: 26px;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chart-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
-            pointer-events: none;
         }
         
         .chart-title {
@@ -561,13 +686,13 @@
             font-size: 1.2rem;
             font-weight: 700;
             color: #FFFFFF;
-            margin-bottom: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         
-        /* Player Grid Liquid Cards */
+        /* Player Grid */
         .player-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
@@ -575,47 +700,28 @@
         }
         
         .player-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-            overflow: hidden;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
         }
         
         .player-card:hover {
             transform: translateY(-6px);
-            border-color: rgba(234, 26, 133, 0.6);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(234, 26, 133, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-        }
-
-        .player-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
-            pointer-events: none;
+            border-color: hsla(var(--primary), 0.6);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px hsla(var(--primary), 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.4);
         }
         
         .card-header {
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 16px;
+            padding: 22px 24px 16px;
         }
         
         .card-rank {
             background: linear-gradient(135deg, rgba(0, 75, 160, 0.9) 0%, rgba(0, 112, 243, 0.8) 100%);
             color: #FFFFFF;
             font-weight: 800;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             padding: 5px 12px;
             border-radius: 8px;
             font-family: 'JetBrains Mono', monospace;
@@ -634,19 +740,19 @@
         
         .player-tag {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: hsl(var(--muted-foreground));
         }
         
         .stat-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 6px;
         }
         
         .stat-item {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid hsla(var(--border), 0.3);
             border-radius: 10px;
             padding: 10px 12px;
             backdrop-filter: blur(12px);
@@ -662,7 +768,7 @@
         
         .stat-lbl {
             font-size: 0.72rem;
-            color: var(--text-muted);
+            color: hsl(var(--muted-foreground));
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 4px;
@@ -677,55 +783,36 @@
         }
         
         .rr-fit-box {
-            background: linear-gradient(135deg, rgba(234, 26, 133, 0.12) 0%, rgba(13, 20, 42, 0.6) 100%);
-            border-left: 3px solid var(--rr-pink);
+            background: linear-gradient(135deg, hsla(var(--primary), 0.12) 0%, rgba(13, 20, 42, 0.6) 100%);
+            border-left: 3px solid hsl(var(--primary));
             border-radius: 0 12px 12px 0;
-            padding: 12px 16px;
+            padding: 14px 18px;
             font-size: 0.88rem;
             color: #F1F5F9;
             line-height: 1.45;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             border-right: 1px solid rgba(255, 255, 255, 0.08);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 0 24px 22px;
         }
         
-        /* Methodology Summary Liquid Card */
+        /* Methodology Summary Card */
         .methodology-box {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
             padding: 32px;
             margin-top: 45px;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-            overflow: hidden;
         }
 
-        .methodology-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.6) 50%, transparent 100%);
-            pointer-events: none;
-        }
-        
         .methodology-box h2 {
-            color: var(--rr-gold);
+            color: hsl(var(--gold));
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.45rem;
             font-weight: 800;
-            margin-bottom: 18px;
             letter-spacing: 0.3px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+            text-shadow: 0 0 20px hsla(var(--gold), 0.35);
         }
         
         .methodology-box p {
-            color: var(--text-secondary);
+            color: #CBD5E1;
             font-size: 0.95rem;
             line-height: 1.65;
             margin-bottom: 14px;
@@ -738,7 +825,7 @@
         footer {
             text-align: center;
             margin-top: 55px;
-            color: var(--text-muted);
+            color: hsl(var(--muted-foreground));
             font-size: 0.9rem;
         }
     </style>
@@ -753,20 +840,22 @@
     <div class="liquid-orb orb-gold"></div>
 </div>
 
-<!-- Evaluator Notice Ribbon -->
+<!-- Evaluator Notice Ribbon (shadcn Alert variant) -->
 <div class="evaluator-topbar">
     <div class="evaluator-topbar-left">
-        <span class="evaluator-pill">🔒 Official Round 1 Submission Preserved</span>
+        <span class="shadcn-badge shadcn-badge-glow-cyan">🔒 Official Round 1 Submission Preserved</span>
         <span>All models, metrics, rankings, and PDFs below represent the unaltered official Round 1 submission.</span>
     </div>
-    <a href="portal.html">⚡ Jump to Advanced AI/ML War Room 2.0 &rarr;</a>
+    <a href="portal.html" class="shadcn-button shadcn-btn-outline" style="border-radius: 9999px; gap: 8px; color: hsl(var(--accent)); border-color: hsla(var(--accent), 0.4);">
+        ⚡ Jump to Advanced AI/ML War Room 2.0 &rarr;
+    </a>
 </div>
 
 <header>
     <div class="header-top">
-        <span class="badge">IPL 2027 Auction Analytics War Room</span>
+        <span class="shadcn-badge shadcn-badge-glow-pink">IPL 2027 Auction Analytics War Room</span>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem; background: rgba(255,255,255,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+            <span class="shadcn-badge shadcn-badge-outline" style="text-transform: none; font-size: 0.85rem; padding: 6px 14px;">
                 Original Round 1 Submission · Unaltered
             </span>
             <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Author: <b>Soham Paul</b></span>
@@ -775,21 +864,21 @@
     <h1>SupeRR Selector Season 2 · Pressure Reliability Engine</h1>
     <div class="subtitle">Leverage-Indexed Win Probability & Hierarchical Shrinkage Model identifying the most reliable clutch players for Kumar Sangakkara & Giles Lindsay.</div>
 
-    <!-- Pulsing Glowing Liquid Neon Button & Explanatory Banner -->
-    <div class="neon-cta-banner">
+    <!-- Pulsing Glowing Liquid Neon Button & Explanatory Banner (shadcn Card) -->
+    <div class="shadcn-card neon-cta-banner">
         <div class="neon-cta-content">
-            <div class="neon-badge-pill">
-                <span>⚡ Post-Round 1 Continuous Engineering</span>
+            <div style="margin-bottom: 10px;">
+                <span class="shadcn-badge shadcn-badge-glow-pink">⚡ Post-Round 1 Continuous Engineering</span>
             </div>
-            <div class="neon-cta-title">
+            <div class="shadcn-card-title" style="font-size: 1.25rem; margin-bottom: 6px;">
                 Evaluator Deep-Dive: Advanced AI/ML War Room 2.0
             </div>
-            <div class="neon-cta-desc">
+            <div class="shadcn-card-description" style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.55;">
                 While our official Round 1 submission is strictly preserved in its entirety below, engineering student Soham Paul continued active research alongside college exams to build an interactive AI/ML expansion. Explore <b>Bayesian Survival Hazard Curves</b>, <b>TreeSHAP Pressure Attribution</b>, <b>10,000-run Monte Carlo Auction Optimization</b>, and <b>Jaipur SMS Stadium Ground Physics</b>.
             </div>
         </div>
         <div>
-            <a href="portal.html" class="neon-pulse-btn">
+            <a href="portal.html" class="shadcn-button shadcn-btn-glow-liquid">
                 ⚡ [POST-ROUND 1 PROGRESS] Advanced AI/ML War Room 2.0
             </a>
         </div>
@@ -797,70 +886,86 @@
 </header>
 
 <div class="container">
-    <!-- KPI Section -->
+    <!-- KPI Section (shadcn Cards) -->
     <div class="kpi-grid">
-        <div class="kpi-card">
+        <div class="shadcn-card kpi-card">
             <div class="kpi-val">200,999</div>
             <div class="kpi-lbl">Legal Deliveries Analyzed</div>
         </div>
-        <div class="kpi-card">
+        <div class="shadcn-card kpi-card">
             <div class="kpi-val">883</div>
             <div class="kpi-lbl">Competitive T20 Matches</div>
         </div>
-        <div class="kpi-card">
+        <div class="shadcn-card kpi-card">
             <div class="kpi-val">24.3%</div>
             <div class="kpi-lbl">Pressure Sample Share</div>
         </div>
-        <div class="kpi-card">
+        <div class="shadcn-card kpi-card">
             <div class="kpi-val">LCB Metric</div>
             <div class="kpi-lbl">Lower Confidence Bound Ranking</div>
         </div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-        <div class="tab-buttons">
-            <button class="tab-btn active" id="btn-batters" onclick="switchTab('batters')">Top 10 Batters (Rank 1–10)</button>
-            <button class="tab-btn" id="btn-bowlers" onclick="switchTab('bowlers')">Top 10 Bowlers (Rank 1–10)</button>
+    <!-- Controls (shadcn Tabs & Input) -->
+    <div class="shadcn-card controls">
+        <div class="shadcn-tabs">
+            <div class="shadcn-tabs-list">
+                <button class="shadcn-tabs-trigger active" id="btn-batters" onclick="switchTab('batters')">Top 10 Batters (Rank 1–10)</button>
+                <button class="shadcn-tabs-trigger" id="btn-bowlers" onclick="switchTab('bowlers')">Top 10 Bowlers (Rank 1–10)</button>
+            </div>
         </div>
-        <input type="text" id="search-input" class="search-box" placeholder="Search player name..." onkeyup="filterPlayers()">
+        <input type="text" id="search-input" class="shadcn-input search-box" placeholder="Search player name..." onkeyup="filterPlayers()">
     </div>
 
-    <!-- Charts Section -->
+    <!-- Charts Section (shadcn Cards) -->
     <div class="charts-section">
-        <div class="chart-box">
-            <div class="chart-title">
-                <span id="chart-title-1">Pressure vs Usual Strike Rate</span>
-                <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Higher Pressure SR = Clutch</span>
+        <div class="shadcn-card chart-box">
+            <div class="shadcn-card-header" style="padding: 0 0 1rem 0;">
+                <div class="chart-title">
+                    <span id="chart-title-1">Pressure vs Usual Strike Rate</span>
+                    <span class="shadcn-badge shadcn-badge-outline" style="font-size: 0.72rem; font-weight: normal;">Higher Pressure SR = Clutch</span>
+                </div>
             </div>
-            <canvas id="barChart" height="200"></canvas>
+            <div class="shadcn-card-content" style="padding: 0;">
+                <canvas id="barChart" height="200"></canvas>
+            </div>
         </div>
-        <div class="chart-box">
-            <div class="chart-title">
-                <span>Composite LCB Reliability Distribution</span>
-                <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Regularized Score</span>
+        <div class="shadcn-card chart-box">
+            <div class="shadcn-card-header" style="padding: 0 0 1rem 0;">
+                <div class="chart-title">
+                    <span>Composite LCB Reliability Distribution</span>
+                    <span class="shadcn-badge shadcn-badge-outline" style="font-size: 0.72rem; font-weight: normal;">Regularized Score</span>
+                </div>
             </div>
-            <canvas id="lcbChart" height="200"></canvas>
+            <div class="shadcn-card-content" style="padding: 0;">
+                <canvas id="lcbChart" height="200"></canvas>
+            </div>
         </div>
     </div>
 
-    <!-- Player Grid -->
+    <!-- Player Grid (shadcn Cards) -->
     <div class="player-grid" id="player-grid">
         <!-- Rendered via JS -->
     </div>
 
-    <!-- Methodology Summary Box -->
-    <div class="methodology-box">
-        <h2>Mathematical Framework & Pressure Formulation</h2>
-        <p><b>1. Situational Leverage Index (LI):</b> Pressure is strictly evaluated as a property of match context before delivery: <i>LI(s) = Σ P(o) · |WP(s_o) - WP(s)|</i>. Tiers isolate situations where LI exceeds 1.5x (Tier 1) and 3.0x (Tier 2) league averages, capturing death-phase chases and top-order wicket collapses.</p>
-        <p><b>2. Contextual Runs Added (y):</b> Measures projected runs above expectation for each delivery. Batters earn positive credit (+y) for boundary-striking and dot avoidance; bowlers earn positive credit (-runs + wickets) for economy and breakthrough wickets under pressure.</p>
-        <p><b>3. Hierarchical Empirical Bayes Shrinkage:</b> Small pressure sample noise is filtered via ridge regularization: <i>Level = Skill + κ · Δ_pressure</i> (penalty κ = 0.5). Players are ranked on their Lower Confidence Bound (Composite LCB = Composite - 1.0 · SE), ensuring both elite ceiling and proven sample depth.</p>
-        <p><b>4. Rajasthan Royals Auction Fit:</b> Recommendations directly address Jaipur's Sawai Mansingh Stadium dynamics—prioritizing domestic finishing engines (Rinku Singh, Ashutosh Sharma) and high-velocity death pace / mystery wrist-spin (Lockie Ferguson, Sufiyan Muqeem).</p>
+    <!-- Methodology Summary Box (shadcn Card) -->
+    <div class="shadcn-card methodology-box">
+        <div class="shadcn-card-header" style="padding: 0 0 1.25rem 0;">
+            <h2 class="shadcn-card-title methodology-title">
+                Mathematical Framework & Pressure Formulation
+            </h2>
+        </div>
+        <div class="shadcn-card-content" style="padding: 0;">
+            <p><b>1. Situational Leverage Index (LI):</b> Pressure is strictly evaluated as a property of match context before delivery: <i>LI(s) = Σ P(o) · |WP(s_o) - WP(s)|</i>. Tiers isolate situations where LI exceeds 1.5x (Tier 1) and 3.0x (Tier 2) league averages, capturing death-phase chases and top-order wicket collapses.</p>
+            <p><b>2. Contextual Runs Added (y):</b> Measures projected runs above expectation for each delivery. Batters earn positive credit (+y) for boundary-striking and dot avoidance; bowlers earn positive credit (-runs + wickets) for economy and breakthrough wickets under pressure.</p>
+            <p><b>3. Hierarchical Empirical Bayes Shrinkage:</b> Small pressure sample noise is filtered via ridge regularization: <i>Level = Skill + κ · Δ_pressure</i> (penalty κ = 0.5). Players are ranked on their Lower Confidence Bound (Composite LCB = Composite - 1.0 · SE), ensuring both elite ceiling and proven sample depth.</p>
+            <p><b>4. Rajasthan Royals Auction Fit:</b> Recommendations directly address Jaipur's Sawai Mansingh Stadium dynamics—prioritizing domestic finishing engines (Rinku Singh, Ashutosh Sharma) and high-velocity death pace / mystery wrist-spin (Lockie Ferguson, Sufiyan Muqeem).</p>
+        </div>
     </div>
 
     <footer>
         <p>Rajasthan Royals SupeRR Selector Season 2 · Confidential War Room Dashboard · Developed by Soham Paul (dhrubo2575@gmail.com)</p>
-        <p style="margin-top: 8px; font-size: 0.85rem; color: #94A3B8;">Official Round 1 Submission Strictly Preserved · <a href="portal.html" style="color: var(--rr-cyan); text-decoration: none; font-weight: 700;">⚡ Open Advanced AI/ML War Room 2.0 &rarr;</a></p>
+        <p style="margin-top: 8px; font-size: 0.85rem; color: hsl(var(--muted-foreground));">Official Round 1 Submission Strictly Preserved · <a href="portal.html" style="color: hsl(var(--accent)); text-decoration: none; font-weight: 700;">⚡ Open Advanced AI/ML War Room 2.0 &rarr;</a></p>
     </footer>
 </div>
 
@@ -907,43 +1012,45 @@
             const fitText = isBat ? (rrFitBatters[p.player_name] || 'High-leverage contributor.') : (rrFitBowlers[p.player_name] || 'High-leverage contributor.');
             
             const card = document.createElement('div');
-            card.className = 'player-card';
+            card.className = 'shadcn-card player-card';
             card.innerHTML = `
-                <div class="card-header">
+                <div class="shadcn-card-header card-header">
                     <div>
-                        <div class="player-name">${p.player_name}</div>
-                        <div class="player-tag">${isBat ? 'Specialist Batter' : 'Specialist Bowler'} · ${p.n_pressure_balls} Pressure Balls</div>
+                        <div class="shadcn-card-title player-name">${p.player_name}</div>
+                        <div class="shadcn-card-description player-tag">${isBat ? 'Specialist Batter' : 'Specialist Bowler'} · ${p.n_pressure_balls} Pressure Balls</div>
                     </div>
-                    <div class="card-rank">RANK #${p.rank}</div>
+                    <div class="shadcn-badge card-rank">RANK #${p.rank}</div>
                 </div>
-                <div class="stat-row">
-                    <div class="stat-item">
-                        <div class="stat-lbl">${isBat ? 'Pressure SR' : 'Pressure Econ'}</div>
-                        <div class="stat-val" style="color: var(--rr-pink);">${isBat ? p.p_sr.toFixed(1) : p.p_econ.toFixed(2)}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-lbl">${isBat ? 'Usual SR' : 'Usual Econ'}</div>
-                        <div class="stat-val">${isBat ? p.u_sr.toFixed(1) : p.u_econ.toFixed(2)}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-lbl">Dot Ball %</div>
-                        <div class="stat-val">${(p.p_dot_pct * 100).toFixed(1)}%</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-lbl">${isBat ? 'Boundary %' : 'Wicket Rate'}</div>
-                        <div class="stat-val">${isBat ? (p.p_boundary_pct * 100).toFixed(1) + '%' : (p.p_wkt_rate * 100).toFixed(1) + '%'}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-lbl">Consistency</div>
-                        <div class="stat-val" style="color: var(--rr-gold);">${(p.consistency * 100).toFixed(1)}%</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-lbl">Composite LCB</div>
-                        <div class="stat-val" style="color: #10B981;">${p.composite_lcb.toFixed(2)}</div>
+                <div class="shadcn-card-content">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <div class="stat-lbl">${isBat ? 'Pressure SR' : 'Pressure Econ'}</div>
+                            <div class="stat-val" style="color: hsl(var(--primary));">${isBat ? p.p_sr.toFixed(1) : p.p_econ.toFixed(2)}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-lbl">${isBat ? 'Usual SR' : 'Usual Econ'}</div>
+                            <div class="stat-val">${isBat ? p.u_sr.toFixed(1) : p.u_econ.toFixed(2)}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-lbl">Dot Ball %</div>
+                            <div class="stat-val">${(p.p_dot_pct * 100).toFixed(1)}%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-lbl">${isBat ? 'Boundary %' : 'Wicket Rate'}</div>
+                            <div class="stat-val">${isBat ? (p.p_boundary_pct * 100).toFixed(1) + '%' : (p.p_wkt_rate * 100).toFixed(1) + '%'}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-lbl">Consistency</div>
+                            <div class="stat-val" style="color: hsl(var(--gold));">${(p.consistency * 100).toFixed(1)}%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-lbl">Composite LCB</div>
+                            <div class="stat-val" style="color: #10B981;">${p.composite_lcb.toFixed(2)}</div>
+                        </div>
                     </div>
                 </div>
-                <div class="rr-fit-box">
-                    <b style="color: var(--rr-pink);">RR War Room Tactical Fit:</b> ${fitText}
+                <div class="shadcn-card-footer rr-fit-box">
+                    <div><b style="color: hsl(var(--primary));">RR War Room Tactical Fit:</b> ${fitText}</div>
                 </div>
             `;
             grid.appendChild(card);
@@ -954,7 +1061,7 @@
         const isBat = currentRole === 'batters';
         const labels = data.map(d => d.player_name.split(' ').pop());
         
-        // 1. Bar Chart with Liquid styling
+        // 1. Bar Chart with shadcn palette
         const ctxBar = document.getElementById('barChart').getContext('2d');
         if (barChartInstance) barChartInstance.destroy();
         

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajasthan Royals War Room 2.0 · Liquid Glass AI/ML Research Engine</title>
+    <title>Rajasthan Royals War Room 2.0 · shadcn/ui Liquid Glass AI/ML Research Engine</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,32 +11,57 @@
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --bg-void: #050814;
-            --liquid-glass-bg: rgba(13, 20, 42, 0.42);
-            --liquid-glass-hover: rgba(22, 34, 68, 0.58);
-            --liquid-glass-card: rgba(10, 16, 36, 0.48);
-            --liquid-border: rgba(255, 255, 255, 0.14);
-            --liquid-border-hover: rgba(255, 255, 255, 0.28);
-            --specular-rim: rgba(255, 255, 255, 0.35);
-            
-            /* RR Neon Brand Palette */
-            --rr-pink: #EA1A85;
-            --rr-pink-neon: #FF007F;
-            --rr-pink-glow: rgba(234, 26, 133, 0.55);
-            --rr-blue: #004BA0;
-            --rr-blue-electric: #0052FF;
-            --rr-blue-glow: rgba(0, 75, 160, 0.5);
-            --rr-cyan: #00F5FF;
-            --rr-cyan-glow: rgba(0, 245, 255, 0.45);
-            --rr-gold: #D4AF37;
-            --rr-gold-glow: rgba(212, 175, 55, 0.45);
-            --rr-emerald: #00F5A0;
-            --rr-emerald-glow: rgba(0, 245, 160, 0.4);
+        /* ============================================================
+           1. SHADCN THEME TOKENS (HSL DESIGN SYSTEM + LIQUID GLASS)
+           ============================================================ */
+        :root, .dark {
+            --background: 222 47% 4%;
+            --foreground: 210 40% 98%;
 
-            --text-primary: #F8FAFC;
-            --text-secondary: #94A3B8;
-            --text-muted: #64748B;
+            --card: 222 47% 8%;
+            --card-foreground: 210 40% 98%;
+
+            --popover: 222 47% 7%;
+            --popover-foreground: 210 40% 98%;
+
+            /* Rajasthan Royals Pink #EA1A85 */
+            --primary: 330 90% 51%;
+            --primary-foreground: 0 0% 100%;
+
+            /* Royal Blue #004BA0 */
+            --secondary: 213 100% 31%;
+            --secondary-foreground: 0 0% 100%;
+
+            --muted: 217 33% 17%;
+            --muted-foreground: 215 20% 65%;
+
+            /* Electric Cyan #00F5FF */
+            --accent: 186 100% 50%;
+            --accent-foreground: 222 47% 4%;
+
+            /* Championship Gold #D4AF37 */
+            --gold: 45 65% 52%;
+            --gold-foreground: 222 47% 4%;
+
+            /* Neon Emerald #00F5A0 */
+            --emerald: 159 100% 48%;
+            --emerald-foreground: 222 47% 4%;
+
+            --destructive: 0 84% 60%;
+            --destructive-foreground: 210 40% 98%;
+
+            --border: 217 33% 30%;
+            --input: 217 33% 20%;
+            --ring: 330 90% 51%;
+
+            --radius: 0.85rem;
+
+            /* Raw Hex / RGBA Glass Helpers */
+            --glass-bg: rgba(13, 20, 42, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --glass-border-hover: rgba(255, 255, 255, 0.28);
+            --glass-rim: rgba(255, 255, 255, 0.35);
+
             --font-display: 'Outfit', -apple-system, sans-serif;
             --font-body: 'Outfit', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
@@ -50,8 +75,8 @@
         }
 
         body {
-            background-color: var(--bg-void);
-            color: var(--text-primary);
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
             font-family: var(--font-body);
             min-height: 100vh;
             overflow-x: hidden;
@@ -59,9 +84,7 @@
             line-height: 1.6;
         }
 
-        /* ============================================================
-           1. LIQUID MESH & AMBIENT DRIFTING LIGHT ORBS
-           ============================================================ */
+        /* Ambient Liquid Mesh */
         .liquid-mesh-container {
             position: fixed;
             top: 0;
@@ -77,14 +100,14 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(100px);
-            opacity: 0.52;
+            opacity: 0.5;
             animation: float-orb 20s ease-in-out infinite alternate;
         }
 
         .orb-pink {
             width: 580px;
             height: 580px;
-            background: radial-gradient(circle, var(--rr-pink) 0%, rgba(234, 26, 133, 0) 70%);
+            background: radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%);
             top: -120px;
             left: -100px;
             animation-duration: 22s;
@@ -93,7 +116,7 @@
         .orb-blue {
             width: 680px;
             height: 680px;
-            background: radial-gradient(circle, var(--rr-blue-electric) 0%, rgba(0, 82, 255, 0) 70%);
+            background: radial-gradient(circle, hsl(var(--secondary)) 0%, transparent 70%);
             top: 25%;
             right: -150px;
             animation-duration: 28s;
@@ -103,7 +126,7 @@
         .orb-cyan {
             width: 520px;
             height: 520px;
-            background: radial-gradient(circle, var(--rr-cyan) 0%, rgba(0, 245, 255, 0) 70%);
+            background: radial-gradient(circle, hsl(var(--accent)) 0%, transparent 70%);
             bottom: -100px;
             left: 25%;
             animation-duration: 24s;
@@ -113,7 +136,7 @@
         .orb-gold {
             width: 440px;
             height: 440px;
-            background: radial-gradient(circle, var(--rr-gold) 0%, rgba(212, 175, 55, 0) 70%);
+            background: radial-gradient(circle, hsl(var(--gold)) 0%, transparent 70%);
             top: 65%;
             left: 65%;
             animation-duration: 26s;
@@ -126,7 +149,6 @@
             100% { transform: translate(-50px, -70px) scale(0.9) rotate(180deg); }
         }
 
-        /* Cyber particle canvas overlay */
         #cyber-canvas {
             position: fixed;
             top: 0;
@@ -135,10 +157,9 @@
             height: 100vh;
             pointer-events: none;
             z-index: 1;
-            opacity: 0.4;
+            opacity: 0.35;
         }
 
-        /* App Container */
         .app-container {
             position: relative;
             z-index: 2;
@@ -148,25 +169,27 @@
         }
 
         /* ============================================================
-           2. ULTRA-REFINED FROSTED LIQUID GLASSMORPHISM
+           2. SHADCN COMPONENT SYSTEM WITH LIQUID GLASS ARCHITECTURE
            ============================================================ */
-        .liquid-glass {
-            background: var(--liquid-glass-bg);
+
+        /* --- shadcn Card --- */
+        .shadcn-card {
+            background: var(--glass-bg);
             backdrop-filter: blur(28px) saturate(190%);
             -webkit-backdrop-filter: blur(28px) saturate(190%);
-            border: 1px solid var(--liquid-border);
+            border: 1px solid var(--glass-border);
+            border-radius: calc(var(--radius) * 1.5);
             box-shadow: 
-                inset 0 1px 1px var(--specular-rim),
+                inset 0 1px 1px var(--glass-rim),
                 inset 0 -1px 1px rgba(0, 0, 0, 0.4),
                 0 20px 45px rgba(0, 0, 0, 0.6);
-            border-radius: 24px;
+            color: hsl(var(--card-foreground));
             position: relative;
             overflow: hidden;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Specular Prismatic Sheen Overlay */
-        .liquid-glass::before {
+        .shadcn-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -185,28 +208,308 @@
             transition: transform 0.8s ease;
         }
 
-        .liquid-glass:hover::before {
+        .shadcn-card:hover::before {
             transform: translateX(65%);
         }
 
-        .liquid-glass:hover {
-            border-color: var(--liquid-border-hover);
+        .shadcn-card:hover {
+            border-color: var(--glass-border-hover);
             box-shadow: 
                 inset 0 1px 2px rgba(255, 255, 255, 0.5),
                 inset 0 -1px 1px rgba(0, 0, 0, 0.5),
                 0 25px 60px rgba(0, 0, 0, 0.7),
-                0 0 35px rgba(0, 245, 255, 0.12);
+                0 0 30px rgba(0, 245, 255, 0.15);
             transform: translateY(-3px);
         }
 
-        /* Top Navigation Bar */
+        .shadcn-card-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 24px 26px 16px;
+        }
+
+        .shadcn-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shadcn-card-description {
+            font-size: 0.875rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .shadcn-card-content {
+            padding: 0 26px 24px;
+        }
+
+        .shadcn-card-footer {
+            display: flex;
+            align-items: center;
+            padding: 0 26px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 16px;
+            padding-top: 16px;
+        }
+
+        /* --- shadcn Badge --- */
+        .shadcn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .shadcn-badge-default {
+            background-color: hsl(var(--primary) / 0.2);
+            color: #FF80BF;
+            border-color: hsl(var(--primary));
+            box-shadow: 0 0 15px rgba(234, 26, 133, 0.35);
+        }
+
+        .shadcn-badge-secondary {
+            background-color: hsl(var(--secondary) / 0.35);
+            color: #93C5FD;
+            border-color: #60A5FA;
+        }
+
+        .shadcn-badge-outline {
+            border-color: var(--glass-border);
+            color: hsl(var(--muted-foreground));
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .shadcn-badge-cyan {
+            background-color: hsl(var(--accent) / 0.16);
+            color: hsl(var(--accent));
+            border-color: hsl(var(--accent));
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.25);
+        }
+
+        .shadcn-badge-gold {
+            background-color: hsl(var(--gold) / 0.18);
+            color: #FFDF73;
+            border-color: hsl(var(--gold));
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .shadcn-badge-emerald {
+            background-color: hsl(var(--emerald) / 0.18);
+            color: hsl(var(--emerald));
+            border-color: hsl(var(--emerald));
+            box-shadow: 0 0 15px rgba(0, 245, 160, 0.3);
+        }
+
+        /* --- shadcn Button --- */
+        .shadcn-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            padding: 9px 18px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shadcn-button-default {
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, #D80064 100%);
+            color: #FFFFFF;
+            box-shadow: 0 4px 18px rgba(234, 26, 133, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .shadcn-button-default:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(234, 26, 133, 0.7);
+        }
+
+        .shadcn-button-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: hsl(var(--foreground));
+            border-color: var(--glass-border);
+            backdrop-filter: blur(14px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .shadcn-button-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: hsl(var(--accent));
+            color: hsl(var(--accent));
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        .shadcn-button-outline {
+            border-color: var(--glass-border);
+            background: transparent;
+            color: hsl(var(--foreground));
+        }
+
+        .shadcn-button-outline:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #FFFFFF;
+        }
+
+        .shadcn-button-glow-liquid {
+            background: linear-gradient(135deg, hsl(var(--primary) / 0.85) 0%, hsl(var(--secondary) / 0.85) 100%);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 25px rgba(234, 26, 133, 0.6), 0 0 20px rgba(0, 245, 255, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(16px);
+        }
+
+        .shadcn-button-glow-liquid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(234, 26, 133, 0.8), 0 0 30px rgba(0, 245, 255, 0.5);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* --- shadcn Tabs --- */
+        .shadcn-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .shadcn-tabs-list {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: var(--radius);
+            background: rgba(5, 10, 25, 0.65);
+            padding: 5px;
+            gap: 6px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            flex-wrap: wrap;
+        }
+
+        .shadcn-tabs-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border-radius: calc(var(--radius) - 2px);
+            padding: 8px 18px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            color: hsl(var(--muted-foreground));
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .shadcn-tabs-trigger.active {
+            background: linear-gradient(135deg, hsl(var(--primary) / 0.45) 0%, hsl(var(--secondary) / 0.45) 100%);
+            color: #FFFFFF;
+            border-color: hsl(var(--primary));
+            box-shadow: 0 4px 18px rgba(234, 26, 133, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+        }
+
+        .shadcn-tabs-trigger:hover:not(.active) {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- shadcn Alert --- */
+        .shadcn-alert {
+            position: relative;
+            width: 100%;
+            border-radius: calc(var(--radius) * 1.5);
+            border: 1px solid var(--glass-border);
+            padding: 22px 26px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px) saturate(190%);
+            box-shadow: inset 0 1px 1px var(--glass-rim), 0 20px 45px rgba(0, 0, 0, 0.6);
+        }
+
+        .shadcn-alert-gold {
+            border-color: rgba(212, 175, 55, 0.45);
+            background: linear-gradient(135deg, rgba(16, 26, 56, 0.6) 0%, rgba(35, 18, 50, 0.6) 100%);
+            box-shadow: 
+                inset 0 1px 2px rgba(255, 215, 0, 0.35),
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                0 0 35px rgba(212, 175, 55, 0.15);
+        }
+
+        .shadcn-alert-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shadcn-alert-description {
+            font-size: 0.95rem;
+            color: #CBD5E1;
+            line-height: 1.7;
+        }
+
+        /* --- shadcn Select & Input --- */
+        .shadcn-select {
+            display: flex;
+            height: 40px;
+            width: fit-content;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            background: rgba(6, 12, 30, 0.7);
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            color: #FFFFFF;
+            font-family: var(--font-body);
+            cursor: pointer;
+            outline: none;
+            backdrop-filter: blur(14px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            transition: all 0.2s;
+        }
+
+        .shadcn-select:focus {
+            border-color: hsl(var(--primary));
+            box-shadow: 0 0 18px rgba(234, 26, 133, 0.5);
+        }
+
+        /* Top Navbar */
         .top-navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 16px 28px;
             margin-bottom: 28px;
-            border-radius: 24px;
         }
 
         .brand-cluster {
@@ -218,15 +521,15 @@
         .rr-logo-badge {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, var(--rr-blue) 0%, var(--rr-pink) 100%);
-            border-radius: 14px;
+            background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--primary)) 100%);
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
             font-size: 1.45rem;
             color: #fff;
-            box-shadow: 0 0 25px var(--rr-pink-glow), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 25px rgba(234, 26, 133, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.5);
             letter-spacing: -1px;
             border: 1px solid rgba(255, 255, 255, 0.25);
         }
@@ -236,14 +539,14 @@
             font-size: 1.4rem;
             font-weight: 800;
             letter-spacing: 0.5px;
-            background: linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 50%, var(--rr-cyan) 100%);
+            background: linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 50%, hsl(var(--accent)) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .brand-meta p {
             font-size: 0.8rem;
-            color: var(--text-secondary);
+            color: hsl(var(--muted-foreground));
             font-family: var(--font-mono);
             letter-spacing: 0.5px;
         }
@@ -255,28 +558,12 @@
             flex-wrap: wrap;
         }
 
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 16px;
-            border-radius: 30px;
-            font-size: 0.78rem;
-            font-family: var(--font-mono);
-            font-weight: 700;
-            background: rgba(0, 245, 160, 0.12);
-            color: var(--rr-emerald);
-            border: 1px solid rgba(0, 245, 160, 0.35);
-            box-shadow: 0 0 20px rgba(0, 245, 160, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(16px);
-        }
-
-        .status-pill .pulse-dot {
+        .pulse-dot {
             width: 8px;
             height: 8px;
-            background: var(--rr-emerald);
+            background: hsl(var(--emerald));
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--rr-emerald);
+            box-shadow: 0 0 12px hsl(var(--emerald));
             animation: pulse-dot 1.8s infinite;
         }
 
@@ -286,230 +573,7 @@
             100% { transform: scale(0.9); opacity: 0.8; }
         }
 
-        /* Liquid Neon Buttons */
-        .btn-liquid {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px 20px;
-            border-radius: 14px;
-            font-size: 0.86rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            border: 1px solid transparent;
-            font-family: var(--font-heading);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-liquid-primary {
-            background: linear-gradient(135deg, rgba(234, 26, 133, 0.85) 0%, rgba(0, 82, 255, 0.85) 100%);
-            color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 25px var(--rr-pink-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(14px);
-        }
-
-        .btn-liquid-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(234, 26, 133, 0.7), 0 0 25px rgba(0, 245, 255, 0.4);
-            border-color: rgba(255, 255, 255, 0.6);
-        }
-
-        .btn-liquid-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(16px);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-liquid-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: var(--rr-cyan);
-            color: var(--rr-cyan);
-            box-shadow: 0 0 20px var(--rr-cyan-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-        }
-
-        .btn-liquid-audio {
-            background: rgba(0, 245, 255, 0.08);
-            color: var(--rr-cyan);
-            border: 1px solid rgba(0, 245, 255, 0.35);
-            font-size: 0.82rem;
-            padding: 9px 16px;
-            backdrop-filter: blur(16px);
-        }
-
-        /* ============================================================
-           3. STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
-           ============================================================ */
-        .student-disclosure-card {
-            background: linear-gradient(135deg, rgba(16, 26, 56, 0.55) 0%, rgba(35, 18, 50, 0.55) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            padding: 30px 36px;
-            margin-bottom: 32px;
-            border-radius: 26px;
-            box-shadow: 
-                inset 0 1px 2px rgba(255, 215, 0, 0.35),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.4),
-                0 25px 60px rgba(0, 0, 0, 0.6),
-                0 0 35px rgba(212, 175, 55, 0.12);
-        }
-
-        .student-disclosure-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--rr-gold), var(--rr-pink));
-            box-shadow: 0 0 15px var(--rr-gold);
-        }
-
-        .disclosure-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .disclosure-title-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .badge-academic {
-            background: rgba(212, 175, 55, 0.18);
-            border: 1px solid var(--rr-gold);
-            color: #FFDF73;
-            padding: 5px 14px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
-        }
-
-        .badge-frozen {
-            background: rgba(0, 245, 255, 0.14);
-            border: 1px solid var(--rr-cyan);
-            color: var(--rr-cyan);
-            padding: 5px 14px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 245, 255, 0.25);
-        }
-
-        .disclosure-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #FFF;
-            font-family: var(--font-heading);
-            letter-spacing: -0.3px;
-        }
-
-        .disclosure-body {
-            font-size: 0.96rem;
-            color: #CBD5E1;
-            line-height: 1.75;
-            max-width: 1240px;
-        }
-
-        .disclosure-body strong {
-            color: #FFFFFF;
-        }
-
-        .disclosure-highlight-box {
-            margin-top: 18px;
-            padding: 16px 22px;
-            background: rgba(6, 10, 25, 0.55);
-            border-radius: 16px;
-            border-left: 3px solid var(--rr-cyan);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-        }
-
-        .disclosure-highlight-text {
-            font-size: 0.9rem;
-            color: #E2E8F0;
-        }
-
-        .disclosure-links {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .link-pill {
-            font-size: 0.82rem;
-            font-family: var(--font-mono);
-            font-weight: 700;
-            padding: 7px 16px;
-            border-radius: 10px;
-            text-decoration: none;
-            transition: all 0.25s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(12px);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        }
-
-        .link-pill-primary {
-            background: rgba(234, 26, 133, 0.18);
-            color: #FF80BF;
-            border: 1px solid var(--rr-pink);
-        }
-        .link-pill-primary:hover {
-            background: var(--rr-pink);
-            color: white;
-            box-shadow: 0 0 20px var(--rr-pink-glow);
-        }
-
-        .link-pill-cyan {
-            background: rgba(0, 245, 255, 0.14);
-            color: var(--rr-cyan);
-            border: 1px solid var(--rr-cyan);
-        }
-        .link-pill-cyan:hover {
-            background: var(--rr-cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--rr-cyan-glow);
-        }
-
-        .link-pill-gold {
-            background: rgba(212, 175, 55, 0.15);
-            color: #FFDF73;
-            border: 1px solid var(--rr-gold);
-        }
-        .link-pill-gold:hover {
-            background: var(--rr-gold);
-            color: #000;
-            box-shadow: 0 0 20px var(--rr-gold-glow);
-        }
-
-        /* ============================================================
-           4. WAR ROOM TELEMETRY HUD
-           ============================================================ */
+        /* HUD Grid */
         .hud-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -517,46 +581,31 @@
             margin-bottom: 34px;
         }
 
-        .hud-card {
-            padding: 22px 24px;
-            border-radius: 20px;
-        }
-
         .hud-label {
             font-size: 0.75rem;
             text-transform: uppercase;
             font-family: var(--font-mono);
             letter-spacing: 1.2px;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
         .hud-value {
-            font-size: 2rem;
+            font-size: 2.1rem;
             font-weight: 800;
             font-family: var(--font-heading);
-            color: #FFFFFF;
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        .hud-subtext {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-        }
+        .accent-pink { color: #FF007F; text-shadow: 0 0 16px rgba(255, 0, 127, 0.5); }
+        .accent-cyan { color: hsl(var(--accent)); text-shadow: 0 0 16px rgba(0, 245, 255, 0.45); }
+        .accent-gold { color: #FFDF73; text-shadow: 0 0 16px rgba(212, 175, 55, 0.45); }
+        .accent-emerald { color: hsl(var(--emerald)); text-shadow: 0 0 16px rgba(0, 245, 160, 0.4); }
 
-        .accent-pink { color: var(--rr-pink-neon); text-shadow: 0 0 15px rgba(255, 0, 127, 0.5); }
-        .accent-cyan { color: var(--rr-cyan); text-shadow: 0 0 15px var(--rr-cyan-glow); }
-        .accent-gold { color: var(--rr-gold); text-shadow: 0 0 15px var(--rr-gold-glow); }
-        .accent-emerald { color: var(--rr-emerald); text-shadow: 0 0 15px var(--rr-emerald-glow); }
-
-        /* ============================================================
-           5. SECTION HEADERS & GRID LAYOUTS
-           ============================================================ */
+        /* Layout Grid */
         .section-container {
             margin-bottom: 44px;
         }
@@ -576,7 +625,6 @@
             font-family: var(--font-heading);
             font-size: 1.6rem;
             font-weight: 800;
-            letter-spacing: 0.3px;
             color: #FFFFFF;
             display: flex;
             align-items: center;
@@ -585,21 +633,8 @@
 
         .section-title-wrap p {
             font-size: 0.9rem;
-            color: var(--text-secondary);
+            color: hsl(var(--muted-foreground));
             margin-top: 4px;
-        }
-
-        .section-tag {
-            font-family: var(--font-mono);
-            font-size: 0.74rem;
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 8px;
-            background: rgba(0, 82, 255, 0.2);
-            color: #93C5FD;
-            border: 1px solid rgba(147, 197, 253, 0.4);
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 82, 255, 0.2);
         }
 
         .grid-2col {
@@ -612,56 +647,6 @@
             .grid-2col {
                 grid-template-columns: 1fr;
             }
-        }
-
-        .panel-card {
-            padding: 26px;
-            border-radius: 24px;
-        }
-
-        .panel-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .panel-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-heading);
-        }
-
-        .panel-subtitle {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .control-select {
-            background: rgba(6, 12, 30, 0.7);
-            color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            border-radius: 12px;
-            padding: 8px 16px;
-            font-size: 0.86rem;
-            font-family: var(--font-body);
-            outline: none;
-            cursor: pointer;
-            transition: all 0.25s;
-            backdrop-filter: blur(12px);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        }
-
-        .control-select:focus {
-            border-color: var(--rr-pink);
-            box-shadow: 0 0 15px var(--rr-pink-glow);
         }
 
         .chart-box {
@@ -682,7 +667,7 @@
         .stat-chip {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 8px 16px;
             font-size: 0.82rem;
             backdrop-filter: blur(12px);
@@ -692,7 +677,7 @@
         .stat-chip span {
             display: block;
             font-size: 0.7rem;
-            color: var(--text-muted);
+            color: hsl(var(--muted-foreground));
             text-transform: uppercase;
             font-family: var(--font-mono);
             letter-spacing: 0.5px;
@@ -704,42 +689,7 @@
             font-family: var(--font-heading);
         }
 
-        /* ============================================================
-           6. SHAP ATTRIBUTION & STRESS TEST
-           ============================================================ */
-        .simulator-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 26px;
-        }
-
-        @media (max-width: 1024px) {
-            .simulator-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .slider-group {
-            margin-bottom: 20px;
-        }
-
-        .slider-label-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.86rem;
-            margin-bottom: 8px;
-        }
-
-        .slider-label-row span {
-            color: var(--text-secondary);
-        }
-
-        .slider-label-row strong {
-            font-family: var(--font-mono);
-            color: var(--rr-cyan);
-            font-size: 0.92rem;
-        }
-
+        /* Simulator Slider */
         .range-slider {
             width: 100%;
             height: 7px;
@@ -755,11 +705,11 @@
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
-            background: var(--rr-pink-neon);
+            background: hsl(var(--primary));
             border: 2px solid #FFFFFF;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 14px var(--rr-pink-neon);
+            box-shadow: 0 0 14px hsl(var(--primary));
             transition: transform 0.15s;
         }
 
@@ -767,73 +717,7 @@
             transform: scale(1.25);
         }
 
-        .gauge-metric-card {
-            background: rgba(5, 10, 24, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            padding: 18px;
-            text-align: center;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
-        }
-
-        .gauge-number {
-            font-size: 2.3rem;
-            font-weight: 900;
-            font-family: var(--font-heading);
-            color: #FFF;
-        }
-
-        /* ============================================================
-           7. MONTE CARLO AUCTION ENGINE
-           ============================================================ */
-        .scenario-tab-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 22px;
-            flex-wrap: wrap;
-        }
-
-        .scenario-tab {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            color: var(--text-secondary);
-            padding: 11px 22px;
-            border-radius: 14px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s;
-            font-family: var(--font-heading);
-            backdrop-filter: blur(14px);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
-        }
-
-        .scenario-tab.active {
-            background: linear-gradient(135deg, rgba(0, 82, 255, 0.4) 0%, rgba(234, 26, 133, 0.4) 100%);
-            border-color: var(--rr-pink);
-            color: #FFFFFF;
-            box-shadow: 0 6px 22px var(--rr-pink-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-        }
-
-        .scenario-details-box {
-            background: rgba(8, 14, 32, 0.55);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
-        }
-
-        .scenario-details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-top: 16px;
-        }
-
-        /* ============================================================
-           8. SQUAD BUILDER & JAIPUR SMS GROUND PHYSICS
-           ============================================================ */
+        /* Squad Builder */
         .war-room-builder-grid {
             display: grid;
             grid-template-columns: 1fr 1.1fr;
@@ -869,21 +753,21 @@
             justify-content: space-between;
             background: rgba(10, 16, 36, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
+            border-radius: var(--radius);
             padding: 12px 18px;
             transition: all 0.25s;
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         .squad-player-item.retained {
-            border-left: 4px solid var(--rr-pink);
-            background: rgba(234, 26, 133, 0.12);
+            border-left: 4px solid hsl(var(--primary));
+            background: hsl(var(--primary) / 0.12);
             box-shadow: 0 0 15px rgba(234, 26, 133, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .squad-player-item.drafted {
-            border-left: 4px solid var(--rr-emerald);
-            background: rgba(0, 245, 160, 0.12);
+            border-left: 4px solid hsl(var(--emerald));
+            background: hsl(var(--emerald) / 0.12);
             box-shadow: 0 0 15px rgba(0, 245, 160, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
@@ -898,7 +782,7 @@
             font-size: 0.78rem;
             width: 30px;
             height: 30px;
-            border-radius: 9px;
+            border-radius: calc(var(--radius) - 3px);
             background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
@@ -906,24 +790,6 @@
             color: #CBD5E1;
             font-weight: 800;
             border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .player-name-text {
-            font-size: 0.98rem;
-            font-weight: 700;
-            color: #FFFFFF;
-        }
-
-        .player-meta-tag {
-            font-size: 0.76rem;
-            color: var(--text-secondary);
-        }
-
-        .player-price-badge {
-            font-family: var(--font-mono);
-            font-size: 0.88rem;
-            font-weight: 800;
-            color: var(--rr-gold);
         }
 
         .target-pool-grid {
@@ -939,7 +805,7 @@
         .target-card {
             background: rgba(8, 14, 32, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
+            border-radius: var(--radius);
             padding: 13px 15px;
             cursor: pointer;
             transition: all 0.25s;
@@ -950,23 +816,23 @@
         }
 
         .target-card:hover {
-            border-color: var(--rr-cyan);
+            border-color: hsl(var(--accent));
             background: rgba(0, 245, 255, 0.08);
             transform: translateY(-2px);
-            box-shadow: 0 0 20px var(--rr-cyan-glow);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
         }
 
         .target-card.selected {
-            border-color: var(--rr-emerald);
+            border-color: hsl(var(--emerald));
             background: rgba(0, 245, 160, 0.16);
-            box-shadow: 0 0 20px var(--rr-emerald-glow);
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.3);
         }
 
-        /* Jaipur SMS Stadium Physics Panel */
+        /* SMS Stadium Visualizer */
         .sms-pitch-visualizer {
             background: radial-gradient(circle at center, rgba(0, 55, 35, 0.55) 0%, rgba(6, 14, 28, 0.9) 80%);
             border: 1px solid rgba(0, 245, 160, 0.35);
-            border-radius: 24px;
+            border-radius: calc(var(--radius) * 1.5);
             padding: 26px;
             position: relative;
             overflow: hidden;
@@ -975,21 +841,6 @@
                 inset 0 0 35px rgba(0, 245, 160, 0.12),
                 0 20px 45px rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(24px);
-        }
-
-        .sms-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 245, 160, 0.16);
-            color: var(--rr-emerald);
-            border: 1px solid var(--rr-emerald);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.76rem;
-            font-family: var(--font-mono);
-            font-weight: 800;
-            box-shadow: 0 0 15px var(--rr-emerald-glow);
         }
 
         .sms-dimension-grid {
@@ -1002,31 +853,17 @@
         .sms-metric {
             background: rgba(3, 7, 18, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 12px 14px;
             text-align: center;
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
-        }
-
-        .sms-metric span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-family: var(--font-mono);
-        }
-
-        .sms-metric strong {
-            font-size: 1.15rem;
-            color: #FFFFFF;
-            font-family: var(--font-heading);
-            display: block;
         }
 
         .synergy-score-gauge {
             text-align: center;
             padding: 18px;
             background: rgba(3, 7, 18, 0.65);
-            border-radius: 18px;
+            border-radius: calc(var(--radius) * 1.2);
             border: 1px solid rgba(212, 175, 55, 0.35);
             margin-top: 16px;
             box-shadow: inset 0 1px 1px rgba(255, 215, 0, 0.2);
@@ -1036,37 +873,28 @@
             font-size: 3rem;
             font-weight: 900;
             font-family: var(--font-heading);
-            color: var(--rr-gold);
+            color: #FFDF73;
             text-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
         }
 
-        /* Footer */
         footer {
             margin-top: 65px;
             padding-top: 32px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            color: var(--text-muted);
+            color: hsl(var(--muted-foreground));
             font-size: 0.88rem;
         }
 
         footer a {
-            color: var(--rr-cyan);
+            color: hsl(var(--accent));
             text-decoration: none;
             transition: color 0.2s;
         }
 
         footer a:hover {
             color: #FFFFFF;
-            text-shadow: 0 0 10px var(--rr-cyan-glow);
-        }
-
-        .footer-tagline {
-            margin-top: 12px;
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
         }
     </style>
 </head>
@@ -1085,48 +913,48 @@
 
     <div class="app-container">
 
-        <!-- Top Liquid Navigation Bar -->
-        <nav class="liquid-glass top-navbar">
+        <!-- Top Navigation Bar (shadcn-card) -->
+        <nav class="shadcn-card top-navbar">
             <div class="brand-cluster">
                 <div class="rr-logo-badge">RR</div>
                 <div class="brand-meta">
                     <h1>RAJASTHAN ROYALS WAR ROOM 2.0</h1>
-                    <p>SupeRR Selector S2 · Advanced Bayesian & Monte Carlo Intelligence</p>
+                    <p>shadcn/ui Custom Theme · Advanced AI/ML Research Engine</p>
                 </div>
             </div>
             <div class="nav-actions">
-                <div class="status-pill">
+                <div class="shadcn-badge shadcn-badge-emerald">
                     <div class="pulse-dot"></div>
                     ROUND 2 DEEP AI/ML RESEARCH
                 </div>
-                <button id="audio-toggle-btn" class="btn-liquid btn-liquid-audio" onclick="toggleAudioFx()">
+                <button id="audio-toggle-btn" class="shadcn-button shadcn-button-secondary" onclick="toggleAudioFx()">
                     🔊 Sound FX: ON
                 </button>
-                <a href="dashboard.html" class="btn-liquid btn-liquid-secondary">
+                <a href="dashboard.html" class="shadcn-button shadcn-button-secondary">
                     ⬅ Official Round 1 Dashboard
                 </a>
-                <a href="#squad-builder" class="btn-liquid btn-liquid-primary">
+                <a href="#squad-builder" class="shadcn-button shadcn-button-glow-liquid">
                     ⚡ Open Squad Builder
                 </a>
             </div>
         </nav>
 
         <!-- ============================================================
-             1. STUDENT ACADEMIC DISCLOSURE & RESEARCH INTEGRITY BANNER
+             1. STUDENT ACADEMIC DISCLOSURE (shadcn-alert)
              ============================================================ -->
-        <section id="academic-disclosure" class="liquid-glass student-disclosure-card">
-            <div class="disclosure-header">
-                <div class="disclosure-title-group">
-                    <span class="badge-academic">🎓 Academic Disclosure</span>
-                    <span class="badge-frozen">❄️ Round 1 Frozen</span>
-                    <h2 class="disclosure-title">Candidate Research Statement & Academic Context</h2>
+        <section id="academic-disclosure" class="shadcn-alert shadcn-alert-gold" style="margin-bottom: 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; margin-bottom: 14px;">
+                <div class="shadcn-alert-title">
+                    <span class="shadcn-badge shadcn-badge-gold">🎓 Academic Disclosure</span>
+                    <span class="shadcn-badge shadcn-badge-cyan">❄️ Round 1 Frozen</span>
+                    Candidate Research Statement & Academic Context
                 </div>
-                <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--rr-gold); font-weight: 700;">
+                <div style="font-family: var(--font-mono); font-size: 0.82rem; color: #FFDF73; font-weight: 700;">
                     Candidate: Soham Paul · B.Tech Engineering
                 </div>
             </div>
 
-            <div class="disclosure-body">
+            <div class="shadcn-alert-description">
                 <p>
                     <strong>To the Esteemed Rajasthan Royals Technical & Analytics Jury:</strong><br>
                     I am an undergraduate engineering student currently appearing for university semester final examinations and rigorous laboratory viva assessments alongside participating in the <em>SupeRR Selector Season 2 Hackathon</em>. In adherence to strict scientific and competition integrity principles, please note:
@@ -1139,52 +967,52 @@
                 </p>
             </div>
 
-            <div class="disclosure-highlight-box">
-                <div class="disclosure-highlight-text">
+            <div style="margin-top: 18px; padding: 14px 20px; background: rgba(5, 10, 25, 0.55); border-radius: var(--radius); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                <div style="font-size: 0.88rem; color: #E2E8F0;">
                     📌 <em>Cross-verify all original Round 1 artifacts and open-source commit history:</em>
                 </div>
-                <div class="disclosure-links">
-                    <a href="dashboard.html" class="link-pill link-pill-primary">📊 Core Dashboard</a>
-                    <a href="Rajasthan_Royals_SupeRR_Selector_Report.pdf" target="_blank" class="link-pill link-pill-cyan">📄 Technical Report (PDF)</a>
-                    <a href="Rajasthan_Royals_SupeRR_Selector_Presentation.pptx" target="_blank" class="link-pill link-pill-gold">📽️ Executive Deck (PPTX)</a>
-                    <a href="https://github.com/Sohaam007/superr-selector-rr2027" target="_blank" class="link-pill link-pill-cyan">💻 GitHub Codebase</a>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="dashboard.html" class="shadcn-badge shadcn-badge-default" style="text-decoration: none;">📊 Core Dashboard</a>
+                    <a href="Rajasthan_Royals_SupeRR_Selector_Report.pdf" target="_blank" class="shadcn-badge shadcn-badge-cyan" style="text-decoration: none;">📄 Technical Report (PDF)</a>
+                    <a href="Rajasthan_Royals_SupeRR_Selector_Presentation.pptx" target="_blank" class="shadcn-badge shadcn-badge-gold" style="text-decoration: none;">📽️ Executive Deck (PPTX)</a>
+                    <a href="https://github.com/Sohaam007/superr-selector-rr2027" target="_blank" class="shadcn-badge shadcn-badge-cyan" style="text-decoration: none;">💻 GitHub Codebase</a>
                 </div>
             </div>
         </section>
 
         <!-- ============================================================
-             2. WAR ROOM TELEMETRY HUD
+             2. WAR ROOM TELEMETRY HUD (shadcn-card grid)
              ============================================================ -->
         <section id="telemetry-hud" class="hud-grid">
-            <div class="liquid-glass hud-card">
+            <div class="shadcn-card" style="padding: 22px 24px;">
                 <div class="hud-label"><span>🌐</span> Database Deliveries</div>
                 <div class="hud-value accent-cyan">200,999</div>
-                <div class="hud-subtext">883 IPL & T20I matches parsed</div>
+                <div class="hud-subtext" style="font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">883 IPL & T20I matches parsed</div>
             </div>
-            <div class="liquid-glass hud-card">
+            <div class="shadcn-card" style="padding: 22px 24px;">
                 <div class="hud-label"><span>🔥</span> High-Pressure Balls</div>
                 <div class="hud-value accent-pink">48,798</div>
-                <div class="hud-subtext">24.28% Climax phase deliveries</div>
+                <div class="hud-subtext" style="font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">24.28% Climax phase deliveries</div>
             </div>
-            <div class="liquid-glass hud-card">
+            <div class="shadcn-card" style="padding: 22px 24px;">
                 <div class="hud-label"><span>🎲</span> Monte Carlo Sims</div>
                 <div class="hud-value accent-gold">10,000</div>
-                <div class="hud-subtext">IPL 2027 Auction Purse paths</div>
+                <div class="hud-subtext" style="font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">IPL 2027 Auction Purse paths</div>
             </div>
-            <div class="liquid-glass hud-card">
+            <div class="shadcn-card" style="padding: 22px 24px;">
                 <div class="hud-label"><span>💰</span> RR Remaining Purse</div>
                 <div class="hud-value accent-emerald">₹41.00 Cr</div>
-                <div class="hud-subtext">Post 6 Core Retentions (₹79 Cr)</div>
+                <div class="hud-subtext" style="font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">Post 6 Core Retentions (₹79 Cr)</div>
             </div>
-            <div class="liquid-glass hud-card">
+            <div class="shadcn-card" style="padding: 22px 24px;">
                 <div class="hud-label"><span>🛡️</span> Retained Match-Winners</div>
                 <div class="hud-value accent-pink">6 Stars</div>
-                <div class="hud-subtext">Samson, Jaiswal, Parag, Jurel, etc.</div>
+                <div class="hud-subtext" style="font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">Samson, Jaiswal, Parag, Jurel, etc.</div>
             </div>
-            <div class="liquid-glass hud-card">
+            <div class="shadcn-card" style="padding: 22px 24px;">
                 <div class="hud-label"><span>🏟️</span> Jaipur SMS Synergy</div>
                 <div class="hud-value accent-cyan">98.0 / 100</div>
-                <div class="hud-subtext">Ashutosh & Vaibhav venue fit</div>
+                <div class="hud-subtext" style="font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">Ashutosh & Vaibhav venue fit</div>
             </div>
         </section>
 
@@ -1197,45 +1025,49 @@
                     <h2><span>🧬</span> Bayesian Hazard Modeling & Survival Probability S(t)</h2>
                     <p>Empirical Bayes Gamma-Poisson posterior estimation (&alpha;=5.0, &beta;=100.0) with Nelson-Aalen survival discretization</p>
                 </div>
-                <span class="section-tag">Stochastic Survival Analytics</span>
+                <span class="shadcn-badge shadcn-badge-secondary">Stochastic Survival Analytics</span>
             </div>
 
             <div class="grid-2col">
-                <!-- Batter Survival Curve Panel -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
+                <!-- Batter Survival Card -->
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                         <div>
-                            <div class="panel-title">🏏 Batter Survival Probability Under Pressure</div>
-                            <div class="panel-subtitle">Cumulative probability of resisting dismissal across balls 1 to 30</div>
+                            <div class="shadcn-card-title">🏏 Batter Survival Probability Under Pressure</div>
+                            <div class="shadcn-card-description">Cumulative probability of resisting dismissal across balls 1 to 30</div>
                         </div>
-                        <select id="batter-select" class="control-select" onchange="updateBatterSurvivalChart()">
+                        <select id="batter-select" class="shadcn-select" onchange="updateBatterSurvivalChart()">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
-                    <div class="chart-box">
-                        <canvas id="batterSurvivalChart"></canvas>
-                    </div>
-                    <div id="batter-hazard-chips" class="stat-badge-row">
-                        <!-- Populated dynamically -->
+                    <div class="shadcn-card-content">
+                        <div class="chart-box">
+                            <canvas id="batterSurvivalChart"></canvas>
+                        </div>
+                        <div id="batter-hazard-chips" class="stat-badge-row">
+                            <!-- Populated dynamically -->
+                        </div>
                     </div>
                 </div>
 
-                <!-- Bowler Strike Induction Curve Panel -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
+                <!-- Bowler Strike Card -->
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                         <div>
-                            <div class="panel-title">🎯 Bowler Strike Induction Probability</div>
-                            <div class="panel-subtitle">Cumulative probability of claiming a wicket within 1-24 pressure balls</div>
+                            <div class="shadcn-card-title">🎯 Bowler Strike Induction Probability</div>
+                            <div class="shadcn-card-description">Cumulative probability of claiming a wicket within 1-24 pressure balls</div>
                         </div>
-                        <select id="bowler-select" class="control-select" onchange="updateBowlerStrikeChart()">
+                        <select id="bowler-select" class="shadcn-select" onchange="updateBowlerStrikeChart()">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
-                    <div class="chart-box">
-                        <canvas id="bowlerStrikeChart"></canvas>
-                    </div>
-                    <div id="bowler-hazard-chips" class="stat-badge-row">
-                        <!-- Populated dynamically -->
+                    <div class="shadcn-card-content">
+                        <div class="chart-box">
+                            <canvas id="bowlerStrikeChart"></canvas>
+                        </div>
+                        <div id="bowler-hazard-chips" class="stat-badge-row">
+                            <!-- Populated dynamically -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1250,95 +1082,96 @@
                     <h2><span>⚡</span> TreeSHAP Feature Attribution & Game-Theoretic Radar</h2>
                     <p>Exact Shapley value decomposition of pressure run expectancy and dismissal dynamics via XGBoost</p>
                 </div>
-                <span class="section-tag">Explainable AI (XAI)</span>
+                <span class="shadcn-badge shadcn-badge-cyan">Explainable AI (XAI)</span>
             </div>
 
-            <div class="simulator-grid">
-                <!-- Global & Player SHAP Radar -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
+            <div class="grid-2col">
+                <!-- SHAP Radar Card -->
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                         <div>
-                            <div class="panel-title">🌐 Multi-Dimensional Pressure Attribution Signature</div>
-                            <div class="panel-subtitle">Relative feature contributions across game context variables</div>
+                            <div class="shadcn-card-title">🌐 Multi-Dimensional Pressure Attribution Signature</div>
+                            <div class="shadcn-card-description">Relative feature contributions across game context variables</div>
                         </div>
-                        <select id="shap-player-select" class="control-select" onchange="updateShapRadarChart()">
+                        <select id="shap-player-select" class="shadcn-select" onchange="updateShapRadarChart()">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
-                    <div class="chart-box">
-                        <canvas id="shapRadarChart"></canvas>
-                    </div>
-                    <div class="stat-badge-row">
-                        <div class="stat-chip">
-                            <span>Dominant Feature</span>
-                            <strong class="accent-pink">Ball of Innings (40.5%)</strong>
+                    <div class="shadcn-card-content">
+                        <div class="chart-box">
+                            <canvas id="shapRadarChart"></canvas>
                         </div>
-                        <div class="stat-chip">
-                            <span>Wickets in Hand</span>
-                            <strong class="accent-cyan">27.3% Weight</strong>
-                        </div>
-                        <div class="stat-chip">
-                            <span>RRR Sensitivity</span>
-                            <strong class="accent-gold">8.2% Weight</strong>
-                        </div>
-                        <div class="stat-chip">
-                            <span>Pace/Speed Factor</span>
-                            <strong class="accent-emerald">7.7% Weight</strong>
+                        <div class="stat-badge-row">
+                            <div class="stat-chip">
+                                <span>Dominant Feature</span>
+                                <strong class="accent-pink">Ball of Innings (40.5%)</strong>
+                            </div>
+                            <div class="stat-chip">
+                                <span>Wickets in Hand</span>
+                                <strong class="accent-cyan">27.3% Weight</strong>
+                            </div>
+                            <div class="stat-chip">
+                                <span>RRR Sensitivity</span>
+                                <strong class="accent-gold">8.2% Weight</strong>
+                            </div>
+                            <div class="stat-chip">
+                                <span>Pace/Speed Factor</span>
+                                <strong class="accent-emerald">7.7% Weight</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Interactive Delivery Pressure Stress-Test Simulator -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
-                        <div>
-                            <div class="panel-title">🎛️ Live Delivery Pressure Simulator</div>
-                            <div class="panel-subtitle">Tune match state variables to evaluate dynamic model response</div>
-                        </div>
+                <!-- Interactive Pressure Stress-Test Simulator -->
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header">
+                        <div class="shadcn-card-title">🎛️ Live Delivery Pressure Simulator</div>
+                        <div class="shadcn-card-description">Tune match state variables to evaluate dynamic model response</div>
                     </div>
-
-                    <div class="slider-group">
-                        <div class="slider-label-row">
-                            <span>Wickets In Hand</span>
-                            <strong id="val-wickets">5 Wkts</strong>
+                    <div class="shadcn-card-content">
+                        <div style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 6px;">
+                                <span style="color: hsl(var(--muted-foreground));">Wickets In Hand</span>
+                                <strong id="val-wickets" style="color: hsl(var(--accent)); font-family: var(--font-mono);">5 Wkts</strong>
+                            </div>
+                            <input id="slider-wickets" type="range" class="range-slider" min="1" max="9" value="5" oninput="runPressureStressTest()">
                         </div>
-                        <input id="slider-wickets" type="range" class="range-slider" min="1" max="9" value="5" oninput="runPressureStressTest()">
-                    </div>
 
-                    <div class="slider-group">
-                        <div class="slider-label-row">
-                            <span>Required Run Rate (RRR)</span>
-                            <strong id="val-rrr">11.5 RPO</strong>
+                        <div style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 6px;">
+                                <span style="color: hsl(var(--muted-foreground));">Required Run Rate (RRR)</span>
+                                <strong id="val-rrr" style="color: hsl(var(--accent)); font-family: var(--font-mono);">11.5 RPO</strong>
+                            </div>
+                            <input id="slider-rrr" type="range" class="range-slider" min="6" max="18" step="0.5" value="11.5" oninput="runPressureStressTest()">
                         </div>
-                        <input id="slider-rrr" type="range" class="range-slider" min="6" max="18" step="0.5" value="11.5" oninput="runPressureStressTest()">
-                    </div>
 
-                    <div class="slider-group">
-                        <div class="slider-label-row">
-                            <span>Balls Remaining</span>
-                            <strong id="val-balls">18 Balls</strong>
+                        <div style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 6px;">
+                                <span style="color: hsl(var(--muted-foreground));">Balls Remaining</span>
+                                <strong id="val-balls" style="color: hsl(var(--accent)); font-family: var(--font-mono);">18 Balls</strong>
+                            </div>
+                            <input id="slider-balls" type="range" class="range-slider" min="6" max="48" step="1" value="18" oninput="runPressureStressTest()">
                         </div>
-                        <input id="slider-balls" type="range" class="range-slider" min="6" max="48" step="1" value="18" oninput="runPressureStressTest()">
-                    </div>
 
-                    <div class="slider-group">
-                        <div class="slider-label-row">
-                            <span>Bowler Release Speed</span>
-                            <strong id="val-speed">142 km/h</strong>
+                        <div style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 6px;">
+                                <span style="color: hsl(var(--muted-foreground));">Bowler Release Speed</span>
+                                <strong id="val-speed" style="color: hsl(var(--accent)); font-family: var(--font-mono);">142 km/h</strong>
+                            </div>
+                            <input id="slider-speed" type="range" class="range-slider" min="115" max="155" step="1" value="142" oninput="runPressureStressTest()">
                         </div>
-                        <input id="slider-speed" type="range" class="range-slider" min="115" max="155" step="1" value="142" oninput="runPressureStressTest()">
-                    </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
-                        <div class="gauge-metric-card">
-                            <div class="hud-label" style="justify-content: center;">Clutch Index</div>
-                            <div id="sim-clutch-index" class="gauge-number accent-pink">1.84x</div>
-                            <div class="hud-subtext">Relative leverage multiplier</div>
-                        </div>
-                        <div class="gauge-metric-card">
-                            <div class="hud-label" style="justify-content: center;">Boundary Expectancy</div>
-                            <div id="sim-boundary-prob" class="gauge-number accent-emerald">28.4%</div>
-                            <div class="hud-subtext">Ashutosh/Vaibhav baseline</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+                            <div class="stat-chip" style="text-align: center; padding: 14px;">
+                                <div class="hud-label" style="justify-content: center;">Clutch Index</div>
+                                <div id="sim-clutch-index" class="hud-value accent-pink" style="font-size: 2.2rem;">1.84x</div>
+                                <div style="font-size: 0.74rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">Relative leverage multiplier</div>
+                            </div>
+                            <div class="stat-chip" style="text-align: center; padding: 14px;">
+                                <div class="hud-label" style="justify-content: center;">Boundary Expectancy</div>
+                                <div id="sim-boundary-prob" class="hud-value accent-emerald" style="font-size: 2.2rem;">28.4%</div>
+                                <div style="font-size: 0.74rem; color: hsl(var(--muted-foreground)); margin-top: 4px;">Ashutosh/Vaibhav baseline</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1354,74 +1187,78 @@
                     <h2><span>🎲</span> 10,000-Iteration Monte Carlo IPL 2027 Auction Simulator</h2>
                     <p>Stochastic purse depletion, market demand volatility, and acquisition probability distributions</p>
                 </div>
-                <span class="section-tag">Purse Optimization</span>
+                <span class="shadcn-badge shadcn-badge-gold">Purse Optimization</span>
             </div>
 
-            <!-- Pre-set Scenario Tabs -->
-            <div class="scenario-tab-bar">
-                <button id="tab-scenario-a" class="scenario-tab active" onclick="selectAuctionScenario('Scenario_A_Jaipur_Fortress')">
-                    🏰 Scenario A: Jaipur Fortress (Clutch Core)
-                </button>
-                <button id="tab-scenario-b" class="scenario-tab" onclick="selectAuctionScenario('Scenario_B_Global_Firepower')">
-                    🚀 Scenario B: Global Firepower (Express Pace)
-                </button>
-                <button id="tab-scenario-c" class="scenario-tab" onclick="selectAuctionScenario('Scenario_C_Dynasty_Vision')">
-                    👑 Scenario C: Dynasty Vision (Prodigy Upside)
-                </button>
-            </div>
+            <!-- shadcn Tabs Bar -->
+            <div class="shadcn-tabs">
+                <div class="shadcn-tabs-list">
+                    <button id="tab-scenario-a" class="shadcn-tabs-trigger active" onclick="selectAuctionScenario('Scenario_A_Jaipur_Fortress')">
+                        🏰 Scenario A: Jaipur Fortress (Clutch Core)
+                    </button>
+                    <button id="tab-scenario-b" class="shadcn-tabs-trigger" onclick="selectAuctionScenario('Scenario_B_Global_Firepower')">
+                        🚀 Scenario B: Global Firepower (Express Pace)
+                    </button>
+                    <button id="tab-scenario-c" class="shadcn-tabs-trigger" onclick="selectAuctionScenario('Scenario_C_Dynasty_Vision')">
+                        👑 Scenario C: Dynasty Vision (Prodigy Upside)
+                    </button>
+                </div>
 
-            <!-- Scenario Details Box -->
-            <div id="scenario-details-container" class="scenario-details-box">
-                <!-- Populated dynamically -->
+                <!-- Scenario Details Box (shadcn-card) -->
+                <div id="scenario-details-container" class="shadcn-card" style="padding: 24px; margin-bottom: 20px;">
+                    <!-- Populated dynamically -->
+                </div>
             </div>
 
             <div class="grid-2col">
-                <!-- Player Valuation Distribution Chart -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
+                <!-- Auction Valuation Card -->
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                         <div>
-                            <div class="panel-title">📈 Auction Price Valuation Percentiles (P10 - P90)</div>
-                            <div class="panel-subtitle">Projected bid spreads across 10,000 market simulations</div>
+                            <div class="shadcn-card-title">📈 Auction Price Valuation Percentiles (P10 - P90)</div>
+                            <div class="shadcn-card-description">Projected bid spreads across 10,000 market simulations</div>
                         </div>
-                        <select id="auction-player-select" class="control-select" onchange="updateAuctionValuationChart()">
+                        <select id="auction-player-select" class="shadcn-select" onchange="updateAuctionValuationChart()">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
-                    <div class="chart-box">
-                        <canvas id="auctionValuationChart"></canvas>
-                    </div>
-                    <div id="auction-player-metrics" class="stat-badge-row">
-                        <!-- Populated dynamically -->
+                    <div class="shadcn-card-content">
+                        <div class="chart-box">
+                            <canvas id="auctionValuationChart"></canvas>
+                        </div>
+                        <div id="auction-player-metrics" class="stat-badge-row">
+                            <!-- Populated dynamically -->
+                        </div>
                     </div>
                 </div>
 
-                <!-- Purse Depletion / Remaining Budget Distribution -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
-                        <div>
-                            <div class="panel-title">💰 Remaining Purse Cushion Distribution (₹41 Cr Initial)</div>
-                            <div class="panel-subtitle">Probabilistic remaining funds for bench depth and scouting</div>
-                        </div>
+                <!-- Purse Depletion Card -->
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header">
+                        <div class="shadcn-card-title">💰 Remaining Purse Cushion Distribution (₹41 Cr Initial)</div>
+                        <div class="shadcn-card-description">Probabilistic remaining funds for bench depth and scouting</div>
                     </div>
-                    <div class="chart-box">
-                        <canvas id="purseDistributionChart"></canvas>
-                    </div>
-                    <div class="stat-badge-row">
-                        <div class="stat-chip">
-                            <span>Starting Purse</span>
-                            <strong class="accent-gold">₹41.00 Cr</strong>
+                    <div class="shadcn-card-content">
+                        <div class="chart-box">
+                            <canvas id="purseDistributionChart"></canvas>
                         </div>
-                        <div class="stat-chip">
-                            <span>P10 Purse Cushion</span>
-                            <strong id="chip-purse-p10" class="accent-pink">₹21.61 Cr</strong>
-                        </div>
-                        <div class="stat-chip">
-                            <span>Median Cushion</span>
-                            <strong id="chip-purse-p50" class="accent-cyan">₹27.09 Cr</strong>
-                        </div>
-                        <div class="stat-chip">
-                            <span>P90 Cushion</span>
-                            <strong id="chip-purse-p90" class="accent-emerald">₹34.53 Cr</strong>
+                        <div class="stat-badge-row">
+                            <div class="stat-chip">
+                                <span>Starting Purse</span>
+                                <strong class="accent-gold">₹41.00 Cr</strong>
+                            </div>
+                            <div class="stat-chip">
+                                <span>P10 Purse Cushion</span>
+                                <strong id="chip-purse-p10" class="accent-pink">₹21.61 Cr</strong>
+                            </div>
+                            <div class="stat-chip">
+                                <span>Median Cushion</span>
+                                <strong id="chip-purse-p50" class="accent-cyan">₹27.09 Cr</strong>
+                            </div>
+                            <div class="stat-chip">
+                                <span>P90 Cushion</span>
+                                <strong id="chip-purse-p90" class="accent-emerald">₹34.53 Cr</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1438,10 +1275,10 @@
                     <p>Integrate 6 retained superstars with auction targets, evaluated against Sawai Mansingh Stadium pitch kinematics</p>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <button class="btn-liquid btn-liquid-secondary" onclick="loadScenarioIntoSquad('Scenario_A_Jaipur_Fortress')">
+                    <button class="shadcn-button shadcn-button-secondary" onclick="loadScenarioIntoSquad('Scenario_A_Jaipur_Fortress')">
                         ⚡ Load Jaipur Fortress
                     </button>
-                    <button class="btn-liquid btn-liquid-secondary" onclick="resetSquadBuilder()">
+                    <button class="shadcn-button shadcn-button-secondary" onclick="resetSquadBuilder()">
                         🔄 Reset Slots
                     </button>
                 </div>
@@ -1449,27 +1286,29 @@
 
             <div class="war-room-builder-grid">
                 <!-- Squad Canvas Column -->
-                <div class="liquid-glass panel-card">
-                    <div class="panel-card-header">
+                <div class="shadcn-card">
+                    <div class="shadcn-card-header" style="flex-direction: row; justify-content: space-between; align-items: center;">
                         <div>
-                            <div class="panel-title">🛡️ Rajasthan Royals Playing XI & Impact Player</div>
-                            <div class="panel-subtitle">6 Official Retentions + Drafted Auction Targets</div>
+                            <div class="shadcn-card-title">🛡️ Rajasthan Royals Playing XI & Impact Player</div>
+                            <div class="shadcn-card-description">6 Official Retentions + Drafted Auction Targets</div>
                         </div>
-                        <div id="squad-purse-counter" class="player-price-badge" style="font-size: 1.05rem; color: var(--rr-emerald);">
+                        <div id="squad-purse-counter" class="shadcn-badge shadcn-badge-emerald" style="font-size: 0.95rem;">
                             Remaining: ₹27.42 Cr
                         </div>
                     </div>
 
-                    <div class="squad-slot-list" id="squad-slot-container">
-                        <!-- Filled by JS -->
-                    </div>
-
-                    <div style="margin-top: 22px;">
-                        <div style="font-size: 0.9rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">
-                            Select Additional Auction Targets to Draft:
-                        </div>
-                        <div class="target-pool-grid" id="target-pool-container">
+                    <div class="shadcn-card-content">
+                        <div class="squad-slot-list" id="squad-slot-container">
                             <!-- Filled by JS -->
+                        </div>
+
+                        <div style="margin-top: 22px;">
+                            <div style="font-size: 0.9rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px; font-family: var(--font-heading);">
+                                Select Additional Auction Targets to Draft:
+                            </div>
+                            <div class="target-pool-grid" id="target-pool-container">
+                                <!-- Filled by JS -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1477,31 +1316,31 @@
                 <!-- Jaipur SMS Stadium Physics Column -->
                 <div class="sms-pitch-visualizer">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="sms-badge">🏟️ Sawai Mansingh Stadium Physics Engine</span>
+                        <span class="shadcn-badge shadcn-badge-emerald">🏟️ Sawai Mansingh Stadium Physics Engine</span>
                         <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94A3B8;">Jaipur, Rajasthan (Altitude: 431m)</span>
                     </div>
 
                     <div class="sms-dimension-grid">
                         <div class="sms-metric">
-                            <span>Square Boundaries</span>
-                            <strong class="accent-gold">68m - 72m</strong>
+                            <span style="font-size: 0.7rem; color: hsl(var(--muted-foreground)); text-transform: uppercase; font-family: var(--font-mono);">Square Boundaries</span>
+                            <strong class="accent-gold" style="font-size: 1.15rem; font-family: var(--font-heading); display: block;">68m - 72m</strong>
                         </div>
                         <div class="sms-metric">
-                            <span>Straight Boundary</span>
-                            <strong class="accent-cyan">75m</strong>
+                            <span style="font-size: 0.7rem; color: hsl(var(--muted-foreground)); text-transform: uppercase; font-family: var(--font-mono);">Straight Boundary</span>
+                            <strong class="accent-cyan" style="font-size: 1.15rem; font-family: var(--font-heading); display: block;">75m</strong>
                         </div>
                         <div class="sms-metric">
-                            <span>Avg 1st Inn Score</span>
-                            <strong class="accent-pink">172.5</strong>
+                            <span style="font-size: 0.7rem; color: hsl(var(--muted-foreground)); text-transform: uppercase; font-family: var(--font-mono);">Avg 1st Inn Score</span>
+                            <strong class="accent-pink" style="font-size: 1.15rem; font-family: var(--font-heading); display: block;">172.5</strong>
                         </div>
                         <div class="sms-metric">
-                            <span>Wicket Split</span>
-                            <strong class="accent-emerald">62% Pace / 38% Spin</strong>
+                            <span style="font-size: 0.7rem; color: hsl(var(--muted-foreground)); text-transform: uppercase; font-family: var(--font-mono);">Wicket Split</span>
+                            <strong class="accent-emerald" style="font-size: 1.15rem; font-family: var(--font-heading); display: block;">62% Pace / 38% Spin</strong>
                         </div>
                     </div>
 
                     <div style="margin-top: 14px;">
-                        <div class="panel-title" style="font-size: 0.98rem; margin-bottom: 8px;">
+                        <div style="font-size: 0.98rem; font-weight: 700; color: #FFFFFF; margin-bottom: 8px; font-family: var(--font-heading);">
                             🏟️ SMS Venue Synergy Radar (Squad vs Jaipur Benchmark)
                         </div>
                         <div class="chart-box" style="height: 250px;">
@@ -1534,8 +1373,8 @@
                 <a href="Rajasthan_Royals_SupeRR_Selector_Presentation.pptx">Executive Slides (PPTX)</a> · 
                 <a href="https://github.com/Sohaam007/superr-selector-rr2027">GitHub Repository</a>
             </p>
-            <div class="footer-tagline">
-                HALLA BOL · LIQUID GLASS AI/ML WAR ROOM · 2026-2027
+            <div style="margin-top: 12px; font-family: var(--font-mono); font-size: 0.76rem; color: hsl(var(--muted-foreground)); letter-spacing: 1px;">
+                HALLA BOL · SHADCN/UI LIQUID GLASS ARCHITECTURE · 2026-2027
             </div>
         </footer>
 
@@ -1586,11 +1425,11 @@
             const btn = document.getElementById('audio-toggle-btn');
             if (audioEnabled) {
                 btn.textContent = "🔊 Sound FX: ON";
-                btn.style.color = "var(--rr-cyan)";
+                btn.style.color = "hsl(var(--accent))";
                 playTone(880, 'sine', 0.1);
             } else {
                 btn.textContent = "🔇 Sound FX: OFF";
-                btn.style.color = "var(--text-muted)";
+                btn.style.color = "hsl(var(--muted-foreground))";
             }
         }
 
@@ -1622,7 +1461,6 @@
 
             function draw() {
                 ctx.clearRect(0, 0, w, h);
-                // Draw connecting lines
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
@@ -1639,7 +1477,6 @@
                     }
                 }
 
-                // Draw dots
                 for (let p of particles) {
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -1665,7 +1502,6 @@
         let purseDistributionChart = null;
         let smsRadarChart = null;
 
-        // Populate Select Dropdowns
         function initSelectors() {
             const batterSelect = document.getElementById('batter-select');
             const bowlerSelect = document.getElementById('bowler-select');
@@ -1724,7 +1560,6 @@
             const labels = Object.keys(curve).map(b => b + " Balls");
             const values = Object.values(curve).map(v => (v * 100).toFixed(1));
 
-            // League average baseline curve (decaying at ~0.05 per ball)
             const leagueAvg = [95.0, 77.4, 59.9, 46.3, 35.8, 27.7, 21.5];
 
             const ctx = document.getElementById('batterSurvivalChart').getContext('2d');
@@ -1786,7 +1621,6 @@
                 }
             });
 
-            // Chips
             const chipContainer = document.getElementById('batter-hazard-chips');
             const hr = batter.hazard_ratio.toFixed(3);
             const ci = `[${batter.hazard_rate_ci_95[0].toFixed(3)} - ${batter.hazard_rate_ci_95[1].toFixed(3)}]`;
@@ -2009,7 +1843,7 @@
             playTone(800, 'sine', 0.1);
             currentScenarioKey = scenarioKey;
 
-            document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.shadcn-tabs-trigger').forEach(t => t.classList.remove('active'));
             if (scenarioKey === 'Scenario_A_Jaipur_Fortress') document.getElementById('tab-scenario-a').classList.add('active');
             if (scenarioKey === 'Scenario_B_Global_Firepower') document.getElementById('tab-scenario-b').classList.add('active');
             if (scenarioKey === 'Scenario_C_Dynasty_Vision') document.getElementById('tab-scenario-c').classList.add('active');
@@ -2025,7 +1859,7 @@
             const box = document.getElementById('scenario-details-container');
             const targetPills = s.target_players.map(p => {
                 const limit = s.bid_limits_cr[p] ? `(Max ₹${s.bid_limits_cr[p]} Cr)` : '';
-                return `<span class="link-pill link-pill-cyan">🎯 ${p} ${limit}</span>`;
+                return `<span class="shadcn-badge shadcn-badge-cyan">🎯 ${p} ${limit}</span>`;
             }).join(' ');
 
             const successPct = (s.success_rate_all_targets * 100).toFixed(1);
@@ -2036,14 +1870,14 @@
                         <h3 style="font-size: 1.25rem; font-family: var(--font-heading); color: #FFF;">${s.name}</h3>
                         <p style="font-size: 0.9rem; color: #CBD5E1; margin-top: 4px;">${s.description}</p>
                     </div>
-                    <div style="font-family: var(--font-mono); font-size: 0.82rem; background: rgba(0, 245, 160, 0.16); color: var(--rr-emerald); padding: 7px 16px; border-radius: 20px; border: 1px solid var(--rr-emerald); box-shadow: 0 0 15px rgba(0, 245, 160, 0.2);">
+                    <div class="shadcn-badge shadcn-badge-emerald" style="font-size: 0.82rem; padding: 7px 16px;">
                         ✓ All Targets Acquired Success Rate: ${successPct}%
                     </div>
                 </div>
                 <div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;">
                     ${targetPills}
                 </div>
-                <div class="scenario-details-grid">
+                <div class="stat-badge-row" style="margin-top: 16px; border: none; padding: 0;">
                     <div class="stat-chip">
                         <span>Expected Total Spend</span>
                         <strong class="accent-pink">₹${s.expected_spend_cr.toFixed(2)} Cr</strong>
@@ -2063,7 +1897,6 @@
                 </div>
             `;
 
-            // Update HUD chips
             document.getElementById('chip-purse-p10').textContent = `₹${s.remaining_purse_p10.toFixed(2)} Cr`;
             document.getElementById('chip-purse-p50').textContent = `₹${s.remaining_purse_p50.toFixed(2)} Cr`;
             document.getElementById('chip-purse-p90').textContent = `₹${s.remaining_purse_p90.toFixed(2)} Cr`;
@@ -2250,7 +2083,7 @@
                 const isRetained = p.retained;
                 const isDrafted = p.drafted;
                 const cls = isRetained ? 'retained' : (isDrafted ? 'drafted' : '');
-                const osBadge = p.overseas ? '<span style="color: var(--rr-pink-neon); font-size: 0.72rem; font-weight: 800;">[OVERS]</span>' : '';
+                const osBadge = p.overseas ? '<span class="shadcn-badge shadcn-badge-default" style="font-size: 0.68rem; padding: 2px 8px;">OVERS</span>' : '';
 
                 const item = document.createElement('div');
                 item.className = `squad-player-item ${cls}`;
@@ -2258,7 +2091,7 @@
                     <div class="player-info-cluster">
                         <div class="player-pos-badge">${p.pos}</div>
                         <div>
-                            <div class="player-name-text">${p.name} ${osBadge}</div>
+                            <div class="player-name-text" style="display: flex; align-items: center; gap: 8px;">${p.name} ${osBadge}</div>
                             <div class="player-meta-tag">${p.role}</div>
                         </div>
                     </div>
@@ -2305,8 +2138,8 @@
                         <div style="font-size: 0.74rem; color: #94A3B8;">${p.role}</div>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                        <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--rr-gold); font-weight: 800;">₹${p.price.toFixed(2)} Cr</span>
-                        <span style="font-size: 0.74rem; font-weight: 700; color: ${isSelectedTarget ? 'var(--rr-emerald)' : 'var(--rr-cyan)'};">
+                        <span style="font-family: var(--font-mono); font-size: 0.82rem; color: #FFDF73; font-weight: 800;">₹${p.price.toFixed(2)} Cr</span>
+                        <span class="shadcn-badge ${isSelectedTarget ? 'shadcn-badge-emerald' : 'shadcn-badge-outline'}" style="font-size: 0.7rem; padding: 2px 8px;">
                             ${isSelectedTarget ? '✓ DRAFTED' : '+ ADD'}
                         </span>
                     </div>
